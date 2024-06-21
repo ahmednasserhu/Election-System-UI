@@ -1,0 +1,93 @@
+<div class="my-container pt-3 pb-3 d-flex align-items-center d-flex">
+  <div class="container-fluid">
+    <div class="row align-items-center justify-content-center gap-5">
+      <div class="col-lg-6 col-md-8 col-sm-8">
+        @if (image) {
+          <ngb-carousel>
+            <ng-template ngbSlide>
+              <div class="picsum-img-wrapper">
+                <img [src]="image" alt="Random first slide" />
+                <div class="layer"></div>
+              </div>
+              <h1 class="pa">Share in the election 🤝🏻</h1>
+            </ng-template>
+            <ng-template ngbSlide>
+              <div class="picsum-img-wrapper">
+                <img [src]="image" alt="Random second slide" />
+                <div class="layer"></div>
+              </div>
+              <h1 class="pa">Your voice is honesty 👌🏻</h1>
+            </ng-template>
+            <ng-template ngbSlide>
+              <div class="picsum-img-wrapper">
+                <img [src]="image" alt="Random third slide" />
+                <div class="layer"></div>
+              </div>
+              <h1 class="pa">Be positive ✅</h1>
+            </ng-template>
+          </ngb-carousel>
+        }
+      </div>
+      <div class="col-lg-3 col-md-3 d-flex rounded-lg">
+        <div
+          class="word-contain text-center rounded-3 border-white d-flex flex-column gap-4"
+        >
+          <p class="header-word pt-3 pb-3 rounded-top-3">
+            Important Advertisement
+          </p>
+          <div class="p-2">
+            <p class="content-word">
+              <a href=""> Timetable for the 2024 presidential elections </a>
+            </p>
+            <div class="line-1"></div>
+            <p class="content-word">
+              <a href=""
+                >The Commission’s decisions regarding the 2024 presidential
+                elections</a
+              >
+            </p>
+            <div class="line-1"></div>
+            <p class="content-word">
+              <a href="">
+                Speech by the Chairman of the Commission to invite voters for
+                the 2024 presidential elections
+              </a>
+            </p>
+            <div class="line-1"></div>
+
+            <p class="content-word">
+              <a href="">
+                Executive Director’s speech at the Voter Call Conference for the
+                2024 Presidential Elections
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="my-container bg-white d-flex">
+  <div class="row d-flex m-0">
+    <div class="col-lg-4 p-4 bg-white d-flex">
+      <div class="my-card">
+        <h4 class="card-header p-2 ps-3">About us</h4>
+        <p class="ps-3 pe-3 pt-3">
+          <img src="../../../assets/images/download.png" alt="" class="mb-3" />
+          Establishing the National Elections Authority in the Arab Republic of
+          Egypt in accordance with the provisions of the 2014 Constitution, of
+          which Article 208 stipulates the establishment of the Authority as an
+          independent body, exclusively responsible for managing referendums and
+          presidential, parliamentary, and local elections, starting with the
+        </p>
+      </div>
+    </div>
+    <div class="col-lg-3 d-flex">
+      <app-testimonial class="d-flex"></app-testimonial>
+    </div>
+    <div class="col-lg-5">
+      <!-- Live election -->
+      <app-election-result></app-election-result>
+    </div>
+  </div>
+</div>
