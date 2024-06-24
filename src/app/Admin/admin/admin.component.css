@@ -6,3 +6,4 @@
   :host ::ng-deep .sidebar.closed + .content {
     margin-left: 80px;
   }
+  
