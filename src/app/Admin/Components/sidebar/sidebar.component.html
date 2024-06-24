@@ -1,1 +1,31 @@
-<p>sidebar works!</p>
+<div class="sidebar" [class.closed]="isClosed">
+    <div class="sidebar-header">
+      <h4 *ngIf="!isClosed" class="m-0">Admin Dashboard</h4>
+      <button class="toggle-btn" (click)="toggleSidebar()">
+        <i [class]="isClosed ? 'fa fa-chevron-right' : 'fa fa-chevron-left'"></i>
+      </button>
+    </div>
+    <ul class="list-group">
+      <li class="list-group-item fs-5" *ngFor="let item of menuItems">
+        <a [routerLink]="item.route" routerLinkActive="active">
+          <i [class]="'fa fa-' + item.icon"></i>
+          <span *ngIf="!isClosed">{{ item.name }}</span>
+        </a>
+      </li>
+    </ul>
+
+    <hr class="mt-5">
+    <div class="dropdown ms-2 text-light">
+      <a href="#" class="d-flex align-items-center link-light text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+        <img src="https://w7.pngwing.com/pngs/178/595/png-transparent-user-profile-computer-icons-login-user-avatars-thumbnail.png" alt="" width="32" height="32" class="rounded-circle me-2 text-light">
+        <strong class="text-light ms-3">ali</strong>
+      </a>
+      <ul class="dropdown-menu text-small shadow text-light" aria-labelledby="dropdownUser1">
+        <li><a class="dropdown-item" href="#">New Election...</a></li>
+        <li><a class="dropdown-item" href="#">Profile</a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item" href="#">Sign out</a></li>
+      </ul>
+    </div>
+  </div>
+  
