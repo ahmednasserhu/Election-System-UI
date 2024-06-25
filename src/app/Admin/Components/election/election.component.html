@@ -1,1 +1,59 @@
-<p>election works!</p>
+<div class="container election-management">
+    <h3 style="font-family: Verdana, Geneva, Tahoma, sans-serif;">Election Management</h3>
+    
+    <!-- Bootstrap Tabs -->
+    <ul class="nav nav-tabs" id="electionTabs" role="tablist">
+      <li class="nav-item" role="presentation">
+        <a class="nav-link active" id="election-list-tab" data-bs-toggle="tab" href="#election-list" role="tab" aria-controls="election-list" aria-selected="true">Election List</a>
+      </li>
+      <li class="nav-item" role="presentation">
+        <a class="nav-link" id="election-form-tab" data-bs-toggle="tab" href="#election-form" role="tab" aria-controls="election-form" aria-selected="false">Add Election</a>
+      </li>
+    </ul>
+    
+    <div class="tab-content" id="electionTabsContent">
+      <!-- Election List -->
+      <div class="tab-pane fade show active" id="election-list" role="tabpanel" aria-labelledby="election-list-tab">
+        <div class="election-list mt-3">
+          <h3>Election List</h3>
+          <ul class="list-group">
+            <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let election of elections">
+              <span>{{ election.title }} ({{ election.startdate | date }} - {{ election.enddate | date }}) - Total Votes: {{ election.totalVotes }}</span>
+              <span>
+                <button class="btn btn-sm btn-primary me-3" (click)="editElection(election)">Edit</button>
+                <button class="btn btn-sm btn-danger" (click)="deleteElection(election.id)">Delete</button>
+              </span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      
+      <!-- Add Election -->
+      <div class="tab-pane fade" id="election-form" role="tabpanel" aria-labelledby="election-form-tab">
+        <div class="election-form mt-3">
+          <h3>{{ selectedElection.id ? 'Edit' : 'Add' }} Election</h3>
+          <form (ngSubmit)="saveElection()">
+            <div class="mb-3">
+              <label class="form-label">Title:</label>
+              <input class="form-control" [(ngModel)]="selectedElection.title" name="title" required />
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Description:</label>
+              <textarea class="form-control" [(ngModel)]="selectedElection.description" name="description" rows="4" required></textarea>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Start Date:</label>
+              <input type="date" class="form-control" [(ngModel)]="selectedElection.startdate" name="startdate" required />
+            </div>
+            <div class="mb-3">
+              <label class="form-label">End Date:</label>
+              <input type="date" class="form-control" [(ngModel)]="selectedElection.enddate" name="enddate" required />
+            </div>
+            <button type="submit" class="btn btn-primary me-3">{{ selectedElection.id ? 'Update' : 'Add' }}</button>
+            <button type="button" class="btn btn-secondary" (click)="clearForm()">Reset</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
