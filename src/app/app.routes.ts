@@ -5,6 +5,7 @@ import { CandidateComponent } from './Admin/Components/candidate/candidate.compo
 import { ElectionComponent } from './Admin/Components/election/election.component';
 import { CitizenComponent } from './Admin/Components/citizen/citizen.component';
 import { PageNotFoundComponent } from './Admin/Components/page-not-found/page-not-found.component';
+import { LoginComponent } from './login/login.component';
 
 export const routes: Routes = [
     {
@@ -21,5 +22,9 @@ export const routes: Routes = [
         { path: "**", component: PageNotFoundComponent },
     
     ],
-}
+},
+{
+    path: "login",
+    component: LoginComponent
+},
 ];
