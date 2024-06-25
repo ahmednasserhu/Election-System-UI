@@ -17,7 +17,7 @@
               <span>{{ candidate.firstName }}</span>
               <span>
                 <button class="btn btn-sm btn-primary me-2" (click)="approveCandidate(candidate)">Approve</button>
-                <button class="btn btn-sm btn-danger" (click)="rejectCandidate(candidate.id)">Reject</button>
+                <button class="btn btn-sm btn-danger" (click)="rejectCandidate(candidate._id)">Reject</button>
               </span>
             </li>
           </ul>

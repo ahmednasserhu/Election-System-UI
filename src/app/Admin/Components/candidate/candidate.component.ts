@@ -39,7 +39,7 @@ export class CandidateComponent implements OnInit {
 
   rejectCandidate(candidateId: number): void {
     this.candidateService.rejectCandidate(candidateId).subscribe(() => {
-      this.candidates = this.candidates.filter(candidate => candidate.id !== candidateId);
+      this.candidates = this.candidates.filter(candidate => candidate._id !== candidateId);
     }, error => {
       console.error('Error rejecting candidate:', error);
     });
