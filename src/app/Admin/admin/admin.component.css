@@ -1,8 +1,14 @@
 .content {
-    margin-left: 250px;
+    margin-left: 200px;
     transition: margin-left 0.3s;
   }
   
   :host ::ng-deep .sidebar.closed + .content {
     margin-left: 80px;
   }
+/* div{
+    background-image: url('https://img.freepik.com/premium-photo/yemen-flag-hand-dropping-ballot-card-into-box-voting-election-concept_764664-10207.jpg');
+    background-size: cover;
+    background-position: center;
+    background-color: rgba(0, 0, 0, 0.7)
+} */
