@@ -1,1 +1,38 @@
-<p>candidate works!</p>
+<div class="container mt-4 candidate-management">
+    <h2>Candidate Management</h2>
+    <ul class="nav nav-tabs" id="candidateTabs" role="tablist">
+      <li class="nav-item" role="presentation">
+        <a class="nav-link active" id="list-tab" data-bs-toggle="tab" href="#list" role="tab" aria-controls="list" aria-selected="true">Candidate List</a>
+      </li>
+      <li class="nav-item" role="presentation">
+        <a class="nav-link" id="approved-tab" data-bs-toggle="tab" href="#approved" role="tab" aria-controls="approved" aria-selected="false">Approved</a>
+      </li>
+    </ul>
+    <div class="tab-content" id="candidateTabsContent">
+      <div class="tab-pane fade show active" id="list" role="tabpanel" aria-labelledby="list-tab">
+        <div class="candidate-list mt-3">
+          <h3>Candidate List</h3>
+          <ul class="list-group">
+            <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let candidate of candidates">
+              <span>{{ candidate.name }}</span>
+              <span>
+                <button class="btn btn-sm btn-primary me-2" (click)="approveCandidate(candidate)">Approve</button>
+                <button class="btn btn-sm btn-danger" (click)="rejectCandidate(candidate.id)">Reject</button>
+              </span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="approved" role="tabpanel" aria-labelledby="approved-tab">
+        <div class="approved-list mt-3">
+          <h3>Approved Candidates</h3>
+          <ul class="list-group">
+            <li class="list-group-item" *ngFor="let candidate of candidates | filterByStatus:'Approved'">
+              {{ candidate.name }} (Approved)
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  
