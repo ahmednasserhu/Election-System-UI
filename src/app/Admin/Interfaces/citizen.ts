@@ -1,5 +1,5 @@
 export interface Citizen {
-    id: number;
+    _id: string;
     firstName: string;
     status: string;
 }
