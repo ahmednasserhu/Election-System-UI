@@ -1,6 +1,6 @@
 export interface Candidate {
     id: number;
-    name: string;
+    firstName: string;
     age: number;
     party: string;
     profile: string;

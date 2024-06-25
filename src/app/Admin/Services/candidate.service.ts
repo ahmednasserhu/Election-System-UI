@@ -13,15 +13,15 @@ export class CandidateService {
 
  
   getCandidates(): Observable<Candidate[]> {
-    return this.http.get<Candidate[]>(`${this.apiUrl}`);
+    return this.http.get<Candidate[]>(this.apiUrl);
   }
 
-  approveCandidate(candidate: Candidate): Observable<Candidate> {
-    return this.http.put<Candidate>(`${this.apiUrl}/review`, { ...candidate, status: 'Approved' });
+  approveCandidate(candidate: Candidate): Observable<any> {
+    return this.http.put(`${this.apiUrl}${candidate.id}/approve`, candidate);
   }
 
-  rejectCandidate(candidateId: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/review/${candidateId}`);
+  rejectCandidate(candidateId: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}${candidateId}`);
   }
 
   getLastCandidate(): Observable<any> {

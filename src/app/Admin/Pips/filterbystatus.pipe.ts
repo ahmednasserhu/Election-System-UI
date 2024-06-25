@@ -7,8 +7,9 @@ import { CommonModule } from '@angular/common';
 })
 export class FilterByStatusPipe implements PipeTransform {
   transform(items: any[], status: string): any[] {
-    if (!items) return [];
-    if (!status) return items;
+    if (!items || !status) {
+      return items;
+    }
     return items.filter(item => item.status === status);
   }
 }
