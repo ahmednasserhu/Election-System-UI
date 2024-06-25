@@ -1,0 +1,12 @@
+/* src/app/candidates/candidate-management/candidate-management.component.css */
+.candidate-management {
+    padding: 20px;
+  }
+  
+  .candidate-list,
+  .candidate-form,
+  .bulk-upload,
+  .candidate-analytics {
+    margin-top: 20px;
+  }
+  
