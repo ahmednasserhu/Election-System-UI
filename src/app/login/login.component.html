@@ -5,11 +5,11 @@
   
       <div class="form-group">
        
-        <input type="text" formControlName="username" id="username" class="form-control" [ngClass]="{ 'is-invalid': loginForm.get('username')?.invalid && loginForm.get('username')?.touched }" placeholder="Enter Your SSN ">
-        <div *ngIf="loginForm.get('username')?.invalid && loginForm.get('username')?.touched" class="invalid-feedback">
-          <div *ngIf="loginForm.get('username')?.hasError('required')">SSN is required</div>
-          <!-- <div *ngIf="loginForm.get('username')?.hasError('minlength')">SSN must be at least 3 characters</div> -->
-          <div *ngIf="loginForm.get('username')?.hasError('invalidSSN')">Invalid SSN format</div>
+        <input type="text" formControlName="ssn" id="ssn" class="form-control" [ngClass]="{ 'is-invalid': loginForm.get('ssn')?.invalid && loginForm.get('ssn')?.touched }" placeholder="Enter Your SSN ">
+        <div *ngIf="loginForm.get('ssn')?.invalid && loginForm.get('ssn')?.touched" class="invalid-feedback">
+          <div *ngIf="loginForm.get('ssn')?.hasError('required')">SSN is required</div>
+          <!-- <div *ngIf="loginForm.get('ssn')?.hasError('minlength')">SSN must be at least 3 characters</div> -->
+          <div *ngIf="loginForm.get('ssn')?.hasError('invalidSSN')">Invalid SSN format</div>
         </div>
       </div>
   

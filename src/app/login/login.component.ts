@@ -23,7 +23,7 @@ export class LoginComponent {
     private formBuilder: FormBuilder
   ) {
     this.loginForm = this.formBuilder.group({
-      username: ["", [Validators.required, this.ssnValidator]],
+      ssn: ["", [Validators.required, this.ssnValidator]],
       password: ["", [Validators.required, ]]
     });
   }
@@ -51,7 +51,6 @@ export class LoginComponent {
   }
 
   login(userData: any) {
-    // Replace with your backend API URL
     const apiUrl = 'http://localhost:3000/citizens/signin';
 
     return this.http.post(apiUrl, userData);
