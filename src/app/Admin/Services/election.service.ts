@@ -37,4 +37,8 @@ export class ElectionService {
   deleteElection(id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
+
+  getElectionById(id: string): Observable<Election> {
+    return this.http.get<Election>(`${this.apiUrl}/${id}`);
+  }
 }
