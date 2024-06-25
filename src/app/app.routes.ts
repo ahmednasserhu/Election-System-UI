@@ -7,6 +7,7 @@ import { CitizenComponent } from './Admin/Components/citizen/citizen.component';
 import { PageNotFoundComponent } from './Admin/Components/page-not-found/page-not-found.component';
 import { LoginComponent } from './login/login.component';
 import { HomeDetailsComponent } from './home-details/home-details.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 export const routes: Routes = [
     {
@@ -27,6 +28,10 @@ export const routes: Routes = [
 {
     path: "login",
     component: LoginComponent
+},
+{
+    path: "reset-password",
+    component: ResetPasswordComponent
 },
 {
     path: "homeDetails/:id",

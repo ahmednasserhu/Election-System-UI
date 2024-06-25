@@ -1,14 +1,17 @@
+<!-- Login Form Section -->
 <section class="w-50 mx-auto shadow rounded p-4 my-5 bg-light mt-5">
   <h1 class="my-3 text-dark">Login</h1>
   <form [formGroup]="loginForm" (ngSubmit)="handleForm()">
+    <!-- SSN Input -->
     <div class="form-group">
-      <input type="text" formControlName="ssn" id="ssn" class="form-control" [ngClass]="{ 'is-invalid': loginForm.get('ssn')?.invalid && loginForm.get('ssn')?.touched }" placeholder="Enter Your SSN ">
+      <input type="text" formControlName="ssn" id="ssn" class="form-control" [ngClass]="{ 'is-invalid': loginForm.get('ssn')?.invalid && loginForm.get('ssn')?.touched }" placeholder="Enter Your SSN">
       <div *ngIf="loginForm.get('ssn')?.invalid && loginForm.get('ssn')?.touched" class="invalid-feedback">
         <div *ngIf="loginForm.get('ssn')?.hasError('required')">SSN is required</div>
         <div *ngIf="loginForm.get('ssn')?.hasError('invalidSSN')">Invalid SSN format</div>
       </div>
     </div>
 
+    <!-- Password Input -->
     <div class="form-group">
       <input type="password" formControlName="password" id="password" class="form-control mt-3" [ngClass]="{ 'is-invalid': loginForm.get('password')?.invalid && loginForm.get('password')?.touched }" placeholder="Enter Password">
       <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="invalid-feedback">
@@ -18,15 +21,20 @@
       </div>
     </div>
 
+    <!-- Login Button -->
     <button [disabled]="loginForm.invalid" type="submit" class="btn btn-block bg-black main-btn text-white mt-3">
       Login
       <span *ngIf="isLoading"><i class="fab fa-spin fa-spinner"></i></span>
     </button>
-    
+
+    <!-- Forgot Password Link -->
     <p class="mt-3"><a (click)="openForgotPasswordModal()" class="text-decoration-none" style="cursor: pointer; color: brown;">Forgot Password?</a></p>
+
+    <!-- Register Link -->
     <p class="mt-3">Don't have an account? <a routerLink="/register" class="text-decoration-none" style="color: brown;">Register</a></p>
   </form>
 
+  <!-- Error Message -->
   <p *ngIf="errMsg" class="alert alert-danger mt-3">{{ errMsg }}</p>
 </section>
 
@@ -39,7 +47,9 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form [formGroup]="forgotPasswordForm" (ngSubmit)="handleForgotPassword()">
+        <!-- Forgot Password Form -->
+        <form [formGroup]="forgotPasswordForm" *ngIf="!resetPasswordToken" (ngSubmit)="handleForgotPassword()">
+          <!-- Email Input -->
           <div class="form-group">
             <input type="email" formControlName="email" id="email" class="form-control" [ngClass]="{ 'is-invalid': forgotPasswordForm.get('email')?.invalid && forgotPasswordForm.get('email')?.touched }" placeholder="Enter Your Email">
             <div *ngIf="forgotPasswordForm.get('email')?.invalid && forgotPasswordForm.get('email')?.touched" class="invalid-feedback">
@@ -47,12 +57,48 @@
               <div *ngIf="forgotPasswordForm.get('email')?.hasError('email')">Invalid email format</div>
             </div>
           </div>
+          <!-- Submit Button -->
           <button [disabled]="forgotPasswordForm.invalid" type="submit" class="btn btn-primary mt-3">
             Send Reset Link
             <span *ngIf="isForgotPasswordLoading"><i class="fab fa-spin fa-spinner"></i></span>
           </button>
+          <!-- Success or Error Message -->
+          <p class="mt-3 text-success" *ngIf="forgotPasswordMsg">{{ forgotPasswordMsg }}</p>
+          <p class="mt-3 text-danger" *ngIf="forgotPasswordErrorMsg">{{ forgotPasswordErrorMsg }}</p>
+        </form>
+
+        <!-- Reset Password Form -->
+        <form [formGroup]="resetPasswordForm" *ngIf="resetPasswordToken" (ngSubmit)="handleResetPassword()">
+          <!-- Token Input (hidden) -->
+          <input type="hidden" formControlName="token" value="{{ resetPasswordToken }}">
+          <!-- New Password Input -->
+          <div class="form-group">
+            <input type="password" formControlName="newPassword" id="newPassword" class="form-control" [ngClass]="{ 'is-invalid': resetPasswordForm.get('newPassword')?.invalid && resetPasswordForm.get('newPassword')?.touched }" placeholder="Enter New Password">
+            <div *ngIf="resetPasswordForm.get('newPassword')?.invalid && resetPasswordForm.get('newPassword')?.touched" class="invalid-feedback">
+              <div *ngIf="resetPasswordForm.get('newPassword')?.hasError('required')">New Password is required</div>
+              <div *ngIf="resetPasswordForm.get('newPassword')?.hasError('minlength')">Password must be at least 8 characters</div>
+              <div *ngIf="resetPasswordForm.get('newPassword')?.hasError('invalidPassword')">Password must contain uppercase, lowercase, number, and special character</div>
+            </div>
+          </div>
+          <!-- Confirm Password Input -->
+          <div class="form-group">
+            <input type="password" formControlName="confirmPassword" id="confirmPassword" class="form-control" [ngClass]="{ 'is-invalid': resetPasswordForm.get('confirmPassword')?.invalid && resetPasswordForm.get('confirmPassword')?.touched }" placeholder="Confirm New Password">
+            <div *ngIf="resetPasswordForm.get('confirmPassword')?.invalid && resetPasswordForm.get('confirmPassword')?.touched" class="invalid-feedback">
+              <div *ngIf="resetPasswordForm.get('confirmPassword')?.hasError('required')">Confirm Password is required</div>
+              <div *ngIf="resetPasswordForm.get('confirmPassword')?.hasError('passwordMismatch')">Passwords do not match</div>
+            </div>
+          </div>
+          <!-- Submit Button -->
+          <button [disabled]="resetPasswordForm.invalid" type="submit" class="btn btn-primary mt-3">
+            Reset Password
+            <span *ngIf="isResetPasswordLoading"><i class="fab fa-spin fa-spinner"></i></span>
+          </button>
+          <!-- Success or Error Message -->
+          <p class="mt-3 text-success" *ngIf="resetPasswordMsg">{{ resetPasswordMsg }}</p>
+          <p class="mt-3 text-danger" *ngIf="resetPasswordErrorMsg">{{ resetPasswordErrorMsg }}</p>
         </form>
       </div>
+      <!-- Modal Footer -->
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
       </div>
