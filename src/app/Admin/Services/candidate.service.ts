@@ -21,9 +21,9 @@ export class CandidateService {
     return this.http.post(`${this.apiUrl}${candidate._id}/review`, candidate);
   }
 
-  // rejectCandidate(candidateId: number): Observable<any> {
-  //   return this.http.delete(`${this.apiUrl}${candidateId}`);
-  // }
+  rejectCandidate(candidateId: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}${candidateId}`);
+  }
 
   getLastCandidate(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}last-candidate`);
