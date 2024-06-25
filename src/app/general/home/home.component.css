@@ -1,0 +1,63 @@
+img {
+  width: 100%;
+}
+.picsum-img-wrapper {
+  /* height: 420px; */
+  filter: blur(6px);
+  position: relative;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url('../../../assets/images/election_image.jpeg');
+}
+.layer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+.pa {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+}
+.my-container {
+  background-color: #333;
+}
+.word-contain {
+  background-color: #444444;
+}
+.header-word {
+  font-size: 20px;
+  color: white;
+  background-color: #555;
+}
+.content-word {
+  font-size: 18px;
+  color: white;
+}
+.line-1 {
+  height: 1px;
+  background: white;
+  margin-bottom: 1rem;
+}
+a {
+  color: white;
+}
+
+.card-header {
+  background-color: #d1d1d1;
+  color: #3d3d3d;
+  font-size: 22px;
+  /* border-radius: 8px 0px; */
+}
+.my-card {
+  border: #d1d1d1 1px solid;
+  border-radius: 8px;
+  overflow: hidden;
+}
