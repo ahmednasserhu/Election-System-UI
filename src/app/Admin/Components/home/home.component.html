@@ -1,0 +1,42 @@
+<div class="home text-dark w-100 ">
+    <div class="header">
+      <h1 style="color: #352f30; font-family: Verdana, Geneva, Tahoma, sans-serif;">Election Management Dashboard</h1>
+      <div class="date text-white">{{ currentDate | date:'fullDate' }}</div>
+    </div>
+  
+    <div class="stats-cards ">
+      <div class="card">
+        <div class="card-icon"><i class="fa fa-users"></i></div>
+        <div class="card-content">
+          <h2>Users</h2>
+          <p>{{ totalVoters }}</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-icon"><i class="fa fa-check-square"></i></div>
+        <div class="card-content">
+          <h2>Registered Candidates</h2>
+          <p>{{ registeredCandidates }}</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-icon"><i class="fa fa-chart-line"></i></div>
+        <div class="card-content">
+          <h2>Votes Cast</h2>
+          <p>{{ votesCast }}</p>
+        </div>
+      </div>
+      
+    </div>
+  
+  
+    <div class="recent-activity text-light">
+      <h2>Recent Activity</h2>
+      <ul>
+        <li *ngFor="let activity of recentActivities">
+          {{ activity.timestamp | date:'short' }}: {{ activity.description }}
+        </li>
+      </ul>
+    </div>
+  </div>
+  
