@@ -1,7 +1,7 @@
 import { Component ,OnInit } from '@angular/core';
 import { Candidate } from '../../Interfaces/candidate';
 import { CommonModule } from '@angular/common';
-import { FilterByStatusPipe } from '../../../Pips/filter-by-status.pipe';
+import { FilterByStatusPipe } from '../../Pips/filterbystatus.pipe';
 import { CandidateService } from '../../Services/candidate.service';
 import { DatePipe,LowerCasePipe,UpperCasePipe,CurrencyPipe,PercentPipe } from '@angular/common';
 
