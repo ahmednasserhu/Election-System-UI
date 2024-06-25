@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient ,HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Election } from '../Interfaces/election';
 
@@ -7,30 +7,34 @@ import { Election } from '../Interfaces/election';
   providedIn: 'root'
 })
 export class ElectionService {
-  private apiUrl = 'http://localhost:3000/elections/';
+  private apiUrl = 'http://localhost:3000/elections';
 
   constructor(private http: HttpClient) { }
 
   getLastElection(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}last-election`);
+    return this.http.get<any>(`${this.apiUrl}/last-election`);
   }
   getElections(): Observable<Election[]> {
     return this.http.get<Election[]>(this.apiUrl);
   }
 
-  getElection(id: number): Observable<Election> {
-    return this.http.get<Election>(`${this.apiUrl}/${id}`);
-  }
-
   createElection(election: Election): Observable<Election> {
-    return this.http.post<Election>(this.apiUrl, election);
+    return this.http.post<Election>(this.apiUrl, election, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    });
   }
 
   updateElection(election: Election): Observable<Election> {
-    return this.http.put<Election>(`${this.apiUrl}/${election.id}`, election);
-  }
+    return this.http.patch<Election>(`${this.apiUrl}/${election._id}`, election, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })}
+    )}
 
-  deleteElection(id: number): Observable<void> {
+
+  deleteElection(id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 }

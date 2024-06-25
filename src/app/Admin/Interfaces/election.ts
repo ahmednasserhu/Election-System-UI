@@ -1,6 +1,6 @@
 import { Candidate } from "../Interfaces/candidate";
 export interface Election {
-  id: number; 
+  _id: string; 
   title: string;
   description: string;
   startdate: string; 

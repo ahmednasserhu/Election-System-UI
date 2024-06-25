@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ElectionService } from '../../Services/election.service';
-import { Election } from '../../Interfaces/election'
+import { Election } from '../../Interfaces/election';
 import * as bootstrap from 'bootstrap';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule  } from '@angular/common/http';
-import { FormsModule ,NgForm , FormBuilder,FormControl} from '@angular/forms';
-
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-election',
@@ -16,7 +14,16 @@ import { FormsModule ,NgForm , FormBuilder,FormControl} from '@angular/forms';
 })
 export class ElectionComponent implements OnInit {
   elections: Election[] = [];
-  selectedElection: Election = {id:0, title: '', description: '', startdate: '', enddate: '', candidates: [], totalVotes: 0 };
+  selectedElection: Election = {
+    _id: '',
+    title: '',
+    description: '',
+    startdate: '',
+    enddate: '',
+    candidates: [],
+    totalVotes: 0
+  };
+  deleteElectionId: string | null = null;
 
   constructor(private electionService: ElectionService) { }
 
@@ -29,39 +36,64 @@ export class ElectionComponent implements OnInit {
   }
 
   editElection(election: Election): void {
-    this.selectedElection.id = election.id!;
     this.selectedElection = { ...election };
-    // Some logic to edit the election
+    const editModal = new bootstrap.Modal(document.getElementById('editModal')!);
+    editModal.show();
   }
-  
-  deleteElection(id: number): void {
-    if (confirm('Are you sure you want to delete this election?')) {
-      this.electionService.deleteElection(id).subscribe(() => this.loadElections());
+
+  deleteElection(id: string): void {
+    this.deleteElectionId = id;
+    const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal')!);
+    deleteModal.show();
+  }
+
+  confirmDelete(): void {
+    if (this.deleteElectionId) {
+      this.electionService.deleteElection(this.deleteElectionId).subscribe({
+        next: () => {
+          this.loadElections();
+          this.deleteElectionId = null;
+          const deleteModal = bootstrap.Modal.getInstance(document.getElementById('deleteModal')!);
+          deleteModal?.hide();
+        },
+        error: err => console.error('Delete error', err)
+      });
     }
   }
 
   saveElection(): void {
-    if (this.selectedElection.id) {
-      this.electionService.updateElection(this.selectedElection).subscribe(() => {
-        this.loadElections();
-        this.clearForm();
-        this.switchTab('election-list-tab');
+    if (this.selectedElection._id) {
+      this.electionService.updateElection(this.selectedElection).subscribe({
+        next: () => {
+          this.loadElections();
+          this.clearForm();
+          const editModal = bootstrap.Modal.getInstance(document.getElementById('editModal')!);
+          editModal?.hide();
+        },
+        error: err => console.error('Update error', err)
       });
     } else {
-      this.electionService.createElection(this.selectedElection).subscribe(() => {
-        this.loadElections();
-        this.clearForm();
-        this.switchTab('election-list-tab');
+      this.electionService.createElection(this.selectedElection).subscribe({
+        next: () => {
+          this.loadElections();
+          this.clearForm();
+          const editModal = bootstrap.Modal.getInstance(document.getElementById('editModal')!);
+          editModal?.hide();
+        },
+        error: err => console.error('Create error', err)
       });
     }
   }
 
   clearForm(): void {
-    this.selectedElection = { id:0,title: '', description: '', startdate: '', enddate: '', candidates: [], totalVotes: 0 };
-  }
-
-  switchTab(tabId: string): void {
-    const tab = new bootstrap.Tab(document.getElementById(tabId) as HTMLElement);
-    tab.show();
+    this.selectedElection = {
+      _id: '',
+      title: '',
+      description: '',
+      startdate: '',
+      enddate: '',
+      candidates: [],
+      totalVotes: 0
+    };
   }
 }
