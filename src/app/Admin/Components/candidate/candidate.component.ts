@@ -8,7 +8,15 @@ import { DatePipe, LowerCasePipe, UpperCasePipe, CurrencyPipe, PercentPipe } fro
 @Component({
   selector: 'app-candidate',
   standalone: true,
-  imports: [CommonModule, DatePipe, LowerCasePipe, UpperCasePipe, CurrencyPipe, PercentPipe, FilterByStatusPipe],
+  imports: [
+    CommonModule,
+    DatePipe,
+    LowerCasePipe,
+    UpperCasePipe,
+    CurrencyPipe,
+    PercentPipe,
+    FilterByStatusPipe
+  ],
   templateUrl: './candidate.component.html',
   styleUrls: ['./candidate.component.css']
 })
@@ -22,26 +30,37 @@ export class CandidateComponent implements OnInit {
   }
 
   loadCandidates(): void {
-    this.candidateService.getCandidates().subscribe(data => {
-      this.candidates = Array.isArray(data) ? data : [];  // Ensure it's an array
-    });
+    this.candidateService.getCandidates().subscribe(
+      data => {
+        this.candidates = data.paginationResults?.results || [];
+      },
+      error => {
+        console.error('Error loading candidates:', error);
+      }
+    );
   }
 
   approveCandidate(candidate: Candidate): void {
-    this.candidateService.approveCandidate(candidate).subscribe(() => {
-      candidate.status = 'Approved';
-      // Force update the list to reflect changes in approved tab
-      this.candidates = [...this.candidates];
-    }, error => {
-      console.error('Error approving candidate:', error);
-    });
+    this.candidateService.approveCandidate(candidate._id).subscribe(
+      () => {
+        candidate.status = 'approved';
+        // Update the list to reflect changes
+        this.candidates = [...this.candidates];
+      },
+      error => {
+        console.error('Error approving candidate:', error);
+      }
+    );
   }
 
-  rejectCandidate(candidateId: string): void {
-    this.candidateService.rejectCandidate(candidateId).subscribe(() => {
-      this.candidates = this.candidates.filter(candidate => candidate._id !== candidateId);
-    }, error => {
-      console.error('Error rejecting candidate:', error);
-    });
+  rejectCandidate(candidate: Candidate): void {
+    this.candidateService.rejectCandidate(candidate._id).subscribe(
+      () => {
+        this.candidates = this.candidates.filter(c => c._id !== candidate._id);
+      },
+      error => {
+        console.error('Error rejecting candidate:', error);
+      }
+    );
   }
 }

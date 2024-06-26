@@ -1,6 +1,7 @@
 /* src/app/candidates/candidate-management/candidate-management.component.css */
 .candidate-management {
     padding: 20px;
+    background-color: #444444;
   }
   
   .candidate-list,

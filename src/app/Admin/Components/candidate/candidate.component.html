@@ -1,38 +1,37 @@
 <div class="container candidate-management">
-    <h3 style="font-family: Verdana, Geneva, Tahoma, sans-serif;">Candidate Management</h3>
-    <ul class="nav nav-tabs" id="candidateTabs" role="tablist">
-      <li class="nav-item" role="presentation">
-        <a class="nav-link active" id="list-tab" data-bs-toggle="tab" href="#list" role="tab" aria-controls="list" aria-selected="true">Candidate List</a>
-      </li>
-      <li class="nav-item" role="presentation">
-        <a class="nav-link" id="approved-tab" data-bs-toggle="tab" href="#approved" role="tab" aria-controls="approved" aria-selected="false">Approved</a>
-      </li>
-    </ul>
-    <div class="tab-content" id="candidateTabsContent">
-      <div class="tab-pane fade show active" id="list" role="tabpanel" aria-labelledby="list-tab">
-        <div class="candidate-list mt-3">
-          <h3>Candidate List</h3>
-          <ul class="list-group">
-            <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let candidate of candidates">
-              <span>{{ candidate.firstName }}</span>
-              <span>
-                <button class="btn btn-sm btn-primary me-2" (click)="approveCandidate(candidate)">Approve</button>
-                <button class="btn btn-sm btn-danger" (click)="rejectCandidate(candidate._id)">Reject</button>
-              </span>
-            </li>
-          </ul>
-        </div>
+  <h3>Candidate Management</h3>
+  <ul class="nav nav-tabs" id="candidateTabs" role="tablist">
+    <li class="nav-item" role="presentation">
+      <a class="nav-link active" id="list-tab" data-bs-toggle="tab" href="#list" role="tab" aria-controls="list" aria-selected="true">Candidate List</a>
+    </li>
+    <li class="nav-item" role="presentation">
+      <a class="nav-link" id="approved-tab" data-bs-toggle="tab" href="#approved" role="tab" aria-controls="approved" aria-selected="false">Approved</a>
+    </li>
+  </ul>
+  <div class="tab-content" id="candidateTabsContent">
+    <div class="tab-pane fade show active" id="list" role="tabpanel" aria-labelledby="list-tab">
+      <div class="candidate-list mt-3">
+        <h3>Candidate List</h3>
+        <ul class="list-group">
+          <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let candidate of candidates">
+            <span>{{ candidate.logoName }}</span>
+            <span>
+              <button class="btn btn-sm btn-primary me-2" (click)="approveCandidate(candidate)">Approve</button>
+              <button class="btn btn-sm btn-danger" (click)="rejectCandidate(candidate)">Reject</button>
+            </span>
+          </li>
+        </ul>
       </div>
-      <div class="tab-pane fade" id="approved" role="tabpanel" aria-labelledby="approved-tab">
-        <div class="approved-list mt-3">
-          <h3>Approved Candidates</h3>
-          <ul class="list-group">
-            <li class="list-group-item" *ngFor="let candidate of candidates | filterByStatus:'Approved'">
-              {{ candidate.firstName }} (Approved)
-            </li>
-          </ul>
-        </div>
+    </div>
+    <div class="tab-pane fade" id="approved" role="tabpanel" aria-labelledby="approved-tab">
+      <div class="approved-list mt-3">
+        <h3>Approved Candidates</h3>
+        <ul class="list-group">
+          <li class="list-group-item" *ngFor="let candidate of candidates | filterByStatus:'approved'">
+            {{ candidate.brief }} (Approved)
+          </li>
+        </ul>
       </div>
     </div>
   </div>
-  
+</div>

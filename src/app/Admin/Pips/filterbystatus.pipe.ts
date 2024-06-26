@@ -1,15 +1,12 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Candidate } from '../Interfaces/candidate';
 
 @Pipe({
   name: 'filterByStatus',
   standalone:true
 })
 export class FilterByStatusPipe implements PipeTransform {
-  transform(items: any[], status: string): any[] {
-    if (!items || !status) {
-      return items;
-    }
-    return items.filter(item => item.status === status);
+  transform(candidates: Candidate[], status: string): Candidate[] {
+    return candidates.filter(candidate => candidate.status === status);
   }
 }

@@ -13,7 +13,7 @@ import { CommonModule } from '@angular/common';
 export class CitizenComponent implements OnInit {
   citizens: Citizen[] = [];
   blockedCitizens: Citizen[] = [];
-  error: string = '';  // Add an error message property
+  error: string = '';
 
   constructor(private citizenService: CitizenService) { }
 
@@ -25,12 +25,7 @@ export class CitizenComponent implements OnInit {
   loadCitizens(): void {
     this.citizenService.getCitizens().subscribe(
       data => {
-        if (Array.isArray(data)) {
-          this.citizens = data.filter(citizen => citizen.status !== 'Blocked');
-        } else {
-          this.error = 'Expected array but got: ' + JSON.stringify(data);
-          console.error('Expected array but got:', data);
-        }
+        this.citizens = data.filter(citizen => citizen.status !== 'blocked');
       },
       error => {
         this.error = 'Error loading citizens: ' + error.message;
@@ -42,12 +37,7 @@ export class CitizenComponent implements OnInit {
   loadBlockedCitizens(): void {
     this.citizenService.getCitizens().subscribe(
       data => {
-        if (Array.isArray(data)) {
-          this.blockedCitizens = data.filter(citizen => citizen.status === 'Blocked');
-        } else {
-          this.error = 'Expected array but got: ' + JSON.stringify(data);
-          console.error('Expected array but got:', data);
-        }
+        this.blockedCitizens = data.filter(citizen => citizen.status === 'blocked');
       },
       error => {
         this.error = 'Error loading blocked citizens: ' + error.message;
@@ -56,16 +46,31 @@ export class CitizenComponent implements OnInit {
     );
   }
 
-  blockCitizen(citizen: Citizen): void {
-    this.citizenService.blockCitizen(citizen._id).subscribe(
+  blockCitizen(citizen: Citizen, action: 'blocked' | 'unblocked'): void {
+    let statusToUpdate: string = ''; // Initialize with a default value
+
+    if (action === 'blocked') {
+      statusToUpdate = 'blocked';
+    } else if (action === 'unblocked') {
+      statusToUpdate = 'unblocked';
+    } else {
+      return; // Handle unexpected actions gracefully
+    }
+
+    this.citizenService.updateCitizenStatus(citizen._id, statusToUpdate).subscribe(
       () => {
-        citizen.status = 'Blocked';
-        this.citizens = this.citizens.filter(c => c._id !== citizen._id);
-        this.blockedCitizens.push(citizen);
+        citizen.status = statusToUpdate;
+        if (statusToUpdate === 'blocked') {
+          this.citizens = this.citizens.filter(c => c._id !== citizen._id);
+          this.blockedCitizens.push(citizen);
+        } else if (statusToUpdate === 'unblocked') {
+          this.blockedCitizens = this.blockedCitizens.filter(c => c._id !== citizen._id);
+          this.citizens.push(citizen);
+        }
       },
       error => {
-        this.error = 'Error blocking citizen: ' + error.message;
-        console.error('Error blocking citizen:', error);
+        this.error = `Error ${action.toLowerCase()} citizen: ${error.message}`;
+        console.error(`Error ${action.toLowerCase()} citizen:`, error);
       }
     );
   }

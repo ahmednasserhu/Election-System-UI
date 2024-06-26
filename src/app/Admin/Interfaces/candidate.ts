@@ -1,8 +1,16 @@
 export interface Candidate {
     _id: string;
-    firstName: string;
-    age: number;
+    citizenId: string;
+    electionId: string;
     party: string;
-    profile: string;
+    brief: string;
+    criminalRecord: string;
+    logoName: string;
+    logoImage: string;
     status: string;
-}
+    requestedAt: string;
+    paginationResults: {
+        total: number;
+      };
+  }
+  

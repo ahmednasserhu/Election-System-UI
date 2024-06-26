@@ -14,21 +14,26 @@ import { FormsModule } from '@angular/forms';
 })
 export class ElectionComponent implements OnInit {
   elections: Election[] = [];
-  selectedElection: Election = {
-    _id: '',
-    title: '',
-    description: '',
-    startdate: '',
-    enddate: '',
-    candidates: [],
-    totalVotes: 0
-  };
+  selectedElection: Election = this.initializeElection();
+  newElection: Election = this.initializeElection();
   deleteElectionId: string | null = null;
 
   constructor(private electionService: ElectionService) { }
 
   ngOnInit(): void {
     this.loadElections();
+  }
+
+  initializeElection(): Election {
+    return {
+      _id: '',
+      title: '',
+      description: '',
+      startdate: '',
+      enddate: '',
+      candidates: [],
+      totalVotes: 0
+    };
   }
 
   loadElections(): void {
@@ -62,38 +67,40 @@ export class ElectionComponent implements OnInit {
   }
 
   saveElection(): void {
-    if (this.selectedElection._id) {
+    if (this.newElection.title && this.newElection.description) {
+      this.electionService.createElection(this.newElection).subscribe({
+        next: () => {
+          this.loadElections();
+          this.clearNewElectionForm();
+        },
+        error: err => console.error('Create error', err)
+      });
+    } else {
+      console.error('Validation error: Title and Description are required.');
+    }
+  }
+
+  saveEditedElection(): void {
+    if (this.selectedElection.title && this.selectedElection.description) {
       this.electionService.updateElection(this.selectedElection).subscribe({
         next: () => {
           this.loadElections();
-          this.clearForm();
+          this.clearSelectedElectionForm();
           const editModal = bootstrap.Modal.getInstance(document.getElementById('editModal')!);
           editModal?.hide();
         },
         error: err => console.error('Update error', err)
       });
     } else {
-      this.electionService.createElection(this.selectedElection).subscribe({
-        next: () => {
-          this.loadElections();
-          this.clearForm();
-          const editModal = bootstrap.Modal.getInstance(document.getElementById('editModal')!);
-          editModal?.hide();
-        },
-        error: err => console.error('Create error', err)
-      });
+      console.error('Validation error: Title and Description are required.');
     }
   }
 
-  clearForm(): void {
-    this.selectedElection = {
-      _id: '',
-      title: '',
-      description: '',
-      startdate: '',
-      enddate: '',
-      candidates: [],
-      totalVotes: 0
-    };
+  clearNewElectionForm(): void {
+    this.newElection = this.initializeElection();
+  }
+
+  clearSelectedElectionForm(): void {
+    this.selectedElection = this.initializeElection();
   }
 }

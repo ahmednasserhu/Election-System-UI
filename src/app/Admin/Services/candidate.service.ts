@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Candidate } from '../Interfaces/candidate';
-import {AuthInterceptor} from './interceptors/jwt.service'
 
 @Injectable({
   providedIn: 'root'
@@ -12,17 +11,18 @@ export class CandidateService {
 
   constructor(private http: HttpClient) { }
 
- 
-  getCandidates(): Observable<Candidate[]> {
-    return this.http.get<Candidate[]>(this.apiUrl);
+  getCandidates(): Observable<any> {
+    return this.http.get<any>(this.apiUrl);
   }
 
-  approveCandidate(candidate: Candidate): Observable<any> {
-    return this.http.post(`${this.apiUrl}${candidate._id}/review`, candidate);
+  approveCandidate(candidateId: string): Observable<any> {
+    const url = `${this.apiUrl}review`;
+    return this.http.post(url, { candidateId, status: 'approved' });
   }
 
   rejectCandidate(candidateId: string): Observable<any> {
-    return this.http.delete(`${this.apiUrl}${candidateId}`);
+    const url = `${this.apiUrl}review`;
+    return this.http.post(url, { candidateId, status: 'rejected' });
   }
 
   getLastCandidate(): Observable<any> {

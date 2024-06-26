@@ -1,5 +1,5 @@
-<div class="container election-management">
-  <h3 style="font-family: Verdana, Geneva, Tahoma, sans-serif;">Election Management</h3>
+<div class="container election-management ms-5" style="background-color: #333333;">
+  <h3 style="font-family: Verdana, Geneva, Tahoma, sans-serif;" class="text-light">Election Management</h3>
   
   <!-- Bootstrap Tabs -->
   <ul class="nav nav-tabs" id="electionTabs" role="tablist">
@@ -28,32 +28,39 @@
       </div>
     </div>
     
-    <!-- Add Election -->
-    <div class="tab-pane fade" id="election-form" role="tabpanel" aria-labelledby="election-form-tab">
-      <div class="election-form mt-3">
-        <h4 class="ms-2">{{ selectedElection._id ? 'Edit' : 'Add' }} Election</h4>
-        <form (ngSubmit)="saveElection()" class="bg-light shadow p-3">
-          <div class="mb-3">
-            <label class="form-label">Title:</label>
-            <input class="form-control" [(ngModel)]="selectedElection.title" name="title" required />
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Description:</label>
-            <textarea class="form-control" [(ngModel)]="selectedElection.description" name="description" rows="4" required></textarea>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Start Date:</label>
-            <input type="date" class="form-control" [(ngModel)]="selectedElection.startdate" name="startdate" required />
-          </div>
-          <div class="mb-3">
-            <label class="form-label">End Date:</label>
-            <input type="date" class="form-control" [(ngModel)]="selectedElection.enddate" name="enddate" required />
-          </div>
-          <button type="submit" class="btn btn-primary me-3">{{ selectedElection._id ? 'Update' : 'Add' }}</button>
-          <button type="button" class="btn btn-secondary" (click)="clearForm()">Reset</button>
-        </form>
+   <!-- Add Election -->
+<div class="tab-pane fade" id="election-form" role="tabpanel" aria-labelledby="election-form-tab" >
+  <div class="election-form mt-3">
+    <h4 class="ms-2">Add Election</h4>
+    <form #addElectionForm="ngForm" (ngSubmit)="saveElection()" class="bg-light shadow p-3" style=" border-radius: 10px;" novalidate>
+      <div class="mb-3">
+        <label class="form-label">Title:</label>
+        <input class="form-control" [(ngModel)]="newElection.title" name="title" required #addTitle="ngModel" />
+        <div *ngIf="addTitle.invalid && (addTitle.dirty || addTitle.touched)" class="text-danger">
+          Title is required.
+        </div>
       </div>
-    </div>
+      <div class="mb-3">
+        <label class="form-label">Description:</label>
+        <textarea class="form-control" [(ngModel)]="newElection.description" name="description" rows="4" required #addDescription="ngModel"></textarea>
+        <div *ngIf="addDescription.invalid && (addDescription.dirty || addDescription.touched)" class="text-danger">
+          Description is required.
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Start Date:</label>
+        <input type="date" class="form-control" [(ngModel)]="newElection.startdate" name="startdate" required />
+      </div>
+      <div class="mb-3">
+        <label class="form-label">End Date:</label>
+        <input type="date" class="form-control" [(ngModel)]="newElection.enddate" name="enddate" required />
+      </div>
+      <button type="submit" class="btn btn-primary me-3" [disabled]="addElectionForm.invalid">Add</button>
+      <button type="button" class="btn btn-secondary" (click)="clearNewElectionForm()">Reset</button>
+    </form>
+  </div>
+</div>
+
   </div>
 </div>
 
@@ -66,14 +73,20 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form (ngSubmit)="saveElection()">
+        <form #editForm="ngForm" (ngSubmit)="saveEditedElection()" novalidate>
           <div class="mb-3">
             <label class="form-label">Title:</label>
-            <input class="form-control" [(ngModel)]="selectedElection.title" name="title" required />
+            <input class="form-control" [(ngModel)]="selectedElection.title" name="title" required #editTitle="ngModel" />
+            <div *ngIf="editTitle.invalid && (editTitle.dirty || editTitle.touched)" class="text-danger">
+              Title is required.
+            </div>
           </div>
           <div class="mb-3">
             <label class="form-label">Description:</label>
-            <textarea class="form-control" [(ngModel)]="selectedElection.description" name="description" rows="4" required></textarea>
+            <textarea class="form-control" [(ngModel)]="selectedElection.description" name="description" rows="4" required #editDescription="ngModel"></textarea>
+            <div *ngIf="editDescription.invalid && (editDescription.dirty || editDescription.touched)" class="text-danger">
+              Description is required.
+            </div>
           </div>
           <div class="mb-3">
             <label class="form-label">Start Date:</label>
@@ -83,13 +96,14 @@
             <label class="form-label">End Date:</label>
             <input type="date" class="form-control" [(ngModel)]="selectedElection.enddate" name="enddate" required />
           </div>
-          <button type="submit" class="btn btn-primary me-3">Save changes</button>
+          <button type="submit" class="btn btn-primary me-3" [disabled]="editForm.invalid">Save changes</button>
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         </form>
       </div>
     </div>
   </div>
 </div>
+
 
 <!-- Delete Modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
