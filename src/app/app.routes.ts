@@ -47,5 +47,19 @@ export const routes: Routes = [
     ],
     component: UserParentComponent,
   },
-
+  {
+    path: 'register',
+    component: RegisterComponent,
+    title: 'register',
+  },
+  {
+    path: 'candidate',
+    component: CandidateDashboardComponent,
+    title: 'Candidate Dashboard',
+  },
+  {
+    path: 'candidate/profile/:id',
+    component: CandidateProfileComponent,
+    title: 'Candidate Profile',
+  },
 ];
