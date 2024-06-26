@@ -1,0 +1,11 @@
+.card-header {
+  background-color: #d1d1d1;
+  color: #3d3d3d;
+  font-size: 22px;
+  /* border-radius: 8px 0px; */
+}
+.my-card {
+  border: #d1d1d1 1px solid;
+  border-radius: 8px;
+  overflow: hidden;
+}

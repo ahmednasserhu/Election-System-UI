@@ -1,0 +1,107 @@
+<div class="card mb-3 my-container m-3">
+  <div class="row p-4">
+    <div class="card-body col-md-4">
+      <h5 class="card-title">
+        {{ result.electionId.title }}
+        <span
+          [class]="
+            result.candidates.length === 0
+              ? 'bg-danger badge ms-1'
+              : 'bg-success badge ms-1'
+          "
+        >
+          {{ result?.candidates.length === 0 ? 'Pending' : 'In Progress' }}
+        </span>
+      </h5>
+      <ng-container *ngIf="result?.candidates.length">
+        <h6 class="card-subtitle mb-2 text-muted my-votes">
+          <i class="fas fa-users me-2"></i>
+          {{ result?.electionId.totalVotes }}
+        </h6>
+      </ng-container>
+      <p class="card-text mb-1">
+        <i class="fas fa-file-code me-2"></i>
+        {{ result.electionId.description }}
+      </p>
+      <p class="card-text mb-1">
+        <i class="fas fa-calendar-week me-2"></i>
+        <span class="sub-head me-2">Start Date</span
+        >{{ result.electionId.startdate | date }}
+      </p>
+      <p class="card-text mb-1">
+        <i class="fas fa-calendar-week me-2"></i>
+        <span class="sub-head me-2">End Date</span
+        >{{ result.electionId.enddate | date }}
+      </p>
+      <div class="contain-btns d-flex gap-2 mt-4">
+        <button class="btn mybtn">Want to be a candidate</button>
+      </div>
+    </div>
+    <div class="col-md-8">
+      <canvas [id]="'barchart-' + result.electionId._id"></canvas>
+    </div>
+  </div>
+  <div class="row p-4 ">
+    @for (
+    candidate of result.candidates;
+    track candidate._id;
+    let index = $index
+  ) {
+    <div class="col-md-6 d-flex mb-4">
+        <div
+      [ngClass]="{
+        'even-background': index % 2 === 0,
+        'odd-background': index % 2 !== 0,
+      }"
+      class="my-container-2 p-5 d-flex container-fluid"
+    >
+      <div class="row w-100">
+        <div class="contain-img col-md-4 d-flex">
+         <img class="my-img" [src]="candidate.citizenDetails.image" alt="" />
+        </div>
+        <div class="contain-words col-md-8">
+          <h3>{{ candidate.candidateName }}</h3>
+          <p>{{ candidate.candidateDetails.brief }}</p>
+         <div class="d-flex gap-5 align-items-center">
+            <p> <span class="pe-2 my-sub-head"><i class="fas fa-image pe-2"></i>Logo Name</span>{{ candidate.candidateDetails.logoName }}</p>
+            <div class="contain-logo">
+                <img class="img-logo" [src]="candidate.candidateDetails.logoImage" alt="" />
+            </div>
+         </div>
+          <p> <span class="pe-2 my-sub-head"><i class="fas fa-landmark pe-2 "></i>Part</span>{{ candidate.candidateDetails.party }}</p>
+          <button class="btn mybtn">Vote</button>
+        </div>
+      </div>
+    </div>
+    </div>
+    
+  }
+  </div>
+  
+</div>
+
+<!-- candidateDetails
+: 
+brief
+: 
+"salam"
+citizenId
+: 
+{_id: '667747ca691d65158be03c72', ssn: '30011090104170', firstName: 'ahmed', lastName: 'khaled', role: 'citizen', …}
+electionId
+: 
+"6675dea6f27ee03a5c43f500"
+logoName
+: 
+"my-logoooooooooo"
+party
+: 
+"ayhaga"
+requestedAt
+: 
+"2024-06-22T22:10:28.912Z"
+status
+: 
+"approved"
+
+ -->

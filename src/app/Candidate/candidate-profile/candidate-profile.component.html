@@ -1,0 +1,276 @@
+<app-candidate-nav-bar></app-candidate-nav-bar>
+<div class="page-bg text-light">
+  <div class="container rounded bg-white mb-5 text-light">
+    <div class="row page-bg text-light">
+      <!-- Left Column -->
+      <div class="col-md-3 border-right text-light">
+        <div
+          class="d-flex flex-column align-items-center text-center p-3 py-5 text-light"
+        >
+          <img
+            class="rounded-circle mt-5"
+            width="150px"
+            [src]="image"
+            alt="Profile Image"
+          />
+          <span class="font-weight-bold mt-2 text-light">{{
+            profileForm.get('firstName')?.value
+          }}</span>
+          <span class="text-light">{{ profileForm.get('ssn')?.value }}</span>
+          <span></span>
+        </div>
+      </div>
+      <!-- Middle Column -->
+      <div class="col-md-5 border-right text-light">
+        <div class="p-3 py-5 text-light">
+          <div
+            class="d-flex justify-content-between align-items-center mb-3 text-light"
+          >
+            <h4 class="text-right text-light">Profile Settings</h4>
+          </div>
+          <form [formGroup]="profileForm">
+            <div class="row mt-2 text-light">
+              <div class="col-md-6 position-relative text-light">
+                <label class="labels text-light">First Name</label>
+                <div class="d-flex align-items-center">
+                  <input
+                    type="text"
+                    formControlName="firstName"
+                    class="form-control"
+                    placeholder="First Name"
+                  />
+                  <fa-icon
+                    [icon]="pen"
+                    class="ms-2 cursor-pointer"
+                    (click)="enableField('firstName')"
+                  ></fa-icon>
+                </div>
+                <div
+                  *ngIf="
+                    profileForm.get('firstName')?.invalid &&
+                    (profileForm.get('firstName')?.dirty ||
+                      profileForm.get('firstName')?.touched)
+                  "
+                >
+                  <app-form-error
+                    [formInput]="profileForm.controls['firstName']"
+                    [validationType]="'required'"
+                    [errorMsg]="'First Name is required.'"
+                  ></app-form-error>
+                  <app-form-error
+                    [formInput]="profileForm.controls['firstName']"
+                    [validationType]="'minlength'"
+                    [errorMsg]="
+                      'First Name must be at least 3 characters long.'
+                    "
+                  ></app-form-error>
+                </div>
+              </div>
+              <div class="col-md-6 position-relative text-light">
+                <label class="labels text-light">Last Name</label>
+                <div class="d-flex align-items-center">
+                  <input
+                    type="text"
+                    formControlName="lastName"
+                    class="form-control"
+                    placeholder="Last Name"
+                  />
+                  <fa-icon
+                    [icon]="pen"
+                    class="ms-2 cursor-pointer"
+                    (click)="enableField('lastName')"
+                  ></fa-icon>
+                </div>
+                <div
+                  *ngIf="
+                    profileForm.get('lastName')?.invalid &&
+                    (profileForm.get('lastName')?.dirty ||
+                      profileForm.get('lastName')?.touched)
+                  "
+                >
+                  <app-form-error
+                    [formInput]="profileForm.controls['lastName']"
+                    [validationType]="'required'"
+                    [errorMsg]="'Last Name is required.'"
+                  ></app-form-error>
+                  <app-form-error
+                    [formInput]="profileForm.controls['lastName']"
+                    [validationType]="'minlength'"
+                    [errorMsg]="'Last Name must be at least 3 characters long.'"
+                  ></app-form-error>
+                </div>
+              </div>
+            </div>
+            <div class="row mt-3 text-light">
+              <div class="col-md-12 position-relative text-light">
+                <label class="labels text-light">Email</label>
+                <div class="d-flex align-items-center">
+                  <input
+                    type="text"
+                    formControlName="email"
+                    class="form-control"
+                    placeholder="Email"
+                  />
+                </div>
+              </div>
+              <div class="col-md-12 position-relative text-light">
+                <label class="labels text-light">Mobile Number</label>
+                <div class="d-flex align-items-center">
+                  <input
+                    type="text"
+                    formControlName="phoneNumber"
+                    class="form-control"
+                    placeholder="Mobile Number"
+                  />
+                  <fa-icon
+                    [icon]="pen"
+                    class="ms-2 cursor-pointer"
+                    (click)="enableField('phoneNumber')"
+                  ></fa-icon>
+                </div>
+                <div
+                  *ngIf="
+                    profileForm.get('phoneNumber')?.invalid &&
+                    (profileForm.get('phoneNumber')?.dirty ||
+                      profileForm.get('phoneNumber')?.touched)
+                  "
+                >
+                  <app-form-error
+                    [formInput]="profileForm.controls['phoneNumber']"
+                    [validationType]="'required'"
+                    [errorMsg]="'Mobile Number is required.'"
+                  ></app-form-error>
+                  <app-form-error
+                    [formInput]="profileForm.controls['phoneNumber']"
+                    [validationType]="'pattern'"
+                    [errorMsg]="
+                      'Please use a valid Egyptian phone number (+20 followed by 10 digits).'
+                    "
+                  ></app-form-error>
+                </div>
+              </div>
+              <div class="col-md-12 position-relative text-light">
+                <label class="labels text-light">Party</label>
+                <div class="d-flex align-items-center">
+                  <input
+                    type="text"
+                    formControlName="party"
+                    class="form-control"
+                    placeholder="Party"
+                  />
+                  <fa-icon
+                    [icon]="pen"
+                    class="ms-2 cursor-pointer"
+                    (click)="enableField('party')"
+                  ></fa-icon>
+                </div>
+                <div
+                  *ngIf="
+                    profileForm.get('party')?.invalid &&
+                    (profileForm.get('party')?.dirty ||
+                      profileForm.get('party')?.touched)
+                  "
+                >
+                  <app-form-error
+                    [formInput]="profileForm.controls['party']"
+                    [validationType]="'required'"
+                    [errorMsg]="'Party is required.'"
+                  ></app-form-error>
+                  <app-form-error
+                    [formInput]="profileForm.controls['party']"
+                    [validationType]="'minlength'"
+                    [errorMsg]="'Party must be at least 3 characters long.'"
+                  ></app-form-error>
+                </div>
+              </div>
+              <div class="col-md-12 position-relative text-light">
+                <label class="labels text-light">Brief</label>
+                <div class="d-flex align-items-center">
+                  <input
+                    type="text"
+                    formControlName="brief"
+                    class="form-control input-brief"
+                    placeholder="Brief"
+                  />
+                  <fa-icon
+                    [icon]="pen"
+                    class="ms-2 cursor-pointer"
+                    (click)="enableField('brief')"
+                  ></fa-icon>
+                </div>
+                <div
+                  *ngIf="
+                    profileForm.get('brief')?.invalid &&
+                    (profileForm.get('brief')?.dirty ||
+                      profileForm.get('brief')?.touched)
+                  "
+                >
+                  <app-form-error
+                    [formInput]="profileForm.controls['brief']"
+                    [validationType]="'required'"
+                    [errorMsg]="'Brief is required.'"
+                  ></app-form-error>
+                  <app-form-error
+                    [formInput]="profileForm.controls['brief']"
+                    [validationType]="'maxlength'"
+                    [errorMsg]="'Brief must be less than 255 characters.'"
+                  ></app-form-error>
+                </div>
+              </div>
+            </div>
+            <button
+              type="button"
+              class="btn btn-primary mt-3"
+              [disabled]="!profileForm.dirty || profileForm.invalid"
+              (click)="updateProfile()"
+            >
+              Update Profile
+            </button>
+          </form>
+        </div>
+      </div>
+      <!-- Right Column -->
+      <div class="col-md-4 mt-5 text-light">
+        <div class="p-3 py-5 text-light">
+          <form [formGroup]="profileForm">
+            <div class="row mt-2 text-light">
+              <div class="col-md-12 position-relative text-light">
+                <label class="labels text-light">Birth Date</label>
+                <div class="d-flex align-items-center">
+                  <input
+                    type="text"
+                    formControlName="birthDate"
+                    class="form-control"
+                    placeholder="Birth Date"
+                    [value]="
+                      profileForm.get('birthDate')?.value | date: 'yyyy-MM-dd'
+                    "
+                  />
+                </div>
+              </div>
+              <div class="col-md-12 position-relative text-light">
+                <label class="labels text-light">Logo Name</label>
+                <div class="d-flex align-items-center">
+                  <input
+                    type="text"
+                    formControlName="logoName"
+                    class="form-control"
+                    placeholder="Logo Name"
+                  />
+                </div>
+              </div>
+              <div class="col-md-12 mt-3 position-relative text-light">
+                <label class="labels text-light">Logo Image</label>
+                <img
+                  [src]="profileForm.get('logoImage')?.value"
+                  class="img-fluid"
+                  alt="Logo Image"
+                />
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
