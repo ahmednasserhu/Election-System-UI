@@ -8,11 +8,19 @@ import { ActivatedRoute } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faPen } from '@fortawesome/free-solid-svg-icons';
 import { environment } from '../../../environments/environment';
+import { Validators } from '@angular/forms';
+import { FormErrorMsgComponent } from '../../form-error/form-error.component';
 
 @Component({
   selector: 'app-candidate-profile',
   standalone: true,
-  imports: [CandidateNavBarComponent, CommonModule, ReactiveFormsModule, FontAwesomeModule],
+  imports: [
+    CandidateNavBarComponent,
+    CommonModule,
+    ReactiveFormsModule,
+    FontAwesomeModule,
+    FormErrorMsgComponent
+  ],
   templateUrl: './candidate-profile.component.html',
   styleUrl: './candidate-profile.component.css',
 })
@@ -26,18 +34,36 @@ export class CandidateProfileComponent {
   constructor(
     private profileService: CandidateProfileService,
     private route: ActivatedRoute,
-    private fb: FormBuilder
+    private fb: FormBuilder,
   ) {
     this.profileForm = this.fb.group({
-      ssn: [{ value: '', disabled: true}],
-      firstName: [{ value: '', disabled: true }],
-      lastName: [{ value: '', disabled: true }],
-      email: [{ value: '', disabled: true }],
-      birthDate: [{ value: '', disabled: true }],
-      phoneNumber: [{ value: '', disabled: true }],
-      party: [{ value: '', disabled: true }],
-      brief: [{ value: '', disabled: true }],
-      logoName: [{ value: '', disabled: true }],
+      ssn: [{ value: '', disabled: true }],
+      firstName: [
+        { value: '', disabled: true },
+        [Validators.required, Validators.minLength(3)],
+      ],
+      lastName: [
+        { value: '', disabled: true },
+        [Validators.required, Validators.minLength(3)],
+      ],
+      email: [
+        { value: '', disabled: true },
+        [Validators.required, Validators.email],
+      ],
+      birthDate: [{ value: '', disabled: true }, [Validators.required]],
+      phoneNumber: [
+        { value: '', disabled: true },
+        [Validators.required, Validators.minLength(10)],
+      ],
+      party: [
+        { value: '', disabled: true },
+        [Validators.required, Validators.minLength(3)],
+      ],
+      brief: [
+        { value: '', disabled: true },
+        [Validators.required, Validators.maxLength(255)],
+      ],
+      logoName: [{ value: '', disabled: true }, [Validators.required]],
       logoImage: [{ value: '', disabled: true }],
     });
   }
@@ -73,7 +99,7 @@ export class CandidateProfileComponent {
       },
       (error: HttpErrorResponse) => {
         console.log(error);
-      }
+      },
     );
   }
 
