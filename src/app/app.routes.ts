@@ -1,4 +1,7 @@
 import { Routes } from '@angular/router';
+import { RegisterComponent } from './register/register.component';
+import { CandidateDashboardComponent } from './Candidate/candidate-dashboard/candidate-dashboard.component';
+import { CandidateProfileComponent } from './Candidate/candidate-profile/candidate-profile.component';
 
 import { HomeComponent } from './general/home/home.component';
 import { AboutUsComponent } from './general/about-us/about-us.component';
