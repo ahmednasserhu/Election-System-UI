@@ -83,6 +83,7 @@ export class AddAdminComponent {
           ]),
         ],
         verifyPassword: ['', Validators.required],
+        role: ['admin'] // Hidden role field
       },
       {
         validator: this.customValidator.MatchPassword(
@@ -91,8 +92,7 @@ export class AddAdminComponent {
         ),
       },
     );
-  }
-
+  }    
   onImagePicked(event: any) {
     const file: File = event.target.files[0];
 
@@ -105,17 +105,31 @@ export class AddAdminComponent {
     if (this.registerForm.valid) {
       const formData = this.registerForm.value;
       formData.image = this.selectedImage;
-      // console.log(formData);
-      this.registerService.register(formData).subscribe((res: any) => {
-        if (res) {
-          console.log(res);
-        }
-      }),
+      formData.role = 'admin'; // Explicitly set role
+  
+      const formDataToSend = new FormData();
+      formDataToSend.append('firstName', formData.firstName);
+      formDataToSend.append('lastName', formData.lastName);
+      formDataToSend.append('ssn', formData.SSN);
+      formDataToSend.append('email', formData.email);
+      formDataToSend.append('phoneNumber', formData.phoneNumber);
+      formDataToSend.append('password', formData.password);
+      formDataToSend.append('role', formData.role);
+      formDataToSend.append('image', formData.image);
+  
+      this.registerService.register(formDataToSend).subscribe(
+        (res: any) => {
+          if (res) {
+            console.log(res);
+          }
+        },
         (error: HttpErrorResponse) => {
           console.log(error);
-        };
+        }
+      );
     }
   }
+  
 
   togglePasswordVisibility(field: string) {
     if (field === 'password') {

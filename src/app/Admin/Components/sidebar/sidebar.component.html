@@ -5,10 +5,10 @@
       <i [class]="isClosed ? 'fa fa-chevron-right' : 'fa fa-chevron-left'"></i>
     </button>
   </div>
-  <ul class="list-group">
+  <ul class="list-group ">
     <li class="list-group-item fs-5" *ngFor="let item of menuItems">
       <a [routerLink]="item.route" routerLinkActive="active">
-        <i [class]="'fa fa-' + item.icon"></i>
+        <i [class]="'fa fa-' + item.icon" class="me-2"></i>
         <span *ngIf="!isClosed">{{ item.name }}</span>
       </a>
     </li>
