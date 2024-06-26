@@ -75,8 +75,7 @@ export class ApplyComponent {
   }
 
   ngOnInit() {
-    this._ElectionService
-      .getElection(this.router.url.split('/')[3])
+    this._ElectionService.getElectionById(this.router.url.split('/')[3])
       .subscribe((res) => {
         console.log(res);
         this.electionDetails = res;

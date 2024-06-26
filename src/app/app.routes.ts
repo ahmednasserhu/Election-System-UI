@@ -10,6 +10,7 @@ import { ParentComponent } from './general/parent/parent.component';
 import { UserParentComponent } from './user/user-parent/user-parent.component';
 import { ElectionDetailsComponent } from './user/election-details/election-details.component';
 import { ApplyComponent } from './user/apply/apply.component';
+import { LoginComponent } from './login/login.component';
 
 export const routes: Routes = [
   {
@@ -33,7 +34,7 @@ export const routes: Routes = [
       },
       {
         path: 'login',
-        component: RegisterComponent,
+        component: LoginComponent,
       },
     ],
     component: ParentComponent,
