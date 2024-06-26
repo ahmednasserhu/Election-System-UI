@@ -5,6 +5,7 @@ import { ReactiveFormsModule, Validators, FormBuilder, FormGroup, AbstractContro
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import * as bootstrap from 'bootstrap';
 import { AuthService } from '../services/auth.service';
+import { jwtDecode } from 'jwt-decode';
 
 @Component({
   selector: 'app-login',
@@ -58,9 +59,14 @@ export class LoginComponent {
       this.login(userData).subscribe({
         next: (response: any) => {
           if (response.token && response.role) {
-            localStorage.setItem("token", response.token);
-            this.authService.navigateBasedOnRole(response.role);
-            this.isLoading = false;
+            const decodedToken: any = jwtDecode(response.token); // Decode the JWT token
+            if (!decodedToken.citizen.emailConfirmation) {
+              this.isLoading = false;
+              this.showToast('Please confirm your email before logging in.');
+            } else {
+              localStorage.setItem("token", response.token);
+              this.authService.navigateBasedOnRole(response.role);
+            }
           }
         },
         error: (err) => {
@@ -71,6 +77,25 @@ export class LoginComponent {
     }
   }
 
+  showToast(message: string, duration: number = 3000) {
+    const alertDiv = document.createElement('div');
+    alertDiv.classList.add('alert', 'alert-warning');
+    alertDiv.role = 'alert';
+    alertDiv.textContent = message;
+  
+    // Assuming you have a div with id 'toastContainer' in your HTML to append the alert
+    const toastContainer = document.getElementById('toastContainer');
+    if (toastContainer) {
+      toastContainer.innerHTML = ''; // Clear previous alerts
+      toastContainer.appendChild(alertDiv);
+    }
+  
+    // Automatically remove the alert after 'duration' milliseconds
+    setTimeout(() => {
+      alertDiv.remove();
+    }, duration);
+  }
+  
   handleForgotPassword(): void {
     this.isForgotPasswordLoading = true;
     this.forgotPasswordMsg = '';
