@@ -34,7 +34,7 @@
       <h2>Recent Activity</h2>
       <ul>
         <li *ngFor="let activity of recentActivities">
-          {{ activity.timestamp | date:'short' }}: <span [innerHTML]="activity.description"></span>
+         <span class="badge bg-secondary me-2"> {{ activity.timestamp | date:'short' }}: </span> <span [innerHTML]="activity.description"></span>
         </li>
       </ul>
     </div>

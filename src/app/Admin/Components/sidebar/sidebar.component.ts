@@ -16,6 +16,7 @@ export class SidebarComponent {
     { name: 'Candidates', icon: 'tachometer', route: '/admin/candidate' },
     { name: 'Citizen', icon: 'users', route: '/admin/citizen' },
     { name: 'Election', icon: 'envelope', route: '/admin/election' },
+    { name: 'Add Admin', icon: 'plus', route: '/admin/add-admin' },
     
   ];
 

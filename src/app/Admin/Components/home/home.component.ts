@@ -70,7 +70,7 @@ export class HomeComponent implements OnInit {
         const timestamp = new Date(lastCandidate.requestedAt);
         if (!isNaN(timestamp.getTime())) {
           const description = this.sanitizer.bypassSecurityTrustHtml(
-            `Candidate <span style="color: yellow;">${lastCandidate.citizenId.firstName} ${lastCandidate.citizenId.lastName}</span> registered for the <span style="color: cyan;">${lastCandidate.electionId.title}</span> election`
+            `Candidate <span style="color: rgb(233, 199, 154);">${lastCandidate.citizenId.firstName} ${lastCandidate.citizenId.lastName}</span> registered for the <span style="color: tomato;">${lastCandidate.electionId.title}</span> election`
           );
           this.recentActivities.push({ timestamp, description });
         }
@@ -87,7 +87,7 @@ export class HomeComponent implements OnInit {
         const timestamp = new Date(lastVote.createdAt);
         if (!isNaN(timestamp.getTime())) {
           const description = this.sanitizer.bypassSecurityTrustHtml(
-            `Vote cast by <span style="color: lightgreen;">${lastVote.citizenId.firstName} ${lastVote.citizenId.lastName}</span> in the <span style="color: cyan;">${lastVote.electionId.title}</span> election`
+            `Vote cast by <span style="color: rgb(233, 199, 154);">${lastVote.citizenId.firstName} ${lastVote.citizenId.lastName}</span> in the <span style="color: tomato;">${lastVote.electionId.title}</span> election`
           );
           this.recentActivities.push({ timestamp, description });
         }
@@ -103,7 +103,7 @@ export class HomeComponent implements OnInit {
         const timestamp = new Date(lastElection.createdAt);
         if (!isNaN(timestamp.getTime())) {
           const description = this.sanitizer.bypassSecurityTrustHtml(
-            `Election <span style="color: cyan;">${lastElection.title}</span> was held`
+            `Election <span style="color: tomato;">${lastElection.title}</span> was held`
           );
           this.recentActivities.push({ timestamp, description });
         }

@@ -1,24 +1,24 @@
-<div class="container election-management ms-5" style="background-color: #333333;">
+<div class="container election-management ms-5 shadow" >
   <h3 style="font-family: Verdana, Geneva, Tahoma, sans-serif;" class="text-light">Election Management</h3>
   
   <!-- Bootstrap Tabs -->
   <ul class="nav nav-tabs" id="electionTabs" role="tablist">
-    <li class="nav-item" role="presentation">
-      <a class="nav-link active" id="election-list-tab" data-bs-toggle="tab" href="#election-list" role="tab" aria-controls="election-list" aria-selected="true">Election List</a>
+    <li class="nav-item " role="presentation">
+      <a class="nav-link active  "  id="election-list-tab" data-bs-toggle="tab" href="#election-list" role="tab" aria-controls="election-list" aria-selected="true">Election List</a>
     </li>
     <li class="nav-item" role="presentation">
-      <a class="nav-link" id="election-form-tab" data-bs-toggle="tab" href="#election-form" role="tab" aria-controls="election-form" aria-selected="false">Add Election</a>
+      <a class="nav-link  " id="election-form-tab" data-bs-toggle="tab" href="#election-form" role="tab" aria-controls="election-form" aria-selected="false">Add Election</a>
     </li>
   </ul>
   
   <div class="tab-content" id="electionTabsContent">
     <!-- Election List -->
-    <div class="tab-pane fade show active" id="election-list" role="tabpanel" aria-labelledby="election-list-tab">
+    <div class="tab-pane fade show active " id="election-list" role="tabpanel" aria-labelledby="election-list-tab">
       <div class="election-list mt-3">
-        <h4>Election List</h4>
+        <h4 class="text-light">Election List</h4>
         <ul class="list-group">
-          <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let election of elections">
-            <span>{{ election.title }} ({{ election.startdate | date }} - {{ election.enddate | date }}) - Total Votes: {{ election.totalVotes }}</span>
+          <li class="list-group-item d-flex justify-content-between align-items-center text-light border-black" style="background-color: #333333;" *ngFor="let election of elections">
+            <span>{{ election.title }} ({{ election.startdate | date }} - {{ election.enddate | date }}) - <span class="badge bg-success">Total Votes: {{ election.totalVotes }}</span></span>
             <span>
               <button class="btn btn-sm btn-primary me-3" (click)="editElection(election)">Edit</button>
               <button class="btn btn-sm btn-danger" (click)="deleteElection(election._id)">Delete</button>
@@ -31,8 +31,8 @@
    <!-- Add Election -->
 <div class="tab-pane fade" id="election-form" role="tabpanel" aria-labelledby="election-form-tab" >
   <div class="election-form mt-3">
-    <h4 class="ms-2">Add Election</h4>
-    <form #addElectionForm="ngForm" (ngSubmit)="saveElection()" class="bg-light shadow p-3" style=" border-radius: 10px;" novalidate>
+    <h4 class="ms-2 text-light">Add Election</h4>
+    <form #addElectionForm="ngForm" (ngSubmit)="saveElection()" class="text-light shadow p-3" style=" border-radius: 10px; background-color: #333333;" novalidate>
       <div class="mb-3">
         <label class="form-label">Title:</label>
         <input class="form-control" [(ngModel)]="newElection.title" name="title" required #addTitle="ngModel" />
