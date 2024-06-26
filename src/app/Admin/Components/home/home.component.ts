@@ -79,13 +79,15 @@ export class HomeComponent implements OnInit {
       console.error('Error fetching last candidate:', error);
     });
 
-    this.voteService.getLastVote().subscribe(vote => {
-      console.log('Last Vote:', vote);
-      if (vote.timestamp) {
-        const timestamp = new Date(vote.timestamp);
+    this.voteService.getLastVote().subscribe(voteResponse => {
+      console.log('Last Vote:', voteResponse);
+      const lastVote = voteResponse.lastVote;
+    
+      if (lastVote && lastVote.createdAt) {
+        const timestamp = new Date(lastVote.createdAt);
         if (!isNaN(timestamp.getTime())) {
           const description = this.sanitizer.bypassSecurityTrustHtml(
-            `Vote cast by <span style="color: lightgreen;">${vote.voterName}</span>`
+            `Vote cast by <span style="color: lightgreen;">${lastVote.citizenId.firstName} ${lastVote.citizenId.lastName}</span> in the <span style="color: cyan;">${lastVote.electionId.title}</span> election`
           );
           this.recentActivities.push({ timestamp, description });
         }
@@ -93,14 +95,15 @@ export class HomeComponent implements OnInit {
     }, error => {
       console.error('Error fetching last vote:', error);
     });
-
-    this.electionService.getLastElection().subscribe(election => {
-      console.log('Last Election:', election);
-      if (election.timestamp) {
-        const timestamp = new Date(election.timestamp);
+    
+    this.electionService.getLastElection().subscribe(electionResponse => {
+      console.log('Last Election:', electionResponse);
+      const lastElection = electionResponse.lastApplication;
+      if (lastElection && lastElection.createdAt) {
+        const timestamp = new Date(lastElection.createdAt);
         if (!isNaN(timestamp.getTime())) {
           const description = this.sanitizer.bypassSecurityTrustHtml(
-            `Election <span style="color: cyan;">${election.name}</span> was held`
+            `Election <span style="color: cyan;">${lastElection.title}</span> was held`
           );
           this.recentActivities.push({ timestamp, description });
         }

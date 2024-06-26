@@ -11,11 +11,12 @@ export class VoteService {
 
   constructor(private http: HttpClient) { }
 
-  getTotalVotes(): Observable<Vote> {
-    return this.http.get<Vote>(this.apiUrl);
+  getTotalVotes(): Observable<any> {
+    return this.http.get<any>(this.apiUrl);
   }
 
   getLastVote(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}last`);
   }
+
 }
