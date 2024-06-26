@@ -111,40 +111,6 @@
                     class="form-control"
                     placeholder="Email"
                   />
-                  <fa-icon
-                    [icon]="pen"
-                    class="ms-2 cursor-pointer"
-                    (click)="enableField('email')"
-                  ></fa-icon>
-                </div>
-                <div
-                  *ngIf="
-                    profileForm.get('email')?.invalid &&
-                    (profileForm.get('email')?.dirty ||
-                      profileForm.get('email')?.touched)
-                  "
-                >
-                  <app-form-error
-                    [formInput]="profileForm.controls['email']"
-                    [validationType]="'required'"
-                    [errorMsg]="'Email is required.'"
-                  ></app-form-error>
-                  <app-form-error
-                    [formInput]="profileForm.controls['email']"
-                    [validationType]="'email'"
-                    [errorMsg]="'Email must be valid.'"
-                  ></app-form-error>
-                </div>
-              </div>
-              <div class="col-md-12 position-relative text-light">
-                <label class="labels text-light">Birth Date</label>
-                <div class="d-flex align-items-center">
-                  <input
-                    type="text"
-                    formControlName="birthDate"
-                    class="form-control"
-                    placeholder="Birth Date"
-                  />
                 </div>
               </div>
               <div class="col-md-12 position-relative text-light">
@@ -176,9 +142,9 @@
                   ></app-form-error>
                   <app-form-error
                     [formInput]="profileForm.controls['phoneNumber']"
-                    [validationType]="'minlength'"
+                    [validationType]="'pattern'"
                     [errorMsg]="
-                      'Mobile Number must be at least 10 characters long.'
+                      'Please use a valid Egyptian phone number (+20 followed by 10 digits).'
                     "
                   ></app-form-error>
                 </div>
@@ -223,7 +189,7 @@
                   <input
                     type="text"
                     formControlName="brief"
-                    class="form-control"
+                    class="form-control input-brief"
                     placeholder="Brief"
                   />
                   <fa-icon
@@ -269,6 +235,20 @@
           <form [formGroup]="profileForm">
             <div class="row mt-2 text-light">
               <div class="col-md-12 position-relative text-light">
+                <label class="labels text-light">Birth Date</label>
+                <div class="d-flex align-items-center">
+                  <input
+                    type="text"
+                    formControlName="birthDate"
+                    class="form-control"
+                    placeholder="Birth Date"
+                    [value]="
+                      profileForm.get('birthDate')?.value | date: 'yyyy-MM-dd'
+                    "
+                  />
+                </div>
+              </div>
+              <div class="col-md-12 position-relative text-light">
                 <label class="labels text-light">Logo Name</label>
                 <div class="d-flex align-items-center">
                   <input
@@ -277,24 +257,6 @@
                     class="form-control"
                     placeholder="Logo Name"
                   />
-                  <fa-icon
-                    [icon]="pen"
-                    class="ms-2 cursor-pointer"
-                    (click)="enableField('logoName')"
-                  ></fa-icon>
-                </div>
-                <div
-                  *ngIf="
-                    profileForm.get('logoName')?.invalid &&
-                    (profileForm.get('logoName')?.dirty ||
-                      profileForm.get('logoName')?.touched)
-                  "
-                >
-                  <app-form-error
-                    [formInput]="profileForm.controls['logoName']"
-                    [validationType]="'required'"
-                    [errorMsg]="'Logo Name is required.'"
-                  ></app-form-error>
                 </div>
               </div>
               <div class="col-md-12 mt-3 position-relative text-light">

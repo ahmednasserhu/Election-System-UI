@@ -1,6 +1,13 @@
 .page-bg {
   background-color: #333333;
 }
+
+.input-brief{
+  width: 500px; 
+  height: 100px;
+  overflow-x: auto;
+  resize: vertical;
+}
 .form-control:focus {
   box-shadow: none;
   border-color: #ba68c8;

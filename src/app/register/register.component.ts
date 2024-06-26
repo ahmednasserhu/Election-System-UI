@@ -107,7 +107,7 @@ export class RegisterComponent {
     if (this.registerForm.valid) {
       const formData = this.registerForm.value;
       formData.image = this.selectedImage;
-      console.log(formData);
+      // console.log(formData);
       this.registerService.register(formData).subscribe((res: any) => {
         if (res) {
           console.log(res);
