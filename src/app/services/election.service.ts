@@ -11,12 +11,12 @@ import { map } from 'rxjs/operators';
 export class ElectionService {
   constructor(private _HttpClient: HttpClient) {}
   getElections(): Observable<Election[]> {
-    return this._HttpClient.get<Election[]>('http://localhost:3000/elections');
+    return this._HttpClient.get<Election[]>('http://localhost:3000/election');
   }
 
   getSpecificElections(): Observable<Result[]> {
     return this._HttpClient
-      .get<{ results: Result[] }>('http://localhost:3000/results/elections')
+      .get<{ results: Result[] }>('http://localhost:3000/results/election')
       .pipe(map((response) => response.results));
   }
   getSpecificElection(id: any): Observable<any> {
