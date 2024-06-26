@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ElectionService } from '../../Services/election.service';
 import { Election } from '../../Interfaces/election';
-import { Election } from '../../Interfaces/election';
 import * as bootstrap from 'bootstrap';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';

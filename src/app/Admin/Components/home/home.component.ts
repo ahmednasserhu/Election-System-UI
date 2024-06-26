@@ -13,7 +13,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
 })
-export class HomeComponent implements OnInit {
+export class HomeComponentAdmin implements OnInit {
   currentDate = new Date();
   totalVoters = 0;
   registeredCandidates = 0;
