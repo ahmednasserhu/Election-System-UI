@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit ,ViewChild, ElementRef } from '@angular/core';
 import { Candidate } from '../../Interfaces/candidate';
 import { CommonModule } from '@angular/common';
 import { CandidateService } from '../../Services/candidate.service';
@@ -28,7 +28,9 @@ import {
 })
 export class CandidateComponent implements OnInit {
   candidates: Candidate[] = [];
+  selectedCandidate: Candidate | undefined;
 
+  @ViewChild('candidateModal') candidateModal: ElementRef | undefined;
   constructor(private candidateService: CandidateService) {}
 
   ngOnInit(): void {
@@ -68,5 +70,22 @@ export class CandidateComponent implements OnInit {
         console.error('Error rejecting candidate:', error);
       }
     );
+  }
+
+  openCandidateModal(candidate: Candidate): void {
+    this.selectedCandidate = candidate;
+    if (this.candidateModal) {
+      // Open Bootstrap modal
+      (this.candidateModal.nativeElement as HTMLElement).classList.add('show');
+      (this.candidateModal.nativeElement as HTMLElement).style.display = 'block';
+    }
+  }
+
+  closeCandidateModal(): void {
+    if (this.candidateModal) {
+      // Close Bootstrap modal
+      (this.candidateModal.nativeElement as HTMLElement).classList.remove('show');
+      (this.candidateModal.nativeElement as HTMLElement).style.display = 'none';
+    }
   }
 }

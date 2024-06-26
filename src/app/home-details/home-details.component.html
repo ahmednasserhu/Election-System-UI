@@ -12,7 +12,8 @@
         <h5>Candidates</h5>
         <ul>
           <li *ngFor="let candidate of election.candidates">
-            {{ candidate.logoImage }} - {{ candidate.party }}
+            <img *ngIf="candidate.logoImage" [src]="candidate.logoImage" alt="{{ candidate.logoName }}" style="max-width: 50px; max-height: 50px; margin-right: 10px;">
+              {{ candidate.logoName }} {{ candidate.party }}
           </li>
         </ul>
       </div>

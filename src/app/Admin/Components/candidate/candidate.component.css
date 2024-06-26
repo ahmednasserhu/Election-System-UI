@@ -10,4 +10,18 @@
   .candidate-analytics {
     margin-top: 20px;
   }
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .modal-header .close {
+    margin: 0;
+    padding: 0;
+  }
+  
+  .modal-header .modal-title {
+    margin-right: auto; /* Pushes the title to the left */
+  }
   
