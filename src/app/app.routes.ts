@@ -9,6 +9,7 @@ import { ElectionsComponent } from './user/elections/elections.component';
 import { ParentComponent } from './general/parent/parent.component';
 import { UserParentComponent } from './user/user-parent/user-parent.component';
 import { ElectionDetailsComponent } from './user/election-details/election-details.component';
+import { UserprofileComponent } from './user/userprofile/userprofile.component';
 
 export const routes: Routes = [
   {
@@ -39,6 +40,10 @@ export const routes: Routes = [
       {
         path: 'elections',
         component: ElectionsComponent,
+      },
+      {
+        path: 'profile/:id',
+        component: UserprofileComponent,
       },
       {
         path: 'election-details/:id',
