@@ -15,7 +15,7 @@ export class CitizenComponent implements OnInit {
   blockedCitizens: Citizen[] = [];
   error: string = '';
 
-  constructor(private citizenService: CitizenService) { }
+  constructor(private citizenService: CitizenService) {}
 
   ngOnInit(): void {
     this.loadCitizens();

@@ -1,17 +1,17 @@
-import { Component ,OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [CommonModule,RouterLink],
+  imports: [CommonModule, RouterLink],
   templateUrl: './sidebar.component.html',
-  styleUrl: './sidebar.component.css'
+  styleUrl: './sidebar.component.css',
 })
 export class SidebarComponent {
-   isClosed = false;
+  isClosed = false;
 
-   menuItems = [
+  menuItems = [
     { name: 'Home', icon: 'home', route: '/admin' },
     { name: 'Candidates', icon: 'tachometer', route: '/admin/candidate' },
     { name: 'Citizen', icon: 'users', route: '/admin/citizen' },
@@ -20,7 +20,7 @@ export class SidebarComponent {
     
   ];
 
-toggleSidebar() {
-  this.isClosed = !this.isClosed;
-}
+  toggleSidebar() {
+    this.isClosed = !this.isClosed;
+  }
 }

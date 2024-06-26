@@ -4,12 +4,12 @@ import { Observable } from 'rxjs';
 import { Election } from '../Interfaces/election';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ElectionService {
   private apiUrl = 'http://localhost:3000/elections';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getLastElection(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/last-election`);

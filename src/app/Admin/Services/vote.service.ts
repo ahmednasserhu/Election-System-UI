@@ -4,12 +4,12 @@ import { Observable } from 'rxjs';
 import { Vote } from '../Interfaces/vote';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class VoteService {
   private apiUrl = 'http://localhost:3000/votes/';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getTotalVotes(): Observable<any> {
     return this.http.get<any>(this.apiUrl);

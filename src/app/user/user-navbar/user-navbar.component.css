@@ -1,0 +1,25 @@
+.navbar {
+  background-color: black !important;
+  padding-inline: 16px;
+}
+
+p,
+a {
+  color: white !important;
+}
+
+img {
+  width: 180px;
+}
+.nav-link {
+  cursor: pointer;
+}
+.small-header {
+  color: #3d3d3d !important;
+  font-size: 18px;
+  margin-bottom: 0px;
+}
+.big-header {
+  color: #ac8500 !important;
+  font-size: 24px;
+}

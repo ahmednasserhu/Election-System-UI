@@ -11,7 +11,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit {
   currentDate = new Date();
@@ -36,12 +36,15 @@ export class HomeComponent implements OnInit {
   }
 
   fetchTotalVotes(): void {
-    this.voteService.getTotalVotes().subscribe(response => {
-      console.log('Total Votes:', response);
-      this.votesCast = response.total;
-    }, error => {
-      console.error('Error fetching total votes:', error);
-    });
+    this.voteService.getTotalVotes().subscribe(
+      (response) => {
+        console.log('Total Votes:', response);
+        this.votesCast = response.total;
+      },
+      (error) => {
+        console.error('Error fetching total votes:', error);
+      },
+    );
   }
 
   fetchTotalCandidates(): void {

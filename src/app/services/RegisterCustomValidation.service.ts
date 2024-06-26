@@ -83,7 +83,7 @@ export class RegisterCustomValidator {
 
     const now = new Date();
     const nowUTC = new Date(
-      Date.UTC(now.getFullYear(), now.getMonth(), now.getDate())
+      Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()),
     );
 
     let age = nowUTC.getUTCFullYear() - birthDate.getUTCFullYear();

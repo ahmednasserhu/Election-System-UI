@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ElectionService } from '../../Services/election.service';
 import { Election } from '../../Interfaces/election';
+import { Election } from '../../Interfaces/election';
 import * as bootstrap from 'bootstrap';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -10,7 +11,7 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './election.component.html',
-  styleUrl: './election.component.css'
+  styleUrl: './election.component.css',
 })
 export class ElectionComponent implements OnInit {
   elections: Election[] = [];
@@ -18,7 +19,7 @@ export class ElectionComponent implements OnInit {
   newElection: Election = this.initializeElection();
   deleteElectionId: string | null = null;
 
-  constructor(private electionService: ElectionService) { }
+  constructor(private electionService: ElectionService) {}
 
   ngOnInit(): void {
     this.loadElections();
@@ -37,7 +38,9 @@ export class ElectionComponent implements OnInit {
   }
 
   loadElections(): void {
-    this.electionService.getElections().subscribe(data => this.elections = data);
+    this.electionService
+      .getElections()
+      .subscribe((data) => (this.elections = data));
   }
 
   editElection(election: Election): void {

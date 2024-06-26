@@ -15,12 +15,14 @@ import { Result } from '../../interface/result';
 })
 export class ElectionsComponent implements OnInit {
   elections!: Election[];
-  results!: Result[];
+  results!: any;
   errorMessage: string = '';
 
   constructor(private _ElectionService: ElectionService) {}
   ngOnInit(): void {
     this._ElectionService.getSpecificElections().subscribe((res) => {
+      // res.splice(0, 1);
+      // res.splice(0, 1);
       console.log(res);
       this.results = res;
     });

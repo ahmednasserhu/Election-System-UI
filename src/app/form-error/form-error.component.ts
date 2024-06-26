@@ -6,7 +6,7 @@ import { AbstractControl } from '@angular/forms';
   standalone: true,
   imports: [],
   templateUrl: './form-error.component.html',
-  styleUrl: './form-error.component.css'
+  styleUrl: './form-error.component.css',
 })
 export class FormErrorMsgComponent {
   @Input() formInput!: AbstractControl<any, any>;

@@ -1,7 +1,7 @@
 <div class="my-container pt-3">
   <div class="container">
     <div class="row">
-      @for (result of results; track result.electionId._id) {
+      @for (result of results; track result?.electionId?._id) {
         <app-election-card [result]="result"></app-election-card>
       }
     </div>

@@ -3,7 +3,13 @@ import { Candidate } from '../../Interfaces/candidate';
 import { CommonModule } from '@angular/common';
 import { CandidateService } from '../../Services/candidate.service';
 import { FilterByStatusPipe } from '../../Pips/filterbystatus.pipe';
-import { DatePipe, LowerCasePipe, UpperCasePipe, CurrencyPipe, PercentPipe } from '@angular/common';
+import {
+  DatePipe,
+  LowerCasePipe,
+  UpperCasePipe,
+  CurrencyPipe,
+  PercentPipe,
+} from '@angular/common';
 
 @Component({
   selector: 'app-candidate',
@@ -18,12 +24,12 @@ import { DatePipe, LowerCasePipe, UpperCasePipe, CurrencyPipe, PercentPipe } fro
     FilterByStatusPipe
   ],
   templateUrl: './candidate.component.html',
-  styleUrls: ['./candidate.component.css']
+  styleUrls: ['./candidate.component.css'],
 })
 export class CandidateComponent implements OnInit {
   candidates: Candidate[] = [];
 
-  constructor(private candidateService: CandidateService) { }
+  constructor(private candidateService: CandidateService) {}
 
   ngOnInit(): void {
     this.loadCandidates();

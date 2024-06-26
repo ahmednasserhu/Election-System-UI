@@ -38,7 +38,7 @@ export class RegisterComponent {
   constructor(
     private fb: FormBuilder,
     private customValidator: RegisterCustomValidator,
-    private registerService: RegisterServiceService
+    private registerService: RegisterServiceService,
   ) {
     this.registerForm = this.fb.group(
       {
@@ -66,7 +66,10 @@ export class RegisterComponent {
         image: [null, Validators.required],
         email: [
           '',
-          Validators.compose([Validators.required, Validators.pattern(/^\S+@\S+\.\S+$/)]),
+          Validators.compose([
+            Validators.required,
+            Validators.pattern(/^\S+@\S+\.\S+$/),
+          ]),
         ],
         phoneNumber: [
           '',
@@ -80,7 +83,7 @@ export class RegisterComponent {
           Validators.compose([
             Validators.required,
             Validators.pattern(
-              '^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?_!@$%^&*-]).{8,32}$'
+              '^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?_!@$%^&*-]).{8,32}$',
             ),
           ]),
         ],
@@ -89,9 +92,9 @@ export class RegisterComponent {
       {
         validator: this.customValidator.MatchPassword(
           'password',
-          'verifyPassword'
+          'verifyPassword',
         ),
-      }
+      },
     );
   }
 
@@ -123,13 +126,13 @@ export class RegisterComponent {
     if (field === 'password') {
       this.passwordVisible = !this.passwordVisible;
       const passwordField = document.getElementById(
-        'password'
+        'password',
       ) as HTMLInputElement;
       passwordField.type = this.passwordVisible ? 'text' : 'password';
     } else if (field === 'verifyPassword') {
       this.verifyPasswordVisible = !this.verifyPasswordVisible;
       const verifyPasswordField = document.getElementById(
-        'verifyPassword'
+        'verifyPassword',
       ) as HTMLInputElement;
       verifyPasswordField.type = this.verifyPasswordVisible
         ? 'text'

@@ -34,50 +34,66 @@
         >{{ result.electionId.enddate | date }}
       </p>
       <div class="contain-btns d-flex gap-2 mt-4">
-        <button class="btn mybtn">Want to be a candidate</button>
+        <button class="btn mybtn" (click)="navigateToApplyForm()">
+          Want to be a candidate
+        </button>
       </div>
     </div>
     <div class="col-md-8">
       <canvas [id]="'barchart-' + result.electionId._id"></canvas>
     </div>
   </div>
-  <div class="row p-4 ">
+  <div class="row p-4">
     @for (
-    candidate of result.candidates;
-    track candidate._id;
-    let index = $index
-  ) {
-    <div class="col-md-6 d-flex mb-4">
+      candidate of result.candidates;
+      track candidate._id;
+      let index = $index
+    ) {
+      <div class="col-md-6 d-flex mb-4">
         <div
-      [ngClass]="{
-        'even-background': index % 2 === 0,
-        'odd-background': index % 2 !== 0,
-      }"
-      class="my-container-2 p-5 d-flex container-fluid"
-    >
-      <div class="row w-100">
-        <div class="contain-img col-md-4 d-flex">
-         <img class="my-img" [src]="candidate.citizenDetails.image" alt="" />
-        </div>
-        <div class="contain-words col-md-8">
-          <h3>{{ candidate.candidateName }}</h3>
-          <p>{{ candidate.candidateDetails.brief }}</p>
-         <div class="d-flex gap-5 align-items-center">
-            <p> <span class="pe-2 my-sub-head"><i class="fas fa-image pe-2"></i>Logo Name</span>{{ candidate.candidateDetails.logoName }}</p>
-            <div class="contain-logo">
-                <img class="img-logo" [src]="candidate.candidateDetails.logoImage" alt="" />
+          [ngClass]="{
+            'even-background': index % 2 === 0,
+            'odd-background': index % 2 !== 0,
+          }"
+          class="my-container-2 p-5 d-flex container-fluid"
+        >
+          <div class="row w-100">
+            <div class="contain-img col-md-4 d-flex">
+              <img
+                class="my-img"
+                [src]="candidate.citizenDetails.image"
+                alt=""
+              />
             </div>
-         </div>
-          <p> <span class="pe-2 my-sub-head"><i class="fas fa-landmark pe-2 "></i>Part</span>{{ candidate.candidateDetails.party }}</p>
-          <button class="btn mybtn">Vote</button>
+            <div class="contain-words col-md-8">
+              <h3>{{ candidate.candidateName }}</h3>
+              <p>{{ candidate.candidateDetails.brief }}</p>
+              <div class="d-flex gap-5 align-items-center">
+                <p>
+                  <span class="pe-2 my-sub-head"
+                    ><i class="fas fa-image pe-2"></i>Logo Name</span
+                  >{{ candidate.candidateDetails.logoName }}
+                </p>
+                <div class="contain-logo">
+                  <img
+                    class="img-logo"
+                    [src]="candidate.candidateDetails.logoImage"
+                    alt=""
+                  />
+                </div>
+              </div>
+              <p>
+                <span class="pe-2 my-sub-head"
+                  ><i class="fas fa-landmark pe-2"></i>Part</span
+                >{{ candidate.candidateDetails.party }}
+              </p>
+              <button class="btn mybtn">Vote</button>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-    </div>
-    
-  }
+    }
   </div>
-  
 </div>
 
 <!-- candidateDetails

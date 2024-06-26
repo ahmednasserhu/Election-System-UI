@@ -3,7 +3,7 @@ import { Candidate } from '../Interfaces/candidate';
 
 @Pipe({
   name: 'filterByStatus',
-  standalone:true
+  standalone: true,
 })
 export class FilterByStatusPipe implements PipeTransform {
   transform(candidates: Candidate[], status: string): Candidate[] {

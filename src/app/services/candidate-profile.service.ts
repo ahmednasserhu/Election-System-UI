@@ -3,14 +3,14 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CandidateProfileService {
   private apiUrl = environment.apiUrl;
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getProfile(id: any) {
-    return this.http.get(`${this.apiUrl}/candidates/${id}`)
+    return this.http.get(`${this.apiUrl}/candidates/${id}`);
   }
 
   updateProfile(data: any, id: any) {

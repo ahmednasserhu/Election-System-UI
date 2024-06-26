@@ -129,4 +129,7 @@ export class ElectionDetailsComponent
       console.error('Failed to get 2D context from canvas element.');
     }
   }
+  navigateToApplyForm() {
+    this.router.navigate(['/user', 'apply', this.result.electionId._id]);
+  }
 }

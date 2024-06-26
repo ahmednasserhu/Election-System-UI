@@ -9,6 +9,7 @@ import { ElectionsComponent } from './user/elections/elections.component';
 import { ParentComponent } from './general/parent/parent.component';
 import { UserParentComponent } from './user/user-parent/user-parent.component';
 import { ElectionDetailsComponent } from './user/election-details/election-details.component';
+import { ApplyComponent } from './user/apply/apply.component';
 
 export const routes: Routes = [
   {
@@ -25,6 +26,14 @@ export const routes: Routes = [
       {
         path: 'about',
         component: AboutUsComponent,
+      },
+      {
+        path: 'register',
+        component: RegisterComponent,
+      },
+      {
+        path: 'login',
+        component: RegisterComponent,
       },
     ],
     component: ParentComponent,
@@ -44,14 +53,14 @@ export const routes: Routes = [
         path: 'election-details/:id',
         component: ElectionDetailsComponent,
       },
+      {
+        path: 'apply/:id',
+        component: ApplyComponent,
+      },
     ],
     component: UserParentComponent,
   },
-  {
-    path: 'register',
-    component: RegisterComponent,
-    title: 'register',
-  },
+
   {
     path: 'candidate',
     component: CandidateDashboardComponent,

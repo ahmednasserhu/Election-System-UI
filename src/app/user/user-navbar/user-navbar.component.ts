@@ -7,4 +7,10 @@ import { Component } from '@angular/core';
   templateUrl: './user-navbar.component.html',
   styleUrl: './user-navbar.component.css',
 })
-export class UserNavbarComponent {}
+export class UserNavbarComponent {
+  /**
+   *
+   */
+  constructor() {}
+  
+}

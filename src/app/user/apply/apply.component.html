@@ -1,0 +1,214 @@
+<div class="container form">
+  <div class="row">
+    <!-- Left Side: Input Fields -->
+    <div class="col-md-6">
+      <h2 class="text-center mb-4">
+        Apply for {{ this.electionDetails.title }}
+      </h2>
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <div class="row">
+          <!-- First Name and Last Name Field -->
+          <!-- { name: 'criminalRecord', maxCount: 1 },
+    { name: 'logoImage', maxCount: 1 },
+  const { electionId, party, brief,logoName} = -->
+
+          <div class="col-md-6">
+            <div class="input-container ic1">
+              <input
+                placeholder=""
+                autocomplete="off"
+                type="text"
+                class="form-control"
+                id="logoName"
+                formControlName="logoName"
+              />
+              <label class="iLabel" for="logoName">logoName</label>
+              <div
+                *ngIf="
+                  registerForm.controls['logoName'].invalid &&
+                  (registerForm.controls['logoName'].dirty ||
+                    registerForm.controls['logoName'].touched)
+                "
+              >
+                <app-form-error
+                  [formInput]="registerForm.controls['logoName']"
+                  [validationType]="'pattern'"
+                  [errorMsg]="'Name must contain only letters (a-z or A-Z)'"
+                ></app-form-error>
+                <app-form-error
+                  [formInput]="registerForm.controls['logoName']"
+                  [validationType]="'required'"
+                  [errorMsg]="'Required Field'"
+                ></app-form-error>
+              </div>
+            </div>
+          </div>
+    
+          <!--! Image Upload Field -->
+          <div class="col-md-6">
+            <button
+              class="container-btn-file input-container ic1 btn btn-block text-center btn-dark p-0"
+              style="height: 46px;"
+            >
+              <fa-icon [icon]="fileImage" class="mx-2"></fa-icon>
+              Upload logo image
+              <input
+                class="file"
+                name="text"
+                type="file"
+                id="image"
+                (change)="onImagePicked($event)"
+                formControlName="image"
+              />
+            </button>
+            <div
+              *ngIf="
+                registerForm.controls['image'].invalid &&
+                (registerForm.controls['image'].dirty ||
+                  registerForm.controls['image'].touched)
+              "
+            >
+              <app-form-error
+                [formInput]="registerForm.controls['image']"
+                [validationType]="'required'"
+                [errorMsg]="'Required Field'"
+              ></app-form-error>
+            </div>
+          </div>
+
+          <!--! criminal record Upload Field -->
+          <div class="col-md-12">
+            <div class="input-container ic1">
+              <input
+                placeholder=""
+                autocomplete="off"
+                type="text"
+                class="form-control"
+                id="party"
+                formControlName="party"
+              />
+              <label class="iLabel" for="party">Party</label>
+              <div
+                *ngIf="
+                  registerForm.controls['party'].invalid &&
+                  (registerForm.controls['party'].dirty ||
+                    registerForm.controls['party'].touched)
+                "
+              >
+                <app-form-error
+                  [formInput]="registerForm.controls['party']"
+                  [validationType]="'pattern'"
+                  [errorMsg]="'Party must contain only letters (a-z or A-Z)'"
+                ></app-form-error>
+                <app-form-error
+                  [formInput]="registerForm.controls['party']"
+                  [validationType]="'max'"
+                  [errorMsg]="'party must not excced 200 charachters'"
+                ></app-form-error>
+                <app-form-error
+                  [formInput]="registerForm.controls['party']"
+                  [validationType]="'required'"
+                  [errorMsg]="'Required Field'"
+                ></app-form-error>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            <button
+              class="container-btn-file input-container ic1 btn btn-block text-center btn-dark p-0"
+              style="height: 46px;"
+            >
+              <!-- <fa-icon [icon]="fileImage" class="mx-2"></fa-icon> -->
+              Upload criminal record
+              <input
+                class="file"
+                name="text"
+                type="file"
+                id="criminalRecord"
+                (change)="onCriminalPicked($event)"
+                formControlName="criminalRecord"
+              />
+            </button>
+            <div
+              *ngIf="
+                registerForm.controls['criminalRecord'].invalid &&
+                (registerForm.controls['criminalRecord'].dirty ||
+                  registerForm.controls['criminalRecord'].touched)
+              "
+            >
+              <app-form-error
+                [formInput]="registerForm.controls['criminalRecord']"
+                [validationType]="'required'"
+                [errorMsg]="'Required Field'"
+              ></app-form-error>
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            <div class="input-container ic1">
+              <textarea
+                placeholder=""
+                autocomplete="off"
+                type="text"
+                class="form-control"
+                id="brief"
+                formControlName="brief"
+                rows="3"
+              ></textarea>
+
+              <label class="iLabel" for="brief">Brief</label>
+              <div
+                *ngIf="
+                  registerForm.controls['brief'].invalid &&
+                  (registerForm.controls['brief'].dirty ||
+                    registerForm.controls['brief'].touched)
+                "
+              >
+                <app-form-error
+                  [formInput]="registerForm.controls['brief']"
+                  [validationType]="'pattern'"
+                  [errorMsg]="'Name must contain only letters (a-z or A-Z)'"
+                ></app-form-error>
+                <app-form-error
+                  [formInput]="registerForm.controls['brief']"
+                  [validationType]="'max'"
+                  [errorMsg]="'drief must not excced 200 charachters'"
+                ></app-form-error>
+                <app-form-error
+                  [formInput]="registerForm.controls['brief']"
+                  [validationType]="'required'"
+                  [errorMsg]="'Required Field'"
+                ></app-form-error>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Submit Button -->
+          <div class="col-12 mt-4">
+            <div class="input-container ic1">
+              <button
+                type="submit"
+                class="btn btn-block mt-2"
+                [class.btn-primary]="registerForm.valid"
+                [class.btn-secondary]="registerForm.invalid"
+                [disabled]="registerForm.invalid"
+              >
+                Apply
+              </button>
+            </div>
+          </div>
+          <!-- Already have an account -->
+        </div>
+      </form>
+    </div>
+    <!-- Right Side: Image -->
+    <div class="col-md-6 d-flex align-items-center justify-content-center">
+      <img
+        src="../../assets/images/voting.jpg"
+        alt="Register"
+        class="img-fluid"
+      />
+    </div>
+  </div>
+</div>

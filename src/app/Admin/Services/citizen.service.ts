@@ -5,13 +5,13 @@ import { catchError,map } from 'rxjs/operators';
 import { Citizen } from '../Interfaces/citizen';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CitizenService {
   private apiUrl = 'http://localhost:3000/citizens/';
   private statusUrl = 'http://localhost:3000/citizens/status'; // Adjust as per your API endpoint structure
   private httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
   };
 
   constructor(private http: HttpClient) { }
