@@ -9,7 +9,9 @@ import { Citizen } from '../Interfaces/citizen';
 })
 export class CitizenService {
   private apiUrl = 'http://localhost:3000/citizens/';
-  private statusUrl = 'http://localhost:3000/citizens/status'; // Adjust as per your API endpoint structure
+  private statusUrl = 'http://localhost:3000/citizens/status'; 
+  // Adjust as per your API endpoint structure
+  private adminUrl = 'http://127.0.0.1:3000/citizens/newAdmin';
   private httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
   };
@@ -18,6 +20,13 @@ export class CitizenService {
   getCitizenss(): Observable<any> {
     return this.http.get<any>(this.apiUrl);
   }
+
+  addAdmin(adminData: FormData): Observable<any> {
+    return this.http.post<any>(this.adminUrl, adminData).pipe(
+      catchError(this.handleError<any>('addAdmin'))
+    );
+  }
+  
   getCitizens(): Observable<Citizen[]> {
     return this.http.get<any>(this.apiUrl).pipe(
       map(response => response.paginationResults.results as Citizen[]),

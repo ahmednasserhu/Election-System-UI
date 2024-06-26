@@ -24,4 +24,8 @@
   .modal-header .modal-title {
     margin-right: auto; /* Pushes the title to the left */
   }
+  .break-link {
+    white-space: pre-wrap; /* To handle preformatted text */
+    word-break: break-all; /* Break words when necessary */
+  }
   

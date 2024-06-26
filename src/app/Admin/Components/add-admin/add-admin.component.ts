@@ -2,11 +2,11 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormErrorMsgComponent } from '../../../form-error/form-error.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { ReactiveFormsModule, FormBuilder,FormGroup,Validators, } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
 import { faFileImage } from '@fortawesome/free-solid-svg-icons';
 import { RegisterCustomValidator } from '../../../services/RegisterCustomValidation.service';
-import { RegisterServiceService } from '../../../services/register/register-service.service';
+import { CitizenService } from '../../Services/citizen.service';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
@@ -19,7 +19,7 @@ import { HttpErrorResponse } from '@angular/common/http';
     CommonModule,
   ],
   templateUrl: './add-admin.component.html',
-  styleUrl: './add-admin.component.css'
+  styleUrls: ['./add-admin.component.css'],
 })
 export class AddAdminComponent {
   registerForm: FormGroup;
@@ -33,7 +33,7 @@ export class AddAdminComponent {
   constructor(
     private fb: FormBuilder,
     private customValidator: RegisterCustomValidator,
-    private registerService: RegisterServiceService,
+    private citizenService: CitizenService
   ) {
     this.registerForm = this.fb.group(
       {
@@ -41,7 +41,7 @@ export class AddAdminComponent {
           '',
           Validators.compose([
             Validators.required,
-            this.customValidator.ssnValidator(),
+            Validators.pattern(/^\d{14}$/),
           ]),
         ],
         firstName: [
@@ -78,21 +78,22 @@ export class AddAdminComponent {
           Validators.compose([
             Validators.required,
             Validators.pattern(
-              '^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?_!@$%^&*-]).{8,32}$',
+              '^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,32}$'
             ),
           ]),
         ],
         verifyPassword: ['', Validators.required],
-        role: ['admin'] // Hidden role field
+        role: ['admin'],
       },
       {
         validator: this.customValidator.MatchPassword(
           'password',
-          'verifyPassword',
+          'verifyPassword'
         ),
-      },
+      }
     );
-  }    
+  }
+
   onImagePicked(event: any) {
     const file: File = event.target.files[0];
 
@@ -105,8 +106,7 @@ export class AddAdminComponent {
     if (this.registerForm.valid) {
       const formData = this.registerForm.value;
       formData.image = this.selectedImage;
-      formData.role = 'admin'; // Explicitly set role
-  
+
       const formDataToSend = new FormData();
       formDataToSend.append('firstName', formData.firstName);
       formDataToSend.append('lastName', formData.lastName);
@@ -115,37 +115,30 @@ export class AddAdminComponent {
       formDataToSend.append('phoneNumber', formData.phoneNumber);
       formDataToSend.append('password', formData.password);
       formDataToSend.append('role', formData.role);
-      formDataToSend.append('image', formData.image);
-  
-      this.registerService.register(formDataToSend).subscribe(
+      if (formData.image) {
+        formDataToSend.append('image', formData.image);
+      }
+
+      this.citizenService.addAdmin(formDataToSend).subscribe(
         (res: any) => {
-          if (res) {
-            console.log(res);
-          }
+          console.log('Admin added successfully:', res);
         },
         (error: HttpErrorResponse) => {
-          console.log(error);
+          console.log('Error adding admin:', error);
         }
       );
     }
   }
-  
 
   togglePasswordVisibility(field: string) {
     if (field === 'password') {
       this.passwordVisible = !this.passwordVisible;
-      const passwordField = document.getElementById(
-        'password',
-      ) as HTMLInputElement;
+      const passwordField = document.getElementById('password') as HTMLInputElement;
       passwordField.type = this.passwordVisible ? 'text' : 'password';
     } else if (field === 'verifyPassword') {
       this.verifyPasswordVisible = !this.verifyPasswordVisible;
-      const verifyPasswordField = document.getElementById(
-        'verifyPassword',
-      ) as HTMLInputElement;
-      verifyPasswordField.type = this.verifyPasswordVisible
-        ? 'text'
-        : 'password';
+      const verifyPasswordField = document.getElementById('verifyPassword') as HTMLInputElement;
+      verifyPasswordField.type = this.verifyPasswordVisible ? 'text' : 'password';
     }
   }
 }

@@ -13,7 +13,7 @@
       <div class="candidate-list mt-3">
         <h4 class="text-light">Candidate List</h4>
         <ul class="list-group">
-          <li class="list-group-item d-flex justify-content-between align-items-center text-white border-black" style="background-color: #333333;" *ngFor="let candidate of candidates">
+          <li class="list-group-item d-flex justify-content-between align-items-center text-white border-black" style="background-color: #333333;" *ngFor="let candidate of pendingCandidates">
             <span (click)="openCandidateModal(candidate)" style="cursor: pointer;">
               <img *ngIf="candidate.logoImage" [src]="candidate.logoImage" alt="{{ candidate.logoName }}" style="max-width: 50px; max-height: 50px; margin-right: 10px;">
               {{ candidate.logoName }}
@@ -30,7 +30,7 @@
       <div class="approved-list mt-3">
         <h4 class="text-light">Approved Candidates</h4>
         <ul class="list-group text-light">
-          <li class="list-group-item text-light border-black" style="background-color: #333333;" *ngFor="let candidate of candidates | filterByStatus:'approved'">
+          <li class="list-group-item text-light border-black" style="background-color: #333333;" *ngFor="let candidate of approvedCandidates">
             <span (click)="openCandidateModal(candidate)" style="cursor: pointer;">
               <img *ngIf="candidate.logoImage" [src]="candidate.logoImage" alt="{{ candidate.logoName }}" style="max-width: 50px; max-height: 50px; margin-right: 10px;">
               {{ candidate.logoName }}
@@ -52,10 +52,14 @@
           </button>
         </div>
         <div class="modal-body">
-          <p><strong>Party:</strong> {{ selectedCandidate?.party }}</p>
-          <p><strong>Brief:</strong> {{ selectedCandidate?.brief }}</p>
-          <!-- <p><strong>Criminal Record:</strong> <a href="#">{{ selectedCandidate?.criminalRecord}}</a></p>
-           -->
+          <p><strong>Party: </strong> {{ selectedCandidate?.party }}</p>
+          <p><strong>Brief: </strong> {{ selectedCandidate?.brief }}</p>
+          <p><strong>Criminal Record: </strong> 
+            <a href="{{ selectedCandidate?.criminalRecord }}" target="_blank" class="break-link">
+              {{ selectedCandidate?.criminalRecord }}
+            </a>
+         </p>
+         
           <!-- Add more details as needed -->
         </div>
         <div class="modal-footer">
@@ -64,5 +68,4 @@
       </div>
     </div>
   </div>
-  
 </div>
