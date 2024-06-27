@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
 import { Citizen } from '../../Admin/Interfaces/citizen';
 
@@ -15,13 +15,14 @@ interface TokenPayload {
 @Component({
   selector: 'app-user-navbar',
   standalone: true,
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './user-navbar.component.html',
   styleUrl: './user-navbar.component.css',
 })
 export class UserNavbarComponent {
   citizenName: string | null = '';
   citizenImage: string | null = '';
+  userId!: string;
   /**
    *
    */
@@ -33,6 +34,7 @@ export class UserNavbarComponent {
      
       this.citizenName = decodedToken.citizen.firstName;
       this.citizenImage = decodedToken.citizen.image;
+      this.userId = decodedToken.citizen._id;
     }
   }
 
