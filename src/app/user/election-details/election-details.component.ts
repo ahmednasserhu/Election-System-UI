@@ -1,3 +1,4 @@
+import { ToastrService } from 'ngx-toastr';
 import { VoteService } from '../../services/vote.service';
 import { ElectionService } from './../../services/election.service';
 import { Router } from '@angular/router';
@@ -47,6 +48,7 @@ export class ElectionDetailsComponent
     private router: Router,
     private _ElectionService: ElectionService,
     private VoteService: VoteService,
+    private toaster:ToastrService
   ) {
     this._ElectionService
       .getSpecificElection(this.router.url.split('/')[3])
@@ -168,8 +170,8 @@ export class ElectionDetailsComponent
         this.openModal();
       },
       error: (err) => {
-        console.error('Error during voting:', err);
-        // Handle the error as needed
+
+          this.toaster.error(err.error.message)
       },
     });
   }
@@ -182,9 +184,10 @@ export class ElectionDetailsComponent
     }).subscribe({
       next: (res) => {
         console.log(res)
+          this.toaster.success(res.message);
       },
       error: (err) => {
-        console.error('Error during voting:', err);
+          this.toaster.error(err.error.message);
       },
     });
   }
