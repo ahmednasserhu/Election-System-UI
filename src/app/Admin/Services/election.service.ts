@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient ,HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Election } from '../Interfaces/election';
 
@@ -21,18 +21,22 @@ export class ElectionService {
   createElection(election: Election): Observable<Election> {
     return this.http.post<Election>(this.apiUrl, election, {
       headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
+        'Content-Type': 'application/json',
+      }),
     });
   }
 
   updateElection(election: Election): Observable<Election> {
-    return this.http.patch<Election>(`${this.apiUrl}/${election._id}`, election, {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })}
-    )}
-
+    return this.http.patch<Election>(
+      `${this.apiUrl}/${election._id}`,
+      election,
+      {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+        }),
+      },
+    );
+  }
 
   deleteElection(id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);

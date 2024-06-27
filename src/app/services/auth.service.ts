@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   constructor(private router: Router) {}
@@ -16,10 +16,10 @@ export class AuthService {
         this.router.navigate(['/candidate']);
         break;
       case 'citizen':
-        this.router.navigate(['/citizen']);
+        this.router.navigate(['/user']);
         break;
       default:
-        console.error("Unknown role:", role);
+        console.error('Unknown role:', role);
     }
   }
 }

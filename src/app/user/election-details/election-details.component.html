@@ -87,15 +87,42 @@
                   ><i class="fas fa-landmark pe-2"></i>Part</span
                 >{{ candidate.candidateDetails.party }}
               </p>
-              <button class="btn mybtn">Vote</button>
+              <button class="btn mybtn" (click)="vote(candidate.candidateId,result.electionId._id)">Vote</button>
             </div>
           </div>
         </div>
       </div>
+      <ng-template #otpModalTemplate let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Enter OTP</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <form (submit)="onSubmitOtp()">
+      <div class="otp-container d-flex flex-column">
+        <p>Enter OTP sent on your email</p>
+        <div>
+            <input type="text" [(ngModel)]="otpNum" name="otpNum" class="form-control" />
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-secondary" (click)="this.voteWithOTP(candidate.candidateId,result.electionId._id,otpNum)">send</button>
+  </div>
+</ng-template>
     }
   </div>
 </div>
 
+
+        
+        <!-- <button class="btn btn-lg btn-outline-primary" (click)="open(content)">Launch demo modal</button> -->
+        
+        <hr />
+        
+        <pre>{{ closeResult }}</pre>
+        
 <!-- candidateDetails
 : 
 brief

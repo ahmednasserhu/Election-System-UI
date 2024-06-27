@@ -18,5 +18,4 @@ export class VoteService {
   getLastVote(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}last`);
   }
-
 }

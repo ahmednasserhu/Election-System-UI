@@ -9,7 +9,7 @@ import { Candidate } from '../Interfaces/candidate';
 export class CandidateService {
   private apiUrl = 'http://localhost:3000/candidates/';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getCandidates(): Observable<any> {
     return this.http.get<any>(this.apiUrl);

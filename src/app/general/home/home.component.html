@@ -36,31 +36,19 @@
             Important Advertisement
           </p>
           <div class="p-2">
-            <p class="content-word">
-              <a href=""> Timetable for the 2024 presidential elections </a>
-            </p>
-            <div class="line-1"></div>
-            <p class="content-word">
-              <a href=""
-                >The Commission’s decisions regarding the 2024 presidential
-                elections</a
-              >
-            </p>
-            <div class="line-1"></div>
-            <p class="content-word">
-              <a href="">
-                Speech by the Chairman of the Commission to invite voters for
-                the 2024 presidential elections
-              </a>
-            </p>
-            <div class="line-1"></div>
-
-            <p class="content-word">
-              <a href="">
-                Executive Director’s speech at the Voter Call Conference for the
-                2024 Presidential Elections
-              </a>
-            </p>
+            @for (
+              ElectionDetail of ElectionDetails;
+              track ElectionDetails.electionId?._id
+            ) {
+              <p class="content-word">
+                <a
+                  (click)="goToElectionDetails(ElectionDetail.electionId?._id)"
+                >
+                  {{ ElectionDetail.electionId?.title }}</a
+                >
+              </p>
+              <div class="line-1"></div>
+            }
           </div>
         </div>
       </div>

@@ -23,6 +23,8 @@ import { CandidateComponent } from './Admin/Components/candidate/candidate.compo
 import { AdminComponent } from './Admin/admin/admin.component';
 import { HomeComponentAdmin } from './Admin/Components/home/home.component';
 import { authGuard } from './guards/admin-guard.guard';
+import { userGuardGuard } from './guards/user-guard.guard';
+import { HomeDetailsComponent } from './home-details/home-details.component';
 
 export const routes: Routes = [
   {
@@ -41,6 +43,10 @@ export const routes: Routes = [
         component: AboutUsComponent,
       },
       {
+        path: 'home-details/:id',
+        component: HomeDetailsComponent,
+      },
+      {
         path: 'register',
         component: RegisterComponent,
       },
@@ -53,6 +59,7 @@ export const routes: Routes = [
   },
   {
     path: 'user',
+    canActivate: [userGuardGuard],
     children: [
       {
         path: '',

@@ -1,105 +1,105 @@
 .home {
-    /* background-image: url('https://img.freepik.com/premium-vector/egypt-flag-vector-illustration-abstract-modern-style_87543-9906.jpg'); */
-    background-size: cover;
-    background-position: center;
-    padding: 40px;
-    min-height: 100vh;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    /* justify-content: center; */
-    align-items: center;
-    /* background-color: rgba(0, 0, 0, 0.4);   */
-    /* color: rgb(233, 199, 154); */
-  }
-  
-  .header {
-    text-align: center;
-    margin-bottom: 30px;
-  }
-  
-  .header h1 {
-    font-size: 2.5rem;
-    margin: 0;
-  }
-  
-  .header .date {
-    font-size: 1.2rem;
-    margin-top: 10px;
-  }
-  
-  .stats-cards {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 20px; 
-    width: 100%;
-    max-width: 1200px;
-  }
-  
-  .card {
-    /* background: rgba(0, 0, 0, 0.7);  */
-    background: #343a40;
-    border-radius: 12px;
-    color: aliceblue;
-    padding: 20px;
-    display: flex;
-    align-items: center;
-    width: calc(25% - 20px); 
-    min-width: 220px; 
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s, box-shadow 0.3s; 
-  }
-  
-  .card:hover {
-    transform: translateY(-5px); 
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); 
-  }
-  
-  .card-icon {
-    font-size: 2.5rem;
-    margin-right: 15px;
-    /* color: #007bff;   */
-    color: red;
-  }
-  
-  .card-content h2 {
-    margin: 0;
-    font-size: 1.3rem;
-    color: aliceblue;
-  }
-  
-  .card-content p {
-    margin: 5px 0 0;
-    font-size: 1.1rem;
-    color: aliceblue;
-  }
-  
-  
-  .recent-activity {
-    /* background: rgba(0, 0, 0, 0.7); */
-    background: #343a40;
-    border-radius: 12px;
-    padding: 20px;
-    margin-top: 30px;
-    width: 100%;
-    max-width: 1200px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  }
-  
-  .recent-activity h2 {
-    margin-bottom: 20px;
-  }
-  
-  .recent-activity ul {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .recent-activity li {
-    margin-bottom: 10px;
-    padding: 10px;
-    background: rgba(255, 255, 255, 0.1); 
-    border-radius: 8px;
-  }
-  
+  /* background-image: url('https://img.freepik.com/premium-vector/egypt-flag-vector-illustration-abstract-modern-style_87543-9906.jpg'); */
+  background-size: cover;
+  background-position: center;
+  padding: 40px;
+  min-height: 100vh;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  align-items: center;
+  /* background-color: rgba(0, 0, 0, 0.4);   */
+  /* color: rgb(233, 199, 154); */
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.header h1 {
+  font-size: 2.5rem;
+  margin: 0;
+}
+
+.header .date {
+  font-size: 1.2rem;
+  margin-top: 10px;
+}
+
+.stats-cards {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.card {
+  /* background: rgba(0, 0, 0, 0.7);  */
+  background: #343a40;
+  border-radius: 12px;
+  color: aliceblue;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  width: calc(25% - 20px);
+  min-width: 220px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition:
+    transform 0.3s,
+    box-shadow 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.card-icon {
+  font-size: 2.5rem;
+  margin-right: 15px;
+  /* color: #007bff;   */
+  color: red;
+}
+
+.card-content h2 {
+  margin: 0;
+  font-size: 1.3rem;
+  color: aliceblue;
+}
+
+.card-content p {
+  margin: 5px 0 0;
+  font-size: 1.1rem;
+  color: aliceblue;
+}
+
+.recent-activity {
+  /* background: rgba(0, 0, 0, 0.7); */
+  background: #343a40;
+  border-radius: 12px;
+  padding: 20px;
+  margin-top: 30px;
+  width: 100%;
+  max-width: 1200px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.recent-activity h2 {
+  margin-bottom: 20px;
+}
+
+.recent-activity ul {
+  list-style: none;
+  padding: 0;
+}
+
+.recent-activity li {
+  margin-bottom: 10px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+}

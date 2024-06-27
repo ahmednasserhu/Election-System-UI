@@ -1,7 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { ReactiveFormsModule, Validators, FormBuilder, FormGroup, AbstractControl, ValidationErrors } from '@angular/forms';
+import {
+  ReactiveFormsModule,
+  Validators,
+  FormBuilder,
+  FormGroup,
+  AbstractControl,
+  ValidationErrors,
+} from '@angular/forms';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import * as bootstrap from 'bootstrap';
 import { AuthService } from '../services/auth.service';
@@ -10,9 +17,15 @@ import { jwtDecode } from 'jwt-decode';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [RouterLink, ReactiveFormsModule, RouterLinkActive, CommonModule, HttpClientModule],
+  imports: [
+    RouterLink,
+    ReactiveFormsModule,
+    RouterLinkActive,
+    CommonModule,
+    HttpClientModule,
+  ],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styleUrl: './login.component.css',
 })
 export class LoginComponent {
   loginForm: FormGroup;
@@ -32,24 +45,37 @@ export class LoginComponent {
     private http: HttpClient,
     private router: Router,
     private formBuilder: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
   ) {
     this.loginForm = this.formBuilder.group({
-      ssn: ["", [Validators.required, this.ssnValidator]],
-      password: ["", [Validators.required, Validators.minLength(8), this.passwordValidator]]
+      ssn: ['', [Validators.required, this.ssnValidator]],
+      password: [
+        '',
+        [Validators.required, Validators.minLength(8), this.passwordValidator],
+      ],
     });
 
     this.forgotPasswordForm = this.formBuilder.group({
-      email: ["", [Validators.required, Validators.email]]
+      email: ['', [Validators.required, Validators.email]],
     });
 
-    this.resetPasswordForm = this.formBuilder.group({
-      token: ["", Validators.required],
-      newPassword: ["", [Validators.required, Validators.minLength(8), this.passwordValidator]],
-      confirmPassword: ["", Validators.required]
-    }, {
-      validators: this.passwordMatchValidator
-    });
+    this.resetPasswordForm = this.formBuilder.group(
+      {
+        token: ['', Validators.required],
+        newPassword: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(8),
+            this.passwordValidator,
+          ],
+        ],
+        confirmPassword: ['', Validators.required],
+      },
+      {
+        validators: this.passwordMatchValidator,
+      },
+    );
   }
 
   handleForm(): void {
@@ -72,7 +98,7 @@ export class LoginComponent {
         error: (err) => {
           this.errMsg = err.error.message;
           this.isLoading = false;
-        }
+        },
       });
     }
   }
@@ -105,7 +131,7 @@ export class LoginComponent {
       this.forgotPassword(emailData).subscribe({
         next: (response: any) => {
           console.log(response);
-          this.forgotPasswordMsg = "Reset link sent to your email address.";
+          this.forgotPasswordMsg = 'Reset link sent to your email address.';
           this.isForgotPasswordLoading = false;
           this.closeForgotPasswordModal();
         },
@@ -113,7 +139,7 @@ export class LoginComponent {
           console.error(err);
           this.forgotPasswordErrorMsg = err.error.message;
           this.isForgotPasswordLoading = false;
-        }
+        },
       });
     }
   }
@@ -127,7 +153,7 @@ export class LoginComponent {
       this.resetPassword(resetData).subscribe({
         next: (response: any) => {
           console.log(response);
-          this.resetPasswordMsg = "Password successfully reset.";
+          this.resetPasswordMsg = 'Password successfully reset.';
           this.isResetPasswordLoading = false;
           this.resetPasswordForm.reset();
           this.closeForgotPasswordModal();
@@ -136,7 +162,7 @@ export class LoginComponent {
           console.error(err);
           this.resetPasswordErrorMsg = err.error.message;
           this.isResetPasswordLoading = false;
-        }
+        },
       });
     }
   }
@@ -158,7 +184,9 @@ export class LoginComponent {
 
   openForgotPasswordModal(): void {
     this.resetPasswordToken = '';
-    const modal = new bootstrap.Modal(document.getElementById('forgotPasswordModal')!);
+    const modal = new bootstrap.Modal(
+      document.getElementById('forgotPasswordModal')!,
+    );
     modal.show();
   }
 
@@ -180,7 +208,8 @@ export class LoginComponent {
 
   // Custom validator for password
   passwordValidator(control: AbstractControl): ValidationErrors | null {
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     if (control.value && !passwordRegex.test(control.value)) {
       return { invalidPassword: true };
     }
@@ -191,7 +220,11 @@ export class LoginComponent {
   passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
     const newPassword = control.get('newPassword');
     const confirmPassword = control.get('confirmPassword');
-    if (newPassword && confirmPassword && newPassword.value !== confirmPassword.value) {
+    if (
+      newPassword &&
+      confirmPassword &&
+      newPassword.value !== confirmPassword.value
+    ) {
       return { passwordMismatch: true };
     }
     return null;
