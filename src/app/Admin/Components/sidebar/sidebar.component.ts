@@ -37,7 +37,7 @@ export class SidebarComponent implements OnInit {
     if (token) {
       const decodedToken = jwtDecode<TokenPayload>(token);
       console.log(decodedToken);
-      
+     
       this.adminName = decodedToken.citizen.firstName;
       this.adminImage = decodedToken.citizen.image;
     }
@@ -45,9 +45,10 @@ export class SidebarComponent implements OnInit {
 
   logout() {
     localStorage.removeItem('token');
+    localStorage.removeItem('role');
     this.router.navigate(['/login']);
-  
   }
+  
 
   toggleSidebar() {
     this.isClosed = !this.isClosed;
