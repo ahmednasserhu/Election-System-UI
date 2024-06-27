@@ -21,10 +21,9 @@ export class CandidateProfileService {
         formData.append(key, data[key]);
       }
     }
-  
+
     // console.log('service', formData);
-  
+
     return this.http.patch<any>(`${this.apiUrl}/candidates/${id}`, formData);
   }
-  
 }

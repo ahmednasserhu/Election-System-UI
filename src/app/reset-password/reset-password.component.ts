@@ -1,5 +1,12 @@
-import { Component,OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors, ReactiveFormsModule } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  AbstractControl,
+  ValidationErrors,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -7,9 +14,9 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-reset-password',
   standalone: true,
-  imports: [CommonModule , ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './reset-password.component.html',
-  styleUrl: './reset-password.component.css'
+  styleUrl: './reset-password.component.css',
 })
 export class ResetPasswordComponent implements OnInit {
   resetPasswordForm: FormGroup;
@@ -20,12 +27,23 @@ export class ResetPasswordComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private route: ActivatedRoute,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
   ) {
-    this.resetPasswordForm = this.formBuilder.group({
-      newPassword: ["", [Validators.required, Validators.pattern(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/)]],
-      confirmPassword: ["", [Validators.required]]
-    }, { validator: this.passwordsMatchValidator });
+    this.resetPasswordForm = this.formBuilder.group(
+      {
+        newPassword: [
+          '',
+          [
+            Validators.required,
+            Validators.pattern(
+              /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/,
+            ),
+          ],
+        ],
+        confirmPassword: ['', [Validators.required]],
+      },
+      { validator: this.passwordsMatchValidator },
+    );
   }
 
   ngOnInit(): void {
@@ -36,16 +54,21 @@ export class ResetPasswordComponent implements OnInit {
     if (this.resetPasswordForm.valid && this.token) {
       this.isLoading = true;
       const { newPassword } = this.resetPasswordForm.value;
-      this.http.post('http://localhost:3000/citizens/reset-password', { token: this.token, newPassword }).subscribe({
-        next: () => {
-          this.isLoading = false;
-          alert('Password reset successful.');
-        },
-        error: (err) => {
-          this.errMsg = err.error.message || 'Failed to reset password.';
-          this.isLoading = false;
-        }
-      });
+      this.http
+        .post('http://localhost:3000/citizens/reset-password', {
+          token: this.token,
+          newPassword,
+        })
+        .subscribe({
+          next: () => {
+            this.isLoading = false;
+            alert('Password reset successful.');
+          },
+          error: (err) => {
+            this.errMsg = err.error.message || 'Failed to reset password.';
+            this.isLoading = false;
+          },
+        });
     }
   }
 

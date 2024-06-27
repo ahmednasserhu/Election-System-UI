@@ -7,6 +7,6 @@ import { Candidate } from '../Interfaces/candidate';
 })
 export class FilterByStatusPipe implements PipeTransform {
   transform(candidates: Candidate[], status: string): Candidate[] {
-    return candidates.filter(candidate => candidate.status === status);
+    return candidates.filter((candidate) => candidate.status === status);
   }
 }

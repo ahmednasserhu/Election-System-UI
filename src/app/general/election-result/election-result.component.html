@@ -4,49 +4,33 @@
       Live Election
       <div class="circle ms-5"></div>
     </h4>
-    <div class="d-flex align-items-center">
-      <img src="../../../assets/images/unnamed (1).jpg" alt="" class="p-3" />
-      <h4>Mohamed Ayman</h4>
+    <ngb-carousel class="d-flex justify-content-center align-items-center pt-4 my-carouser py-5" 
+    style="background-color: #444444;"
+    >
+      @for( election of elections; track election?.electionId?._id){
+      <ng-template ngbSlide>
+          <div class="d-flex align-items-center p-1">
+      <!-- <img src="../../../assets/images/unnamed (1).jpg" alt="" class="p-3" /> -->
+      <h4 style="color: white;" class="ms-3">{{election.electionId.title}}</h4>
     </div>
     <div class="contain-number d-flex align-items-center gap-5 ps-4 pe-4 pb-2">
-      <p class="pa-2">Total Votes</p>
+      <p class="pa-2"  style="color: white;">Total Votes</p>
       <div
         class="contain-states justify-content-center d-flex flex-column align-items-center"
       >
-        <div class="d-flex">
-          @for (digit of number; track number) {
-            <div class="num-contain">
-              <p class="my-num" [class.goup]="previousNumber">{{ digit }}</p>
-            </div>
-          }
-        </div>
-        <div class="d-flex mt-2">
-          <h1>95.34%</h1>
+        <div class="d-flex" style="color: white; font-size: 48px;" >
+         {{election.electionId.totalVotes}}
         </div>
       </div>
-    </div>
-
-    <div class="d-flex align-items-center">
-      <img src="../../../assets/images/unnamed (1).jpg" alt="" class="p-3" />
-      <h4>Mohamed Ayman</h4>
-    </div>
-    <div class="contain-number d-flex align-items-center gap-5 ps-4 pe-4 pb-2">
-      <p class="pa-2">Total Votes</p>
-      <div
-        class="contain-states justify-content-center d-flex flex-column align-items-center"
-      >
-        <div class="d-flex">
-          @for (digit of number; track number) {
-            <div class="num-contain">
-              <p class="my-num" [class.goup]="previousNumber">{{ digit }}</p>
-            </div>
-          }
-        </div>
-        <div class="d-flex mt-2">
-          <h1>95.34%</h1>
-        </div>
       </div>
-    </div>
+    <!-- <canvas [id]="'barchart-' + election?.electionId?._id"></canvas> -->
+     <app-pie-chart [result]="election"></app-pie-chart>
+    </ng-template>
+    }
+    
+    </ngb-carousel>
+   
+    
   </div>
 
   <!-- <button class="btn btn-info ms-5" (click)="addNumber()">Add</button> -->

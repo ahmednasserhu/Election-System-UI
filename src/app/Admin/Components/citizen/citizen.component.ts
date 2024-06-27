@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './citizen.component.html',
-  styleUrls: ['./citizen.component.css']
+  styleUrls: ['./citizen.component.css'],
 })
 export class CitizenComponent implements OnInit {
   citizens: Citizen[] = [];
@@ -24,25 +24,27 @@ export class CitizenComponent implements OnInit {
 
   loadCitizens(): void {
     this.citizenService.getCitizens().subscribe(
-      data => {
-        this.citizens = data.filter(citizen => citizen.status !== 'blocked');
+      (data) => {
+        this.citizens = data.filter((citizen) => citizen.status !== 'blocked');
       },
-      error => {
+      (error) => {
         this.error = 'Error loading citizens: ' + error.message;
         console.error('Error loading citizens:', error);
-      }
+      },
     );
   }
 
   loadBlockedCitizens(): void {
     this.citizenService.getCitizens().subscribe(
-      data => {
-        this.blockedCitizens = data.filter(citizen => citizen.status === 'blocked');
+      (data) => {
+        this.blockedCitizens = data.filter(
+          (citizen) => citizen.status === 'blocked',
+        );
       },
-      error => {
+      (error) => {
         this.error = 'Error loading blocked citizens: ' + error.message;
         console.error('Error loading blocked citizens:', error);
-      }
+      },
     );
   }
 
@@ -57,21 +59,25 @@ export class CitizenComponent implements OnInit {
       return; // Handle unexpected actions gracefully
     }
 
-    this.citizenService.updateCitizenStatus(citizen._id, statusToUpdate).subscribe(
-      () => {
-        citizen.status = statusToUpdate;
-        if (statusToUpdate === 'blocked') {
-          this.citizens = this.citizens.filter(c => c._id !== citizen._id);
-          this.blockedCitizens.push(citizen);
-        } else if (statusToUpdate === 'unblocked') {
-          this.blockedCitizens = this.blockedCitizens.filter(c => c._id !== citizen._id);
-          this.citizens.push(citizen);
-        }
-      },
-      error => {
-        this.error = `Error ${action.toLowerCase()} citizen: ${error.message}`;
-        console.error(`Error ${action.toLowerCase()} citizen:`, error);
-      }
-    );
+    this.citizenService
+      .updateCitizenStatus(citizen._id, statusToUpdate)
+      .subscribe(
+        () => {
+          citizen.status = statusToUpdate;
+          if (statusToUpdate === 'blocked') {
+            this.citizens = this.citizens.filter((c) => c._id !== citizen._id);
+            this.blockedCitizens.push(citizen);
+          } else if (statusToUpdate === 'unblocked') {
+            this.blockedCitizens = this.blockedCitizens.filter(
+              (c) => c._id !== citizen._id,
+            );
+            this.citizens.push(citizen);
+          }
+        },
+        (error) => {
+          this.error = `Error ${action.toLowerCase()} citizen: ${error.message}`;
+          console.error(`Error ${action.toLowerCase()} citizen:`, error);
+        },
+      );
   }
 }

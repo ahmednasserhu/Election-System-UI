@@ -12,6 +12,19 @@ import { ElectionDetailsComponent } from './user/election-details/election-detai
 import { UserprofileComponent } from './user/userprofile/userprofile.component';
 import { ApplyComponent } from './user/apply/apply.component';
 import { LoginComponent } from './login/login.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
+// import { HomeDetailsComponent } from './home-details/home-details.component';
+import { PageNotFoundComponent } from './Admin/Components/page-not-found/page-not-found.component';
+import { AddAdminComponent } from './Admin/Components/add-admin/add-admin.component';
+import { AdminProfileComponent } from './Admin/Components/admin-profile/admin-profile.component';
+import { CitizenComponent } from './Admin/Components/citizen/citizen.component';
+import { ElectionComponent } from './Admin/Components/election/election.component';
+import { CandidateComponent } from './Admin/Components/candidate/candidate.component';
+import { AdminComponent } from './Admin/admin/admin.component';
+import { HomeComponentAdmin } from './Admin/Components/home/home.component';
+import { authGuard } from './guards/admin-guard.guard';
+import { userGuardGuard } from './guards/user-guard.guard';
+import { HomeDetailsComponent } from './home-details/home-details.component';
 
 export const routes: Routes = [
   {
@@ -30,6 +43,10 @@ export const routes: Routes = [
         component: AboutUsComponent,
       },
       {
+        path: 'home-details/:id',
+        component: HomeDetailsComponent,
+      },
+      {
         path: 'register',
         component: RegisterComponent,
       },
@@ -42,6 +59,7 @@ export const routes: Routes = [
   },
   {
     path: 'user',
+    canActivate: [userGuardGuard],
     children: [
       {
         path: '',
@@ -78,8 +96,32 @@ export const routes: Routes = [
     title: 'Candidate Profile',
   },
   {
-    path: 'candidate/elections',
-    component: ElectionsComponent,
-    title: 'Elections',
-  },
+    path: "admin",
+    component: AdminComponent,
+    // canActivate: [authGuard],
+
+    children: [
+        { path: "", component: HomeComponentAdmin },
+        { path: "candidate", component: CandidateComponent },
+        { path: "election", component: ElectionComponent },
+        { path: "citizen", component: CitizenComponent },
+        { path: "profile", component: AdminProfileComponent },
+        { path: "add-admin", component: AddAdminComponent },
+       
+        { path: "**", component: PageNotFoundComponent },
+    
+    ],
+},
+{
+    path: "login",
+    component: LoginComponent
+},
+{
+    path: "reset-password",
+    component: ResetPasswordComponent
+},
+{
+    path: "homeDetails/:id",
+    component: HomeDetailsComponent
+},
 ];

@@ -2,35 +2,107 @@
   <h3 class="text-light">Candidate Management</h3>
   <ul class="nav nav-tabs" id="candidateTabs" role="tablist">
     <li class="nav-item" role="presentation">
-      <a class="nav-link active" id="list-tab" data-bs-toggle="tab" href="#list" role="tab" aria-controls="list" aria-selected="true">Candidate List</a>
+      <a
+        class="nav-link active"
+        id="list-tab"
+        data-bs-toggle="tab"
+        href="#list"
+        role="tab"
+        aria-controls="list"
+        aria-selected="true"
+        >Candidate List</a
+      >
     </li>
     <li class="nav-item" role="presentation">
-      <a class="nav-link" id="approved-tab" data-bs-toggle="tab" href="#approved" role="tab" aria-controls="approved" aria-selected="false">Approved</a>
+      <a
+        class="nav-link"
+        id="approved-tab"
+        data-bs-toggle="tab"
+        href="#approved"
+        role="tab"
+        aria-controls="approved"
+        aria-selected="false"
+        >Approved</a
+      >
     </li>
   </ul>
   <div class="tab-content" id="candidateTabsContent">
-    <div class="tab-pane fade show active" id="list" role="tabpanel" aria-labelledby="list-tab">
+    <div
+      class="tab-pane fade show active"
+      id="list"
+      role="tabpanel"
+      aria-labelledby="list-tab"
+    >
       <div class="candidate-list mt-3">
         <h4 class="text-light">Candidate List</h4>
         <ul class="list-group">
-          <li class="list-group-item d-flex justify-content-between align-items-center text-white border-black" style="background-color: #333333;" *ngFor="let candidate of candidates">
-            <span>{{ candidate.logoName }}</span>
+          <li class="list-group-item d-flex justify-content-between align-items-center text-white border-black" style="background-color: #333333;" *ngFor="let candidate of pendingCandidates">
+            <span (click)="openCandidateModal(candidate)" style="cursor: pointer;">
+              <img *ngIf="candidate.logoImage" [src]="candidate.logoImage" alt="{{ candidate.logoName }}" style="max-width: 50px; max-height: 50px; margin-right: 10px;">
+              {{ candidate.logoName }}
+            </span>
             <span>
-              <button class="btn btn-sm btn-primary me-2" (click)="approveCandidate(candidate)">Approve</button>
-              <button class="btn btn-sm btn-danger" (click)="rejectCandidate(candidate)">Reject</button>
+              <button
+                class="btn btn-sm btn-primary me-2"
+                (click)="approveCandidate(candidate)"
+              >
+                Approve
+              </button>
+              <button
+                class="btn btn-sm btn-danger"
+                (click)="rejectCandidate(candidate)"
+              >
+                Reject
+              </button>
             </span>
           </li>
         </ul>
       </div>
     </div>
-    <div class="tab-pane fade" id="approved" role="tabpanel" aria-labelledby="approved-tab">
+    <div
+      class="tab-pane fade"
+      id="approved"
+      role="tabpanel"
+      aria-labelledby="approved-tab"
+    >
       <div class="approved-list mt-3">
         <h4 class="text-light">Approved Candidates</h4>
-        <ul class="list-group text-light" >
-          <li class="list-group-item text-light border-black" style="background-color: #333333;" *ngFor="let candidate of candidates | filterByStatus:'approved'">
-            {{ candidate.brief }} 
+        <ul class="list-group text-light">
+          <li class="list-group-item text-light border-black" style="background-color: #333333;" *ngFor="let candidate of approvedCandidates">
+            <span (click)="openCandidateModal(candidate)" style="cursor: pointer;">
+              <img *ngIf="candidate.logoImage" [src]="candidate.logoImage" alt="{{ candidate.logoName }}" style="max-width: 50px; max-height: 50px; margin-right: 10px;">
+              {{ candidate.logoName }}
+            </span>
           </li>
         </ul>
+      </div>
+    </div>
+  </div>
+
+   <!-- Bootstrap Modal -->
+   <div #candidateModal id="candidateModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="candidateModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="candidateModalLabel">{{ selectedCandidate?.logoName }}</h5>
+          <button type="button" class="close border-0 fs-3" aria-label="Close" (click)="closeCandidateModal()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p><strong>Party: </strong> {{ selectedCandidate?.party }}</p>
+          <p><strong>Brief: </strong> {{ selectedCandidate?.brief }}</p>
+          <p><strong>Criminal Record: </strong> 
+            <a href="{{ selectedCandidate?.criminalRecord }}" target="_blank" class="break-link">
+              {{ selectedCandidate?.criminalRecord }}
+            </a>
+         </p>
+         
+          <!-- Add more details as needed -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="closeCandidateModal()">Close</button>
+        </div>
       </div>
     </div>
   </div>

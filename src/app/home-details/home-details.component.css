@@ -1,14 +1,12 @@
 .container {
-    margin-top: 40px;
-  }
-  
- 
-  .events-title {
-    color: #BE1E2D;
-    position: relative;
-    display: inline-block;
-    padding-bottom: 10px;
-    margin-bottom: 20px;
-    border-bottom: 2px solid #000; 
-  }
-  
+  margin-top: 40px;
+}
+
+.events-title {
+  color: #be1e2d;
+  position: relative;
+  display: inline-block;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #000;
+}

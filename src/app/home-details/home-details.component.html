@@ -1,24 +1,51 @@
 <div class="container my-5 d-flex justify-content-center">
-    <div class="card p-4" style="width: 75%; max-width: 800px;">
-      <h4 class="fs-6 events-title">Election Details</h4>
-      <div *ngIf="election">
-        <h4 style="font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">{{ election?.title }}</h4>
-        <p>{{ election?.description }}</p>
-        <p class="badge bg-secondary">Start Date: {{ election?.startdate | date:'yyyy-MM-dd' }}</p>
-        <p class="badge bg-secondary ms-2">End Date: {{ election?.enddate | date:'yyyy-MM-dd' }}</p>
+  <div class="card p-4" style="width: 75%; max-width: 800px">
+    <h4 class="fs-6 events-title">Election Details</h4>
+    <div *ngIf="election">
+      <h4
+        style="
+          font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
+            'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        "
+      >
+        {{ election?.title }}
+      </h4>
+      <p>{{ election[0]?.electionId?.description }}</p>
+      <p class="badge bg-secondary">
+        Start Date:
+        {{ election[0]?.electionId?.startdate | date: 'yyyy-MM-dd' }}
+      </p>
+      <p class="badge bg-secondary ms-2">
+        End Date: {{ election[0]?.electionId?.enddate | date: 'yyyy-MM-dd' }}
+      </p>
 
-        <p><strong>Total Votes:</strong> {{ election?.totalVotes }}</p>
+      <p>
+        <strong>Total Votes:</strong> {{ election[0]?.electionId?.totalVotes }}
+      </p>
 
-        <h5>Candidates</h5>
-        <ul>
-          <li *ngFor="let candidate of election.candidates">
-            {{ candidate.logoImage }} - {{ candidate.party }}
-          </li>
-        </ul>
-      </div>
-      <div *ngIf="!election">
-        <p>Loading election details...</p>
-      </div>
+      <h5>Candidates</h5>
+      <ul>
+        <li *ngFor="let candidate of election[0]?.candidates">
+          {{ candidate.candidateDetails.logoName }} -
+          {{ candidate.candidateDetails.party }}
+        </li>
+
+        <li *ngFor="let candidate of election[0]?.candidaId">
+          {{ candidate.logoImage }} - {{ candidate.party }}
+        </li>
+      </ul>
+    </div>
+    <div *ngIf="!election">
+      <p>Loading election details...</p>
     </div>
   </div>
-  
+</div>
+
+<!-- 
+   <li *ngFor="let candidate of election[0]?.candidates">
+            {{ candidate.candidateDetails.logoName }} - {{  candidate.candidateDetails.party }}
+          </li>
+
+          <li *ngFor="let candidate of election[0]?.candidaId">
+            {{ candidate.logoImage }} - {{ candidate.party }}
+    </li> -->

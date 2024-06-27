@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ElectionService } from '../../Services/election.service';
 import { Election } from '../../Interfaces/election';
-import { Election } from '../../Interfaces/election';
 import * as bootstrap from 'bootstrap';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -33,7 +32,7 @@ export class ElectionComponent implements OnInit {
       startdate: '',
       enddate: '',
       candidates: [],
-      totalVotes: 0
+      totalVotes: 0,
     };
   }
 
@@ -45,13 +44,17 @@ export class ElectionComponent implements OnInit {
 
   editElection(election: Election): void {
     this.selectedElection = { ...election };
-    const editModal = new bootstrap.Modal(document.getElementById('editModal')!);
+    const editModal = new bootstrap.Modal(
+      document.getElementById('editModal')!,
+    );
     editModal.show();
   }
 
   deleteElection(id: string): void {
     this.deleteElectionId = id;
-    const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal')!);
+    const deleteModal = new bootstrap.Modal(
+      document.getElementById('deleteModal')!,
+    );
     deleteModal.show();
   }
 
@@ -61,10 +64,12 @@ export class ElectionComponent implements OnInit {
         next: () => {
           this.loadElections();
           this.deleteElectionId = null;
-          const deleteModal = bootstrap.Modal.getInstance(document.getElementById('deleteModal')!);
+          const deleteModal = bootstrap.Modal.getInstance(
+            document.getElementById('deleteModal')!,
+          );
           deleteModal?.hide();
         },
-        error: err => console.error('Delete error', err)
+        error: (err) => console.error('Delete error', err),
       });
     }
   }
@@ -76,7 +81,7 @@ export class ElectionComponent implements OnInit {
           this.loadElections();
           this.clearNewElectionForm();
         },
-        error: err => console.error('Create error', err)
+        error: (err) => console.error('Create error', err),
       });
     } else {
       console.error('Validation error: Title and Description are required.');
@@ -89,10 +94,12 @@ export class ElectionComponent implements OnInit {
         next: () => {
           this.loadElections();
           this.clearSelectedElectionForm();
-          const editModal = bootstrap.Modal.getInstance(document.getElementById('editModal')!);
+          const editModal = bootstrap.Modal.getInstance(
+            document.getElementById('editModal')!,
+          );
           editModal?.hide();
         },
-        error: err => console.error('Update error', err)
+        error: (err) => console.error('Update error', err),
       });
     } else {
       console.error('Validation error: Title and Description are required.');

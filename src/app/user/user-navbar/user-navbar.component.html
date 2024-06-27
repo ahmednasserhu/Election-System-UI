@@ -31,8 +31,18 @@
       <li class="nav-item active">
         <a class="nav-link" href="#">Register</a>
       </li>
+      <li class="nav-item ">
+        <img
+        [src]="citizenImage || 'https://w7.pngwing.com/pngs/178/595/png-transparent-user-profile-computer-icons-login-user-avatars-thumbnail.png'"
+        alt="Citizen Image"
+        
+        style="width: 40px; height: 100%;"
+        class="rounded-circle me-2"
+      />
+      </li>
+
       <li class="nav-item">
-        <a class="nav-link" href="#"><i class="fa fa-sign-out"></i></a>
+        <button (click)="logout()" style="background-color: transparent;" class="nav-link "><i class="fa-solid fa-right-from-bracket ms-2 fs-5 text-danger "></i></button>
       </li>
     </ul>
   </div>

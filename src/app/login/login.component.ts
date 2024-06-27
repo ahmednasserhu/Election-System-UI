@@ -1,7 +1,15 @@
+import { ToastrService } from 'ngx-toastr';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { ReactiveFormsModule, Validators, FormBuilder, FormGroup, AbstractControl, ValidationErrors } from '@angular/forms';
+import {
+  ReactiveFormsModule,
+  Validators,
+  FormBuilder,
+  FormGroup,
+  AbstractControl,
+  ValidationErrors,
+} from '@angular/forms';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import * as bootstrap from 'bootstrap';
 import { AuthService } from '../services/auth.service';
@@ -10,9 +18,15 @@ import { jwtDecode } from 'jwt-decode';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [RouterLink, ReactiveFormsModule, RouterLinkActive, CommonModule, HttpClientModule],
+  imports: [
+    RouterLink,
+    ReactiveFormsModule,
+    RouterLinkActive,
+    CommonModule,
+    HttpClientModule,
+  ],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styleUrl: './login.component.css',
 })
 export class LoginComponent {
   loginForm: FormGroup;
@@ -32,24 +46,38 @@ export class LoginComponent {
     private http: HttpClient,
     private router: Router,
     private formBuilder: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private toastr: ToastrService
   ) {
     this.loginForm = this.formBuilder.group({
-      ssn: ["", [Validators.required, this.ssnValidator]],
-      password: ["", [Validators.required, Validators.minLength(8), this.passwordValidator]]
+      ssn: ['', [Validators.required, this.ssnValidator]],
+      password: [
+        '',
+        [Validators.required, Validators.minLength(8), this.passwordValidator],
+      ],
     });
 
     this.forgotPasswordForm = this.formBuilder.group({
-      email: ["", [Validators.required, Validators.email]]
+      email: ['', [Validators.required, Validators.email]],
     });
 
-    this.resetPasswordForm = this.formBuilder.group({
-      token: ["", Validators.required],
-      newPassword: ["", [Validators.required, Validators.minLength(8), this.passwordValidator]],
-      confirmPassword: ["", Validators.required]
-    }, {
-      validators: this.passwordMatchValidator
-    });
+    this.resetPasswordForm = this.formBuilder.group(
+      {
+        token: ['', Validators.required],
+        newPassword: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(8),
+            this.passwordValidator,
+          ],
+        ],
+        confirmPassword: ['', Validators.required],
+      },
+      {
+        validators: this.passwordMatchValidator,
+      },
+    );
   }
 
   handleForm(): void {
@@ -59,17 +87,45 @@ export class LoginComponent {
       this.login(userData).subscribe({
         next: (response: any) => {
           if (response.token && response.role) {
-            localStorage.setItem("token", response.token);
-            this.authService.navigateBasedOnRole(response.role);
-            this.isLoading = false;
+            const decodedToken: any = jwtDecode(response.token); // Decode the JWT token
+            if (!decodedToken.citizen.emailConfirmation) {
+              this.isLoading = false;
+              this.showToast('Please confirm your email before logging in.');
+            } else {
+              localStorage.setItem('token', response.token);
+              this.authService.navigateBasedOnRole(response.role);
+            }
           }
+
         },
         error: (err) => {
-          this.errMsg = err.error.message;
-          this.isLoading = false;
-        }
+          // this.errMsg = err.error.message;
+          // this.isLoading = false;
+          //////////////////////
+          // console.log('jhgjkj')
+          this.toastr.error(err.error.message)
+        },
       });
     }
+  }
+
+  showToast(message: string, duration: number = 3000) {
+    const alertDiv = document.createElement('div');
+    alertDiv.classList.add('alert', 'alert-warning');
+    alertDiv.role = 'alert';
+    alertDiv.textContent = message;
+
+    // Assuming you have a div with id 'toastContainer' in your HTML to append the alert
+    const toastContainer = document.getElementById('toastContainer');
+    if (toastContainer) {
+      toastContainer.innerHTML = ''; // Clear previous alerts
+      toastContainer.appendChild(alertDiv);
+    }
+
+    // Automatically remove the alert after 'duration' milliseconds
+    setTimeout(() => {
+      alertDiv.remove();
+    }, duration);
   }
 
   handleForgotPassword(): void {
@@ -81,7 +137,7 @@ export class LoginComponent {
       this.forgotPassword(emailData).subscribe({
         next: (response: any) => {
           console.log(response);
-          this.forgotPasswordMsg = "Reset link sent to your email address.";
+          this.forgotPasswordMsg = 'Reset link sent to your email address.';
           this.isForgotPasswordLoading = false;
           this.closeForgotPasswordModal();
         },
@@ -89,7 +145,7 @@ export class LoginComponent {
           console.error(err);
           this.forgotPasswordErrorMsg = err.error.message;
           this.isForgotPasswordLoading = false;
-        }
+        },
       });
     }
   }
@@ -103,7 +159,7 @@ export class LoginComponent {
       this.resetPassword(resetData).subscribe({
         next: (response: any) => {
           console.log(response);
-          this.resetPasswordMsg = "Password successfully reset.";
+          this.resetPasswordMsg = 'Password successfully reset.';
           this.isResetPasswordLoading = false;
           this.resetPasswordForm.reset();
           this.closeForgotPasswordModal();
@@ -112,7 +168,7 @@ export class LoginComponent {
           console.error(err);
           this.resetPasswordErrorMsg = err.error.message;
           this.isResetPasswordLoading = false;
-        }
+        },
       });
     }
   }
@@ -134,7 +190,9 @@ export class LoginComponent {
 
   openForgotPasswordModal(): void {
     this.resetPasswordToken = '';
-    const modal = new bootstrap.Modal(document.getElementById('forgotPasswordModal')!);
+    const modal = new bootstrap.Modal(
+      document.getElementById('forgotPasswordModal')!,
+    );
     modal.show();
   }
 
@@ -156,7 +214,8 @@ export class LoginComponent {
 
   // Custom validator for password
   passwordValidator(control: AbstractControl): ValidationErrors | null {
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     if (control.value && !passwordRegex.test(control.value)) {
       return { invalidPassword: true };
     }
@@ -167,7 +226,11 @@ export class LoginComponent {
   passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
     const newPassword = control.get('newPassword');
     const confirmPassword = control.get('confirmPassword');
-    if (newPassword && confirmPassword && newPassword.value !== confirmPassword.value) {
+    if (
+      newPassword &&
+      confirmPassword &&
+      newPassword.value !== confirmPassword.value
+    ) {
       return { passwordMismatch: true };
     }
     return null;

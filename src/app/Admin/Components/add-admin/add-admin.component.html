@@ -1,1 +1,301 @@
-<p>add-admin works!</p>
+<div class="outer-container " >
+    <div class="container form w-100">
+      <div class="row">
+        <!-- Left Side: Input Fields -->
+        <div class="col-md-6">
+          <h2 class="text-center mb-4">Add Admin</h2>
+          <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" style="background-color: transparent;">
+            <div class="row">
+              <!-- First Name and Last Name Field -->
+              <div class="col-md-6">
+                <div class="input-container ic1">
+                  <input
+                    placeholder=""
+                    autocomplete="off"
+                    type="text"
+                    class="form-control"
+                    id="firstName"
+                    formControlName="firstName"
+                  />
+                  <label class="iLabel" for="firstName">First name</label>
+                  <div
+                    *ngIf="
+                      registerForm.controls['firstName'].invalid &&
+                      (registerForm.controls['firstName'].dirty ||
+                        registerForm.controls['firstName'].touched)
+                    "
+                  >
+                    <app-form-error
+                      [formInput]="registerForm.controls['firstName']"
+                      [validationType]="'pattern'"
+                      [errorMsg]="'Name must contain only letters (a-z or A-Z)'"
+                    ></app-form-error>
+                    <app-form-error
+                      [formInput]="registerForm.controls['firstName']"
+                      [validationType]="'required'"
+                      [errorMsg]="'Required Field'"
+                    ></app-form-error>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="input-container ic1">
+                  <input
+                    placeholder=""
+                    autocomplete="off"
+                    type="text"
+                    class="form-control"
+                    id="lastName"
+                    formControlName="lastName"
+                  />
+                  <label class="iLabel" for="lastName">Last name</label>
+                  <div
+                    *ngIf="
+                      registerForm.controls['lastName'].invalid &&
+                      (registerForm.controls['lastName'].dirty ||
+                        registerForm.controls['lastName'].touched)
+                    "
+                  >
+                    <app-form-error
+                      [formInput]="registerForm.controls['lastName']"
+                      [validationType]="'pattern'"
+                      [errorMsg]="'Name must contain only letters (a-z or A-Z)'"
+                    ></app-form-error>
+                    <app-form-error
+                      [formInput]="registerForm.controls['lastName']"
+                      [validationType]="'required'"
+                      [errorMsg]="'Required Field'"
+                    ></app-form-error>
+                  </div>
+                </div>
+              </div>
+              <!-- SSN and Email Field -->
+              <div class="col-md-6">
+                <div class="input-container ic1">
+                  <input
+                    placeholder=""
+                    autocomplete="off"
+                    type="text"
+                    class="form-control"
+                    id="ssn"
+                    formControlName="SSN"
+                  />
+                  <label class="iLabel" for="ssn">SSN</label>
+                  <div
+                    *ngIf="
+                      registerForm.controls['SSN'].invalid &&
+                      (registerForm.controls['SSN'].dirty ||
+                        registerForm.controls['SSN'].touched)
+                    "
+                  >
+                    <app-form-error
+                      [formInput]="registerForm.controls['SSN']"
+                      [validationType]="'required'"
+                      [errorMsg]="'Required Field'"
+                    ></app-form-error>
+                    <div class="custom-alert" role="alert">Invalid SSN</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="input-container ic1">
+                  <input
+                    placeholder=""
+                    autocomplete="off"
+                    type="email"
+                    class="form-control"
+                    id="email"
+                    formControlName="email"
+                  />
+                  <label class="iLabel" for="email">Email</label>
+                  <div
+                    *ngIf="
+                      registerForm.controls['email'].invalid &&
+                      (registerForm.controls['email'].dirty ||
+                        registerForm.controls['email'].touched)
+                    "
+                  >
+                    <app-form-error
+                      [formInput]="registerForm.controls['email']"
+                      [validationType]="'pattern'"
+                      [errorMsg]="
+                        'Please enter a valid email address (e.g., yourname@example.com).'
+                      "
+                    ></app-form-error>
+                    <app-form-error
+                      [formInput]="registerForm.controls['email']"
+                      [validationType]="'required'"
+                      [errorMsg]="'Required Field'"
+                    ></app-form-error>
+                  </div>
+                </div>
+              </div>
+              <!-- Password and Verify Password Field -->
+              <div class="col-md-6">
+                <div class="form-group position-relative input-container ic1">
+                  <label for="password" class="iLabel">Password</label>
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="password"
+                    formControlName="password"
+                  />
+                  <fa-icon
+                    [icon]="passwordVisible ? eyeSlashed : eyeIcon"
+                    class="password-toggle-icon"
+                    (click)="togglePasswordVisibility('password')"
+                  >
+                  </fa-icon>
+                </div>
+                <div
+                  *ngIf="
+                    registerForm.controls['password'].invalid &&
+                    (registerForm.controls['password'].dirty ||
+                      registerForm.controls['password'].touched)
+                  "
+                >
+                  <app-form-error
+                    [formInput]="registerForm.controls['password']"
+                    [validationType]="'required'"
+                    [errorMsg]="'Required Field'"
+                  ></app-form-error>
+                  <app-form-error
+                    [formInput]="registerForm.controls['password']"
+                    [validationType]="'pattern'"
+                    [errorMsg]="
+                      'Password Must be: 8-32 in length, lower char, upper char, digit, special char'
+                    "
+                  ></app-form-error>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group position-relative input-container ic1">
+                  <label for="verifyPassword" class="iLabel">Verify Password</label>
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="verifyPassword"
+                    formControlName="verifyPassword"
+                  />
+                  <fa-icon
+                    [icon]="verifyPasswordVisible ? eyeSlashed : eyeIcon"
+                    class="password-toggle-icon"
+                    (click)="togglePasswordVisibility('verifyPassword')"
+                  >
+                  </fa-icon>
+                </div>
+                <div
+                  *ngIf="
+                    registerForm.controls['verifyPassword'].invalid &&
+                    (registerForm.controls['verifyPassword'].dirty ||
+                      registerForm.controls['verifyPassword'].touched)
+                  "
+                >
+                  <app-form-error
+                    [formInput]="registerForm.controls['verifyPassword']"
+                    [validationType]="'required'"
+                    [errorMsg]="'Required Field'"
+                  ></app-form-error>
+                </div>
+                <div
+                  *ngIf="
+                    registerForm.errors?.['passwordMismatch'] &&
+                    registerForm.controls['verifyPassword'].dirty
+                  "
+                  class="custom-alert"
+                  role="alert"
+                >
+                  Passwords Don't Match
+                </div>
+              </div>
+              <!-- Phone Number and Role Field -->
+              <div class="col-md-6">
+                <div class="input-container ic1">
+                  <input
+                    placeholder=""
+                    autocomplete="off"
+                    type="text"
+                    class="form-control"
+                    id="phoneNumber"
+                    formControlName="phoneNumber"
+                  />
+                  <label class="iLabel" for="phoneNumber">Phone Number</label>
+                  <div
+                    *ngIf="
+                      registerForm.controls['phoneNumber'].invalid &&
+                      (registerForm.controls['phoneNumber'].dirty ||
+                        registerForm.controls['phoneNumber'].touched)
+                    "
+                  >
+                    <app-form-error
+                      [formInput]="registerForm.controls['phoneNumber']"
+                      [validationType]="'pattern'"
+                      [errorMsg]="
+                        'Please use a valid Egyptian phone number (+20 followed by 10 digits).'
+                      "
+                    ></app-form-error>
+                    <app-form-error
+                      [formInput]="registerForm.controls['phoneNumber']"
+                      [validationType]="'required'"
+                      [errorMsg]="'Required Field'"
+                    ></app-form-error>
+                  </div>
+                </div>
+              </div>
+              <!-- Image Upload Field -->
+              <div class="col-md-6">
+                <button
+                  class="container-btn-file input-container ic1 btn btn-block text-center btn-dark p-0"
+                  style="height: 46px"
+                >
+                  <fa-icon [icon]="fileImage" class="mx-2"></fa-icon>
+                  Upload Image
+                  <input
+                    class="file"
+                    name="text"
+                    type="file"
+                    id="image"
+                    (change)="onImagePicked($event)"
+                    formControlName="image"
+                  />
+                </button>
+                <div
+                  *ngIf="
+                    registerForm.controls['image'].invalid &&
+                    (registerForm.controls['image'].dirty ||
+                      registerForm.controls['image'].touched)
+                  "
+                >
+                  <app-form-error
+                    [formInput]="registerForm.controls['image']"
+                    [validationType]="'required'"
+                    [errorMsg]="'Required Field'"
+                  ></app-form-error>
+                </div>
+              </div>
+              <!-- Add this hidden field inside your form -->
+<input type="hidden" formControlName="role" value="admin" />
+
+              <!-- Submit Button -->
+              <div class="col-12 mt-4">
+                <div class="d-flex justify-content-between align-items-center">
+                  <button
+                    type="submit"
+                    class="btn btn-primary btn-block"
+                    [disabled]="registerForm.invalid"
+                  >
+                    Register
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <!-- Right Side: Image -->
+        <div class="col-md-6 d-flex align-items-center justify-content-center">
+          <img src="https://media.kasperskydaily.com/wp-content/uploads/sites/92/2020/10/16044143/M187_Digital-voting-header.png" alt="Register" class="img-fluid" />
+        </div>
+      </div>
+    </div>
+  </div>
+  

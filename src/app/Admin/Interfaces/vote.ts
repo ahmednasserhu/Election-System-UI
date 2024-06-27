@@ -1,5 +1,5 @@
 export interface Vote {
-    total: number;
-    votes: any[];
-    _id:string
+  total: number;
+  votes: any[];
+  _id: string;
 }

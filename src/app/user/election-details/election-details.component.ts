@@ -1,14 +1,27 @@
+import { ToastrService } from 'ngx-toastr';
+import { VoteService } from '../../services/vote.service';
 import { ElectionService } from './../../services/election.service';
 import { Router } from '@angular/router';
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { FormsModule, NgModel } from '@angular/forms';  // Import FormsModule
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+
 import {
-  Input,
+  Component,
+  inject,
+  TemplateRef,
+  ViewChild,
   OnDestroy,
   OnChanges,
   SimpleChanges,
   AfterViewInit,
 } from '@angular/core';
+import {
+  ModalDismissReasons,
+  NgbDatepickerModule,
+  NgbModal,
+} from '@ng-bootstrap/ng-bootstrap';
+import { CommonModule } from '@angular/common';
 import { Chart, ChartConfiguration, registerables } from 'chart.js';
 
 Chart.register(...registerables);
@@ -16,18 +29,26 @@ Chart.register(...registerables);
 @Component({
   selector: 'app-election-details',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, NgbDatepickerModule, FormsModule],
   templateUrl: './election-details.component.html',
-  styleUrl: './election-details.component.css',
+  styleUrls: ['./election-details.component.css'],
 })
 export class ElectionDetailsComponent
   implements OnDestroy, OnChanges, AfterViewInit
 {
   private chart: Chart | undefined;
   result!: any;
+  @ViewChild('otpModalTemplate') otpModalTemplate!: TemplateRef<any>; // ViewChild to access the template
+  private modalService = inject(NgbModal);
+  closeResult = '';
+  otpNum: any = '';
+  otpArray = ['', '', '', '', '', '']; // Array to store OTP digits
+
   constructor(
     private router: Router,
     private _ElectionService: ElectionService,
+    private VoteService: VoteService,
+    private toaster:ToastrService
   ) {
     this._ElectionService
       .getSpecificElection(this.router.url.split('/')[3])
@@ -36,6 +57,7 @@ export class ElectionDetailsComponent
         console.log(res);
       });
   }
+
   ngAfterViewInit(): void {
     this.renderChart();
   }
@@ -48,12 +70,15 @@ export class ElectionDetailsComponent
       this.renderChart();
     }
   }
+
   ngOnInit(): void {}
+
   ngOnDestroy(): void {
     if (this.chart) {
       this.chart.destroy();
     }
   }
+
   renderChart(): void {
     if (
       !this.result ||
@@ -76,6 +101,7 @@ export class ElectionDetailsComponent
       console.warn(`Canvas element with ID ${canvasId} not found.`);
       return;
     }
+
     let delayed: any;
     const chartConfig: ChartConfiguration = {
       type: 'bar',
@@ -129,7 +155,87 @@ export class ElectionDetailsComponent
       console.error('Failed to get 2D context from canvas element.');
     }
   }
+
   navigateToApplyForm() {
     this.router.navigate(['/user', 'apply', this.result.electionId._id]);
+  }
+
+  vote(candidateId: any, electionId: any) {
+    this.VoteService.vote({
+      candidateId: candidateId,
+      electionId: electionId,
+    }).subscribe({
+      next: (res) => {
+        // Open the modal after receiving a successful response
+        this.openModal();
+      },
+      error: (err) => {
+
+          this.toaster.error(err.error.message)
+      },
+    });
+  }
+
+  voteWithOTP(candidateId: any, electionId: any, otp: any) {
+    this.VoteService.vote({
+      candidateId: candidateId,
+      electionId: electionId,
+      otp,
+    }).subscribe({
+      next: (res) => {
+        console.log(res)
+          this.toaster.success(res.message);
+      },
+      error: (err) => {
+          this.toaster.error(err.error.message);
+      },
+    });
+  }
+
+  openModal() {
+    const modalRef = this.modalService.open(this.otpModalTemplate, {
+      ariaLabelledBy: 'modal-basic-title',
+    });
+    modalRef.result.then(
+      (result) => {
+        this.closeResult = `Closed with: ${result}`;
+      },
+      (reason) => {
+        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      },
+    );
+  }
+
+  moveFocus(index: number, event: Event) {
+    const input = event.target as HTMLInputElement;
+    const value = input.value;
+    if (value.length === 1 && index < this.otpArray.length - 1) {
+      const nextInput = input.nextElementSibling as HTMLInputElement;
+      nextInput?.focus();
+    }
+  }
+
+  onKeyDown(index: number, event: KeyboardEvent) {
+    if (event.key === 'Backspace' && index > 0) {
+      const prevInput = (event.target as HTMLInputElement)
+        .previousElementSibling as HTMLInputElement;
+      prevInput?.focus();
+    }
+  }
+
+  onSubmitOtp() {
+    // const otp = this.otpArray.join('');
+    console.log('OTP Entered:', this.otpNum);
+  }
+
+  private getDismissReason(reason: any): string {
+    switch (reason) {
+      case ModalDismissReasons.ESC:
+        return 'by pressing ESC';
+      case ModalDismissReasons.BACKDROP_CLICK:
+        return 'by clicking on a backdrop';
+      default:
+        return `with: ${reason}`;
+    }
   }
 }
