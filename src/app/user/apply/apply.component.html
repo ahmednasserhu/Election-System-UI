@@ -56,20 +56,20 @@
                 class="file"
                 name="text"
                 type="file"
-                id="image"
+                id="logoImage"
                 (change)="onImagePicked($event)"
-                formControlName="image"
+                formControlName="logoImage"
               />
             </button>
             <div
               *ngIf="
-                registerForm.controls['image'].invalid &&
-                (registerForm.controls['image'].dirty ||
-                  registerForm.controls['image'].touched)
+                registerForm.controls['logoImage'].invalid &&
+                (registerForm.controls['logoImage'].dirty ||
+                  registerForm.controls['logoImage'].touched)
               "
             >
               <app-form-error
-                [formInput]="registerForm.controls['image']"
+                [formInput]="registerForm.controls['logoImage']"
                 [validationType]="'required'"
                 [errorMsg]="'Required Field'"
               ></app-form-error>

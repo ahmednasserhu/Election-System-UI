@@ -5,6 +5,7 @@ import { ReactiveFormsModule, Validators, FormBuilder, FormGroup, AbstractContro
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import * as bootstrap from 'bootstrap';
 import { AuthService } from '../services/auth.service';
+import { jwtDecode } from 'jwt-decode';
 
 @Component({
   selector: 'app-login',
@@ -59,7 +60,14 @@ export class LoginComponent {
         next: (response: any) => {
           if (response.token && response.role) {
             localStorage.setItem("token", response.token);
-            this.authService.navigateBasedOnRole(response.role);
+            let decodedToken: any = jwtDecode(response.token);
+            const candidateId = decodedToken?.candidate?._id;
+            if (candidateId) {
+              this.authService.navigateBasedOnRole(response.role, candidateId);
+            }
+            // } else {
+            //   this.authService.navigateBasedOnRole(response.role);
+            // }
             this.isLoading = false;
           }
         },

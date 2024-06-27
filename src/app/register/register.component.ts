@@ -103,6 +103,8 @@ export class RegisterComponent {
 
     if (file) {
       this.selectedImage = file;
+      console.log(this.selectedImage);
+      
     }
   }
 

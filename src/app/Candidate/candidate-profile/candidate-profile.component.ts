@@ -10,6 +10,7 @@ import { faPen } from '@fortawesome/free-solid-svg-icons';
 import { environment } from '../../../environments/environment';
 import { Validators } from '@angular/forms';
 import { FormErrorMsgComponent } from '../../form-error/form-error.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-candidate-profile',
@@ -139,6 +140,11 @@ export class CandidateProfileComponent {
         .subscribe((res: any) => {
           if (res) {
             console.log(res);
+            Swal.fire({
+              icon:"success",
+              title:"profile updated successfully",
+              timer:2000
+            })
             this.loadProfile();
           }
         }),

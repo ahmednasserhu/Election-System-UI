@@ -11,7 +11,7 @@ import { map } from 'rxjs/operators';
 export class ElectionService {
   constructor(private _HttpClient: HttpClient) {}
   getElections(): Observable<Election[]> {
-    return this._HttpClient.get<Election[]>('http://localhost:3000/election');
+    return this._HttpClient.get<Election[]>('http://localhost:3000/elections');
   }
 
   getSpecificElections(): Observable<Result[]> {

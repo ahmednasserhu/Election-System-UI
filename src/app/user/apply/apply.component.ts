@@ -15,6 +15,9 @@ import { RegisterCustomValidator } from '../../services/RegisterCustomValidation
 import { FormErrorMsgComponent } from '../../form-error/form-error.component';
 import { RegisterServiceService } from '../../services/register/register-service.service';
 import { Router } from '@angular/router';
+import { ApplyService } from '../../services/apply.service';
+import Swal from 'sweetalert2';
+
 
 @Component({
   selector: 'app-apply',
@@ -44,6 +47,7 @@ export class ApplyComponent {
     private registerService: RegisterServiceService,
     private router: Router,
     private _ElectionService: ElectionService,
+    private applyservice:ApplyService,
   ) {
     this.registerForm = this.fb.group({
       logoName: [
@@ -69,7 +73,7 @@ export class ApplyComponent {
           Validators.max(200),
         ]),
       ],
-      image: [null, Validators.required],
+      logoImage: [null, Validators.required],
       criminalRecord: [null, Validators.required],
     });
   }
@@ -95,17 +99,23 @@ export class ApplyComponent {
 
     if (file) {
       this.selectedCriminal = file;
+      
     }
   }
 
   onSubmit() {
     if (this.registerForm.valid) {
       const formData = this.registerForm.value;
-      formData.image = this.selectedImage;
-      console.log(formData);
-      this.registerService.register(formData).subscribe((res: any) => {
+      formData.logoImage = this.selectedImage;
+      formData.electionId = this.electionDetails._id;
+      formData.criminalRecord = this.selectedCriminal;
+      // console.log(formData);
+      this.applyservice.applyAsCandidate(formData).subscribe((res: any) => {
         if (res) {
-          console.log(res);
+          Swal.fire({
+            title: "Application sent successfully",
+            icon: "success"
+          });
         }
       }),
         (error: HttpErrorResponse) => {

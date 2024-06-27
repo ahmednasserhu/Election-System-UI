@@ -7,7 +7,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
+import { ActivatedRoute, RouterOutlet } from '@angular/router';
+import { CandidateProfileService } from '../../services/candidate-profile.service';
 
 @Component({
   selector: 'app-candidate-dashboard',
@@ -16,4 +17,18 @@ import { RouterOutlet } from '@angular/router';
   templateUrl: './candidate-dashboard.component.html',
   styleUrl: './candidate-dashboard.component.css',
 })
-export class CandidateDashboardComponent {}
+export class CandidateDashboardComponent {
+  candidateId!: string;
+  candidateData!:any;
+  constructor(private dashboardservice:CandidateProfileService,private route: ActivatedRoute,){}
+
+  ngOnInit() {
+    this.route.params.subscribe((params) => {
+      this.candidateId = params['id'];
+    });
+    this.dashboardservice.getProfile(this.candidateId).subscribe((e) => {
+      this.candidateData = e;
+      console.log(this.candidateData);
+    })
+  }
+}

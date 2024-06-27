@@ -68,7 +68,7 @@ export const routes: Routes = [
   },
 
   {
-    path: 'candidate',
+    path: 'candidate/:id',
     component: CandidateDashboardComponent,
     title: 'Candidate Dashboard',
   },
@@ -76,5 +76,10 @@ export const routes: Routes = [
     path: 'candidate/profile/:id',
     component: CandidateProfileComponent,
     title: 'Candidate Profile',
+  },
+  {
+    path: 'candidate/elections',
+    component: ElectionsComponent,
+    title: 'Elections',
   },
 ];

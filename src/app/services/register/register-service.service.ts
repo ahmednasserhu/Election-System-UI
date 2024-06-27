@@ -13,6 +13,8 @@ export class RegisterServiceService {
 
   register(data: any): Observable<any> {
     const formData = new FormData();
+    console.log(data);
+    
     formData.append('firstName', data.firstName);
     formData.append('lastName', data.lastName);
     formData.append('ssn', data.SSN);
