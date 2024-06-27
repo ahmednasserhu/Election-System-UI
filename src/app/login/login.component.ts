@@ -90,7 +90,7 @@ export class LoginComponent {
               this.isLoading = false;
               this.showToast('Please confirm your email before logging in.');
             } else {
-              localStorage.setItem("token", response.token);
+              localStorage.setItem('token', response.token);
               this.authService.navigateBasedOnRole(response.role);
             }
           }
@@ -108,20 +108,20 @@ export class LoginComponent {
     alertDiv.classList.add('alert', 'alert-warning');
     alertDiv.role = 'alert';
     alertDiv.textContent = message;
-  
+
     // Assuming you have a div with id 'toastContainer' in your HTML to append the alert
     const toastContainer = document.getElementById('toastContainer');
     if (toastContainer) {
       toastContainer.innerHTML = ''; // Clear previous alerts
       toastContainer.appendChild(alertDiv);
     }
-  
+
     // Automatically remove the alert after 'duration' milliseconds
     setTimeout(() => {
       alertDiv.remove();
     }, duration);
   }
-  
+
   handleForgotPassword(): void {
     this.isForgotPasswordLoading = true;
     this.forgotPasswordMsg = '';

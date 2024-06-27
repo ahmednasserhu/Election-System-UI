@@ -13,7 +13,7 @@ import { UserprofileComponent } from './user/userprofile/userprofile.component';
 import { ApplyComponent } from './user/apply/apply.component';
 import { LoginComponent } from './login/login.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
-import { HomeDetailsComponent } from './home-details/home-details.component';
+// import { HomeDetailsComponent } from './home-details/home-details.component';
 import { PageNotFoundComponent } from './Admin/Components/page-not-found/page-not-found.component';
 import { AddAdminComponent } from './Admin/Components/add-admin/add-admin.component';
 import { AdminProfileComponent } from './Admin/Components/admin-profile/admin-profile.component';

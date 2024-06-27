@@ -93,21 +93,4 @@ export class CandidateComponent implements OnInit {
       (this.candidateModal.nativeElement as HTMLElement).style.display = 'none';
     }
   }
-
-  openCandidateModal(candidate: Candidate): void {
-    this.selectedCandidate = candidate;
-    if (this.candidateModal) {
-      // Open Bootstrap modal
-      (this.candidateModal.nativeElement as HTMLElement).classList.add('show');
-      (this.candidateModal.nativeElement as HTMLElement).style.display = 'block';
-    }
-  }
-
-  closeCandidateModal(): void {
-    if (this.candidateModal) {
-      // Close Bootstrap modal
-      (this.candidateModal.nativeElement as HTMLElement).classList.remove('show');
-      (this.candidateModal.nativeElement as HTMLElement).style.display = 'none';
-    }
-  }
 }

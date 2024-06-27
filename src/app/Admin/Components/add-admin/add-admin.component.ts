@@ -2,7 +2,12 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormErrorMsgComponent } from '../../../form-error/form-error.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  ReactiveFormsModule,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
 import { faFileImage } from '@fortawesome/free-solid-svg-icons';
 import { RegisterCustomValidator } from '../../../services/RegisterCustomValidation.service';
@@ -33,7 +38,7 @@ export class AddAdminComponent {
   constructor(
     private fb: FormBuilder,
     private customValidator: RegisterCustomValidator,
-    private citizenService: CitizenService
+    private citizenService: CitizenService,
   ) {
     this.registerForm = this.fb.group(
       {
@@ -78,7 +83,7 @@ export class AddAdminComponent {
           Validators.compose([
             Validators.required,
             Validators.pattern(
-              '^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,32}$'
+              '^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,32}$',
             ),
           ]),
         ],
@@ -88,9 +93,9 @@ export class AddAdminComponent {
       {
         validator: this.customValidator.MatchPassword(
           'password',
-          'verifyPassword'
+          'verifyPassword',
         ),
-      }
+      },
     );
   }
 
@@ -125,7 +130,7 @@ export class AddAdminComponent {
         },
         (error: HttpErrorResponse) => {
           console.log('Error adding admin:', error);
-        }
+        },
       );
     }
   }
@@ -133,12 +138,18 @@ export class AddAdminComponent {
   togglePasswordVisibility(field: string) {
     if (field === 'password') {
       this.passwordVisible = !this.passwordVisible;
-      const passwordField = document.getElementById('password') as HTMLInputElement;
+      const passwordField = document.getElementById(
+        'password',
+      ) as HTMLInputElement;
       passwordField.type = this.passwordVisible ? 'text' : 'password';
     } else if (field === 'verifyPassword') {
       this.verifyPasswordVisible = !this.verifyPasswordVisible;
-      const verifyPasswordField = document.getElementById('verifyPassword') as HTMLInputElement;
-      verifyPasswordField.type = this.verifyPasswordVisible ? 'text' : 'password';
+      const verifyPasswordField = document.getElementById(
+        'verifyPassword',
+      ) as HTMLInputElement;
+      verifyPasswordField.type = this.verifyPasswordVisible
+        ? 'text'
+        : 'password';
     }
   }
 }
