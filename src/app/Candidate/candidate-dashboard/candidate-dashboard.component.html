@@ -1,27 +1,35 @@
 <app-candidate-nav-bar></app-candidate-nav-bar>
 <div class="container mt-5">
-    <h4 class="text-danger">Live Elections</h4>
+  <h4 class="text-danger">Live Elections</h4>
+  <div class="row">
     <div class="row">
-        <div class="row">
-          @for (election of elections; track $index) {
-            <div class="col-md-6 mb-4">
-              <div class="card text-light" style="height: 345px; background-color: #444444;">
-                <div class="card-body">
-                  <div class="card-content">
-                    <h5 class="card-title">{{ election.title }}</h5>
-                    <p class="card-text">{{ election.description }}</p>
-                    <p class="card-text"><strong>Start Date:</strong> {{ election.startdate | date }}</p>
-                    <p class="card-text"><strong>End Date:</strong> {{ election.enddate | date }}</p>
-                    <p class="card-text"><strong>Total Votes:</strong> {{ election.totalVotes }}</p>
-                  </div>
-                  <div class="btn-container">
-                    <a href="#" class="btn btn-primary">Vote</a>
-                  </div>
-                </div>
+      @for (election of elections; track $index) {
+        <div class="col-md-6 mb-4">
+          <div
+            class="card text-light"
+            style="height: 345px; background-color: #444444"
+          >
+            <div class="card-body">
+              <div class="card-content">
+                <h5 class="card-title">{{ election.title }}</h5>
+                <p class="card-text">{{ election.description }}</p>
+                <p class="card-text">
+                  <strong>Start Date:</strong> {{ election.startdate | date }}
+                </p>
+                <p class="card-text">
+                  <strong>End Date:</strong> {{ election.enddate | date }}
+                </p>
+                <p class="card-text">
+                  <strong>Total Votes:</strong> {{ election.totalVotes }}
+                </p>
               </div>
+              <!-- <div class="btn-container">
+                    <a href="#" class="btn btn-primary">Vote</a>
+                  </div> -->
+            </div>
+          </div>
         </div>
-          }
-            
-      </div>
+      }
     </div>
   </div>
+</div>

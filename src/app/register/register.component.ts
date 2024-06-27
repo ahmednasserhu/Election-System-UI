@@ -41,7 +41,7 @@ export class RegisterComponent {
     private fb: FormBuilder,
     private customValidator: RegisterCustomValidator,
     private registerService: RegisterServiceService,
-    private route: Router
+    private route: Router,
   ) {
     this.registerForm = this.fb.group(
       {
@@ -107,7 +107,6 @@ export class RegisterComponent {
     if (file) {
       this.selectedImage = file;
       console.log(this.selectedImage);
-      
     }
   }
 
@@ -122,13 +121,17 @@ export class RegisterComponent {
           Swal.fire({
             icon: 'success',
             title: 'User registered successfully',
-            timer: 2000
-          })
+            timer: 2000,
+          });
           this.route.navigate(['/login']);
         }
       }),
         (error: HttpErrorResponse) => {
-          console.log(error);
+          Swal.fire({
+            icon: 'error',
+            title: `${error.message}`,
+            timer: 2500,
+          });
         };
     }
   }

@@ -25,6 +25,7 @@ import { HomeComponentAdmin } from './Admin/Components/home/home.component';
 import { authGuard } from './guards/admin-guard.guard';
 import { userGuardGuard } from './guards/user-guard.guard';
 import { HomeDetailsComponent } from './home-details/home-details.component';
+import { candidateGuard } from './guards/candidate.guard';
 
 export const routes: Routes = [
   {
@@ -89,17 +90,20 @@ export const routes: Routes = [
     path: 'candidate',
     component: CandidateDashboardComponent,
     title: 'Candidate Dashboard',
+    canActivate: [candidateGuard],
+
   },
   {
     path: 'candidate/profile/:id',
     component: CandidateProfileComponent,
     title: 'Candidate Profile',
+    canActivate: [candidateGuard],
+    
   },
   {
     path: "admin",
     component: AdminComponent,
     // canActivate: [authGuard],
-
     children: [
         { path: "", component: HomeComponentAdmin },
         { path: "candidate", component: CandidateComponent },

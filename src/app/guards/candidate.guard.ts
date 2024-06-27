@@ -1,8 +1,8 @@
-import { jwtDecode } from 'jwt-decode';
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
+import { jwtDecode } from 'jwt-decode';
 
-export const authGuard: CanActivateFn = (route, state) => {
+export const candidateGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
   const token = localStorage.getItem('token');
 
@@ -10,9 +10,9 @@ export const authGuard: CanActivateFn = (route, state) => {
     try {
       const decodedToken: any = jwtDecode(token);
       const role = decodedToken.role;
+      // console.log(role);
 
-      if (role === 'admin') {
-        // router.navigate(['/admin']);
+      if (role === 'candidate') {
         return true; // Allow navigation if role is 'admin'
       } else {
         // Navigate to unauthorized page or candidate page
