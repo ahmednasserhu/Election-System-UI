@@ -22,9 +22,7 @@ export class CitizenService {
   }
 
   addAdmin(adminData: FormData): Observable<any> {
-    return this.http.post<any>(this.adminUrl, adminData).pipe(
-      catchError(this.handleError<any>('addAdmin'))
-    );
+    return this.http.post<any>(this.adminUrl, adminData)
   }
   
   getCitizens(): Observable<Citizen[]> {

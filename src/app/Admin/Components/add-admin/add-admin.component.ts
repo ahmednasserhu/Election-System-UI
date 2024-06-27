@@ -2,6 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormErrorMsgComponent } from '../../../form-error/form-error.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ToastrService } from 'ngx-toastr';
+
 import {
   ReactiveFormsModule,
   FormBuilder,
@@ -39,6 +41,7 @@ export class AddAdminComponent {
     private fb: FormBuilder,
     private customValidator: RegisterCustomValidator,
     private citizenService: CitizenService,
+    private toastr: ToastrService,
   ) {
     this.registerForm = this.fb.group(
       {
@@ -125,11 +128,11 @@ export class AddAdminComponent {
       }
 
       this.citizenService.addAdmin(formDataToSend).subscribe(
-        (res: any) => {
-          console.log('Admin added successfully:', res);
+        (res) => {
+          this.toastr.success('Admin Added Succuflly');
         },
-        (error: HttpErrorResponse) => {
-          console.log('Error adding admin:', error);
+        (error) => {
+          this.toastr.error(error.error);
         },
       );
     }
