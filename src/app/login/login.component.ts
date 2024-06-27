@@ -1,3 +1,4 @@
+import { ToastrService } from 'ngx-toastr';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
@@ -46,6 +47,7 @@ export class LoginComponent {
     private router: Router,
     private formBuilder: FormBuilder,
     private authService: AuthService,
+    private toastr: ToastrService
   ) {
     this.loginForm = this.formBuilder.group({
       ssn: ['', [Validators.required, this.ssnValidator]],
@@ -94,10 +96,14 @@ export class LoginComponent {
               this.authService.navigateBasedOnRole(response.role);
             }
           }
+
         },
         error: (err) => {
-          this.errMsg = err.error.message;
-          this.isLoading = false;
+          // this.errMsg = err.error.message;
+          // this.isLoading = false;
+          //////////////////////
+          // console.log('jhgjkj')
+          this.toastr.error(err.error.message)
         },
       });
     }
