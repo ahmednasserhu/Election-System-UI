@@ -22,7 +22,7 @@ import { ElectionComponent } from './Admin/Components/election/election.componen
 import { CandidateComponent } from './Admin/Components/candidate/candidate.component';
 import { AdminComponent } from './Admin/admin/admin.component';
 import { HomeComponentAdmin } from './Admin/Components/home/home.component';
-import { authGuard } from './guards/admin-guard.guard';
+// import { authGuard } from './guards/admin-guard.guard';
 
 export const routes: Routes = [
   {
@@ -91,7 +91,7 @@ export const routes: Routes = [
   {
     path: "admin",
     component: AdminComponent,
-    canActivate: [authGuard],
+    // canActivate: [authGuard],
 
     children: [
         { path: "", component: HomeComponentAdmin },
