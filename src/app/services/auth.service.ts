@@ -7,13 +7,13 @@ import { Router } from '@angular/router';
 export class AuthService {
   constructor(private router: Router) {}
 
-  navigateBasedOnRole(role: string,id:any): void {
+  navigateBasedOnRole(role: string): void {
     switch (role) {
       case 'admin':
         this.router.navigate(['/admin']);
         break;
       case 'candidate':
-        this.router.navigate([`/candidate/${id}`]);
+        this.router.navigate([`/candidate`]);
         break;
       case 'citizen':
         this.router.navigate(['/citizen']);

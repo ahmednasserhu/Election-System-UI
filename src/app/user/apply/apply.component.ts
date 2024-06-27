@@ -109,18 +109,23 @@ export class ApplyComponent {
       formData.logoImage = this.selectedImage;
       formData.electionId = this.electionDetails._id;
       formData.criminalRecord = this.selectedCriminal;
-      // console.log(formData);
-      this.applyservice.applyAsCandidate(formData).subscribe((res: any) => {
-        if (res) {
+
+      this.applyservice.applyAsCandidate(formData).subscribe(
+        (res: any) => {
+          if (res) {
+            Swal.fire({
+              title: "Application sent successfully",
+              icon: "success"
+            });
+          }
+        },
+        (error: HttpErrorResponse) => {
           Swal.fire({
-            title: "Application sent successfully",
-            icon: "success"
+            title: `${error.error.message}`,
+            icon: "error"
           });
         }
-      }),
-        (error: HttpErrorResponse) => {
-          console.log(error);
-        };
+      );
     }
   }
 }

@@ -68,7 +68,7 @@ export const routes: Routes = [
   },
 
   {
-    path: 'candidate/:id',
+    path: 'candidate',
     component: CandidateDashboardComponent,
     title: 'Candidate Dashboard',
   },

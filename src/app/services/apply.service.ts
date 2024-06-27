@@ -12,6 +12,7 @@ private apiUrl = environment.apiUrl;
 
   applyAsCandidate(data:any):Observable<any>{
     const formdata = new FormData();
+    console.log("data = ",data);
     
     formdata.append('party',data.party);
     formdata.append('logoName',data.logoName);
@@ -19,6 +20,8 @@ private apiUrl = environment.apiUrl;
     formdata.append('electionId',data.electionId);
     formdata.append('logoImage',data.logoImage);
     formdata.append('criminalRecord',data.criminalRecord);
+    console.log("image = ",data.logoImage);
+    console.log("image2 = ",formdata.get("logoImage"));
     
     return this.http.post(`${this.apiUrl}/candidates/apply`,formdata);
   }

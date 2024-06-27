@@ -9,6 +9,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterOutlet } from '@angular/router';
 import { CandidateProfileService } from '../../services/candidate-profile.service';
+import { ElectionService } from '../../services/election.service';
 
 @Component({
   selector: 'app-candidate-dashboard',
@@ -20,15 +21,13 @@ import { CandidateProfileService } from '../../services/candidate-profile.servic
 export class CandidateDashboardComponent {
   candidateId!: string;
   candidateData!:any;
-  constructor(private dashboardservice:CandidateProfileService,private route: ActivatedRoute,){}
+  elections!:Array<any>;
+  constructor(private electionservice:ElectionService,private route: ActivatedRoute,){}
 
   ngOnInit() {
-    this.route.params.subscribe((params) => {
-      this.candidateId = params['id'];
-    });
-    this.dashboardservice.getProfile(this.candidateId).subscribe((e) => {
-      this.candidateData = e;
-      console.log(this.candidateData);
+    this.electionservice.getElections().subscribe((e)=>{
+      this.elections = e;
+      console.log(this.elections)
     })
   }
 }

@@ -13,6 +13,8 @@ import { FormErrorMsgComponent } from '../form-error/form-error.component';
 import { CommonModule } from '@angular/common';
 import { RegisterServiceService } from '../services/register/register-service.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -39,6 +41,7 @@ export class RegisterComponent {
     private fb: FormBuilder,
     private customValidator: RegisterCustomValidator,
     private registerService: RegisterServiceService,
+    private route: Router
   ) {
     this.registerForm = this.fb.group(
       {
@@ -115,7 +118,13 @@ export class RegisterComponent {
       // console.log(formData);
       this.registerService.register(formData).subscribe((res: any) => {
         if (res) {
-          console.log(res);
+          // console.log(res);
+          Swal.fire({
+            icon: 'success',
+            title: 'User registered successfully',
+            timer: 2000
+          })
+          this.route.navigate(['/login']);
         }
       }),
         (error: HttpErrorResponse) => {

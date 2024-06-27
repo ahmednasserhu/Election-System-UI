@@ -60,14 +60,7 @@ export class LoginComponent {
         next: (response: any) => {
           if (response.token && response.role) {
             localStorage.setItem("token", response.token);
-            let decodedToken: any = jwtDecode(response.token);
-            const candidateId = decodedToken?.candidate?._id;
-            if (candidateId) {
-              this.authService.navigateBasedOnRole(response.role, candidateId);
-            }
-            // } else {
-            //   this.authService.navigateBasedOnRole(response.role);
-            // }
+            this.authService.navigateBasedOnRole(response.role);
             this.isLoading = false;
           }
         },
