@@ -3,6 +3,7 @@ import { Candidate } from '../../Interfaces/candidate';
 import { CommonModule } from '@angular/common';
 import { CandidateService } from '../../Services/candidate.service';
 import { FilterByStatusPipe } from '../../Pips/filterbystatus.pipe';
+import { ToastrService } from 'ngx-toastr';
 import {
   DatePipe,
   LowerCasePipe,
@@ -32,8 +33,11 @@ export class CandidateComponent implements OnInit {
   approvedCandidates: Candidate[] = [];
   selectedCandidate: Candidate | undefined;
 
+
   @ViewChild('candidateModal') candidateModal: ElementRef | undefined;
-  constructor(private candidateService: CandidateService) {}
+  constructor(private candidateService: CandidateService ,private toastr: ToastrService) {}
+
+
 
   ngOnInit(): void {
     this.loadCandidates();
@@ -59,6 +63,7 @@ export class CandidateComponent implements OnInit {
         candidate.status = 'approved';
         this.pendingCandidates = this.pendingCandidates.filter(c => c._id !== candidate._id);
         this.approvedCandidates.push(candidate);
+        this.toastr.success(`Candidate '${candidate.logoName}' approved successfully.`);
       },
       (error) => {
         console.error('Error approving candidate:', error);
@@ -70,6 +75,7 @@ export class CandidateComponent implements OnInit {
     this.candidateService.rejectCandidate(candidate._id).subscribe(
       () => {
         this.pendingCandidates = this.pendingCandidates.filter(c => c._id !== candidate._id);
+        this.toastr.success(`Candidate '${candidate.logoName}' rejected .`);
       },
       (error) => {
         console.error('Error rejecting candidate:', error);
