@@ -86,6 +86,7 @@ export class LoginComponent {
     if (this.loginForm.valid) {
       this.login(userData).subscribe({
         next: (response: any) => {
+          this.isLoading = false;
           if (response.token && response.role) {
             const decodedToken: any = jwtDecode(response.token); // Decode the JWT token
             if (!decodedToken.citizen.emailConfirmation) {
@@ -100,7 +101,7 @@ export class LoginComponent {
         },
         error: (err) => {
           // this.errMsg = err.error.message;
-          // this.isLoading = false;
+          this.isLoading = false;
           //////////////////////
           // console.log('jhgjkj')
           this.toastr.error(err.error.message)

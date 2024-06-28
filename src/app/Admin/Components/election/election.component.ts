@@ -4,6 +4,8 @@ import { Election } from '../../Interfaces/election';
 import * as bootstrap from 'bootstrap';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
+
 
 @Component({
   selector: 'app-election',
@@ -18,7 +20,7 @@ export class ElectionComponent implements OnInit {
   newElection: Election = this.initializeElection();
   deleteElectionId: string | null = null;
 
-  constructor(private electionService: ElectionService) {}
+  constructor(private electionService: ElectionService,private toastr: ToastrService) {}
 
   ngOnInit(): void {
     this.loadElections();
@@ -80,11 +82,12 @@ export class ElectionComponent implements OnInit {
         next: () => {
           this.loadElections();
           this.clearNewElectionForm();
+          this.toastr.success('Election created successfully.');
         },
-        error: (err) => console.error('Create error', err),
+        error: (err) => this.toastr.error(err.error.message)
       });
     } else {
-      console.error('Validation error: Title and Description are required.');
+      this.toastr.error('Title and Description are required.', 'Validation Error');
     }
   }
 

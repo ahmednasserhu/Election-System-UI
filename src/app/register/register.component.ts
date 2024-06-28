@@ -15,6 +15,7 @@ import { RegisterServiceService } from '../services/register/register-service.se
 import { HttpErrorResponse } from '@angular/common/http';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-register',
@@ -42,6 +43,8 @@ export class RegisterComponent {
     private customValidator: RegisterCustomValidator,
     private registerService: RegisterServiceService,
     private route: Router,
+    private toastr: ToastrService
+
   ) {
     this.registerForm = this.fb.group(
       {
@@ -115,24 +118,17 @@ export class RegisterComponent {
       const formData = this.registerForm.value;
       formData.image = this.selectedImage;
       // console.log(formData);
-      this.registerService.register(formData).subscribe((res: any) => {
-        if (res) {
-          // console.log(res);
-          Swal.fire({
-            icon: 'success',
-            title: 'User registered successfully',
-            timer: 2000,
-          });
-          this.route.navigate(['/login']);
+      this.registerService.register(formData).subscribe({
+        next: (res: any) => {
+          if (res) {
+            this.toastr.success('User registered successfully');
+            this.route.navigate(['/login']);
+          }
+        },
+        error: (error: HttpErrorResponse) => {
+          this.toastr.error(error.error.message, 'Registration Failed');
         }
-      }),
-        (error: HttpErrorResponse) => {
-          Swal.fire({
-            icon: 'error',
-            title: `${error.message}`,
-            timer: 2500,
-          });
-        };
+      });
     }
   }
 
