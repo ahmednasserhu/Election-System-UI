@@ -1,3 +1,4 @@
+import { ActivatedRoute } from '@angular/router';
 import { ElectionService } from './../../services/election.service';
 import { Component, OnInit } from '@angular/core';
 import { ElectionCardComponent } from '../election-card/election-card.component';
@@ -14,15 +15,19 @@ import { Result } from '../../interface/result';
   styleUrls: ['./elections.component.css'],
 })
 export class ElectionsComponent implements OnInit {
-  elections!: Election[];
+  // elections!: Election[];
   results!: any;
   errorMessage: string = '';
 
-  constructor(private _ElectionService: ElectionService) {}
+  constructor(private _ElectionService: ElectionService, private activatedRoute:ActivatedRoute) {}
   ngOnInit(): void {
-    this._ElectionService.getSpecificElections().subscribe((res) => {
-      // res.splice(0, 1);
-      // res.splice(0, 1);
+    let status = ''
+    this.activatedRoute.queryParams.subscribe((params) => {
+       status = params['status'];
+    });
+    status = status !== undefined ? status : ''
+    console.log(status)
+    this._ElectionService.getStatusElection(status).subscribe((res) => {
       console.log(res);
       this.results = res;
     });

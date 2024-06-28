@@ -22,10 +22,14 @@ Chart.register(...registerables);
 export class ElectionCardComponent
   implements OnDestroy, OnChanges, AfterViewInit
 {
-  @Input() result!: Result;
+  @Input() result!: any;
   private chart: Chart | undefined;
+  currentDate !: Date | number;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) {
+      this.currentDate = Date.now();
+      console.log(this.currentDate)
+  }
 
   goToDetails(): void {
     this.router.navigate([
@@ -81,12 +85,12 @@ export class ElectionCardComponent
       type: 'bar',
       data: {
         labels: this.result.candidates.map(
-          (candidate) => candidate.candidateName,
+          (candidate :any) => candidate.candidateName,
         ),
         datasets: [
           {
             label: this.result.electionId.title,
-            data: this.result.candidates.map((candidate) =>
+            data: this.result.candidates.map((candidate :any) =>
               Number(candidate.percentage),
             ),
             backgroundColor: 'rgba(75, 192, 192, 0.2)',

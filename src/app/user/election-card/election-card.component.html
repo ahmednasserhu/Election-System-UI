@@ -3,36 +3,36 @@
     <div class="row p-4">
       <div class="card-body col-md-4">
         <h5 class="card-title">
-          {{ result.electionId.title }}
+          {{ result.title }}
           <span
             [class]="
-              result.candidates.length === 0
+              this.currentDate > result.startdate
                 ? 'bg-danger badge ms-1'
                 : 'bg-success badge ms-1'
             "
           >
-            {{ result.candidates.length === 0 ? 'Pending' : 'In Progress' }}
+            {{ this.currentDate > result.startDate ? 'Pending' : 'In Progress' }}
           </span>
         </h5>
         <ng-container *ngIf="result.candidates.length">
           <h6 class="card-subtitle mb-2 text-muted my-votes">
             <i class="fas fa-users me-2"></i>
-            {{ result.electionId.totalVotes }}
+            {{ result.candidates.length }}
           </h6>
         </ng-container>
         <p class="card-text mb-1">
           <i class="fas fa-file-code me-2"></i>
-          {{ result.electionId.description }}
+          {{ result.description }}
         </p>
         <p class="card-text mb-1">
           <i class="fas fa-calendar-week me-2"></i>
           <span class="sub-head me-2">Start Date</span
-          >{{ result.electionId.startdate | date }}
+          >{{ result.startdate | date }}
         </p>
         <p class="card-text mb-1">
           <i class="fas fa-calendar-week me-2"></i>
           <span class="sub-head me-2">End Date</span
-          >{{ result.electionId.enddate | date }}
+          >{{ result.enddate | date }}
         </p>
         <div class="contain-btns d-flex gap-2 mt-4">
           <button class="btn mybtn">Want to be a candidate</button>
@@ -40,7 +40,7 @@
         </div>
       </div>
       <div class="col-md-8">
-        <canvas [id]="'barchart-' + result.electionId._id"></canvas>
+        <canvas [id]="'barchart-' + result._id"></canvas>
       </div>
     </div>
   </div>
