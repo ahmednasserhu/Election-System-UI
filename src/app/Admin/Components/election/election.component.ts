@@ -14,13 +14,14 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./election.component.css'],
 })
 export class ElectionComponent implements OnInit {
-  @ViewChild('addElectionForm') addElectionForm!: NgForm;
+  @ViewChild('editForm') editForm!: NgForm;
   elections: Election[] = [];
   selectedElection: Election = this.initializeElection();
   newElection: Election = this.initializeElection();
   deleteElectionId: string | null = null;
-  dateError: string | null = null; 
-  endDateError: string | null = null; 
+  duplicateTitleError: string | null = null;
+  startDateError: string | null = null;
+  endDateError: string | null = null;
 
   constructor(private electionService: ElectionService, private toastr: ToastrService) {}
 
@@ -80,9 +81,6 @@ export class ElectionComponent implements OnInit {
       return;
     }
 
-    this.dateError = null; 
-    this.endDateError = null; 
-
     this.electionService.createElection(this.newElection).subscribe({
       next: () => {
         this.loadElections();
@@ -100,8 +98,11 @@ export class ElectionComponent implements OnInit {
   }
 
   saveEditedElection(): void {
-    this.dateError = null; 
-    this.endDateError = null; 
+    if (!this.selectedElection.title || !this.selectedElection.description || !this.selectedElection.startdate || !this.selectedElection.enddate) {
+      this.toastr.error('Please fill in all fields.', 'Validation Error');
+      return;
+    }
+
     this.electionService.updateElection(this.selectedElection).subscribe({
       next: () => {
         this.loadElections();
@@ -120,24 +121,38 @@ export class ElectionComponent implements OnInit {
     });
   }
 
+  validateDates(): void {
+    const startDate = new Date(this.selectedElection.startdate);
+    const endDate = new Date(this.selectedElection.enddate);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    this.startDateError = startDate <= today ? 'Start date must be at least one day after today.' : null;
+    this.endDateError = endDate <= startDate ? 'End date must be at least one day after the start date.' : null;
+  }
+
+  checkDuplicateTitle(title: string): void {
+    this.duplicateTitleError = this.elections.some(e => e.title === title && e._id !== this.selectedElection._id)
+      ? 'An election with this title already exists.'
+      : null;
+  }
+
   clearNewElectionForm(): void {
     this.newElection = this.initializeElection();
-    if (this.addElectionForm) {
-      this.addElectionForm.resetForm(); 
-    }
   }
 
   clearSelectedElectionForm(): void {
     this.selectedElection = this.initializeElection();
-    this.dateError = null; 
-    this.endDateError = null; 
+    this.duplicateTitleError = null;
+    this.startDateError = null;
+    this.endDateError = null;
   }
 
   handleServerError(errorMessage: string): void {
     if (errorMessage.includes('duplicate key error')) {
-      this.toastr.error('An election with this title already exists.', 'Duplicate Title');
+      this.duplicateTitleError = 'An election with this title already exists.';
     } else if (errorMessage.includes('Start date must be at least one day after the current date.')) {
-      this.dateError = errorMessage;
+      this.startDateError = errorMessage;
     } else if (errorMessage.includes('End date must be at least one day after the start date.')) {
       this.endDateError = errorMessage;
     } else {
