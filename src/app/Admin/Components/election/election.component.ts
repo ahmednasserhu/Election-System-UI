@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ElectionService } from '../../Services/election.service';
 import { Election } from '../../Interfaces/election';
 import * as bootstrap from 'bootstrap';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -14,6 +14,7 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./election.component.css'],
 })
 export class ElectionComponent implements OnInit {
+  @ViewChild('addElectionForm') addElectionForm!: NgForm;
   elections: Election[] = [];
   selectedElection: Election = this.initializeElection();
   newElection: Election = this.initializeElection();
@@ -47,6 +48,7 @@ export class ElectionComponent implements OnInit {
     this.selectedElection = { ...election };
     const editModal = new bootstrap.Modal(document.getElementById('editModal')!);
     editModal.show();
+
   }
 
   deleteElection(id: string): void {
@@ -63,6 +65,8 @@ export class ElectionComponent implements OnInit {
           this.deleteElectionId = null;
           const deleteModal = bootstrap.Modal.getInstance(document.getElementById('deleteModal')!);
           deleteModal?.hide();
+          this.toastr.success('Election Deleted successfully');
+
         },
         error: (err) => console.error('Delete error', err),
       });
@@ -70,6 +74,16 @@ export class ElectionComponent implements OnInit {
   }
 
   saveElection(): void {
+    if (!this.newElection.title && !this.newElection.description && !this.newElection.startdate && !this.newElection.enddate) {
+      this.toastr.error('All fields are required.', 'Validation Error');
+      return;
+    }
+  
+    if (!this.newElection.title || !this.newElection.description || !this.newElection.startdate || !this.newElection.enddate) {
+      this.toastr.error('Please fill in all fields.', 'Validation Error');
+      return;
+    }
+
     this.dateError = null; 
     this.endDateError = null; 
     this.electionService.createElection(this.newElection).subscribe({
@@ -97,9 +111,12 @@ export class ElectionComponent implements OnInit {
         this.clearSelectedElectionForm();
         const editModal = bootstrap.Modal.getInstance(document.getElementById('editModal')!);
         editModal?.hide();
+        this.toastr.success('Election Edited successfully');
+
       },
       error: (err) => {
         if (err.error.message) {
+          this.toastr.success('Election Failed to be Edited');
           this.handleServerError(err.error.message);
         } else {
           console.error('Update error', err);
@@ -108,10 +125,12 @@ export class ElectionComponent implements OnInit {
     });
   }
 
+
   clearNewElectionForm(): void {
     this.newElection = this.initializeElection();
-    this.dateError = null; 
-    this.endDateError = null; 
+    if (this.addElectionForm) {
+      this.addElectionForm.resetForm(); 
+    }
   }
 
   clearSelectedElectionForm(): void {

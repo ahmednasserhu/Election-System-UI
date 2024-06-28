@@ -1,6 +1,6 @@
 .sidebar {
   width: 200px;
-  background: #343a40;
+  background: #313131;
   color: #fff;
   transition: width 0.3s;
   overflow: hidden;
@@ -19,7 +19,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 8px 12px;
-  background: #212529;
+  background: #1f1f1f;
 }
 
 .toggle-btn {
