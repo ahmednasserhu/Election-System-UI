@@ -12,7 +12,9 @@
 
 .my-container-2 {
 }
-
+.fa-heart{
+  color: rgb(217, 20, 20);
+}
 .sub-head {
   font-weight: 600;
 }

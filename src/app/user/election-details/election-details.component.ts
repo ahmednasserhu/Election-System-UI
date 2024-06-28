@@ -5,6 +5,10 @@ import { Router } from '@angular/router';
 import { FormsModule, NgModel } from '@angular/forms';  // Import FormsModule
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { InputOtpModule } from 'primeng/inputotp';
+import { ButtonModule } from 'primeng/button';
+import { ChangeDetectorRef } from '@angular/core';
+
 import {
   Component,
   inject,
@@ -23,6 +27,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { Chart, ChartConfiguration, registerables } from 'chart.js';
 import { JwtPayload, jwtDecode } from 'jwt-decode';
+import { CountdownComponent } from 'ngx-countdown';
 
 Chart.register(...registerables);
 
@@ -35,13 +40,22 @@ interface CandidateJwtPayload extends JwtPayload {
 @Component({
   selector: 'app-election-details',
   standalone: true,
-  imports: [CommonModule, NgbDatepickerModule, FormsModule],
+  imports: [
+    CommonModule,
+    NgbDatepickerModule,
+    FormsModule,
+    FormsModule,
+    InputOtpModule,
+    ButtonModule,
+    CountdownComponent,
+  ],
   templateUrl: './election-details.component.html',
   styleUrls: ['./election-details.component.css'],
 })
 export class ElectionDetailsComponent
   implements OnDestroy, OnChanges, AfterViewInit
 {
+  value: any;
   private chart: Chart | undefined;
   result!: any;
   currentDate!: Date;
@@ -58,6 +72,7 @@ export class ElectionDetailsComponent
     private _ElectionService: ElectionService,
     private VoteService: VoteService,
     private toaster: ToastrService,
+    private cd: ChangeDetectorRef,
   ) {
     this.currentDate = new Date();
     this._ElectionService
@@ -74,7 +89,10 @@ export class ElectionDetailsComponent
         this.statusDate =
           this.currentDate < new Date(this.result.startdate)
             ? 'Pending'
-            : this.currentDate > new Date(this.result.enddate)
+            : this.currentDate > new Date(this.result.enddate) ||
+                (this.currentDate > new Date(this.result.startdate) &&
+                  this.currentDate < new Date(this.result.enddate) &&
+                  this.result.candidates.length === 1)
               ? 'Finished'
               : 'In-progress';
       });
@@ -93,7 +111,9 @@ export class ElectionDetailsComponent
     }
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    
+  }
 
   ngOnDestroy(): void {
     if (this.chart) {
@@ -198,21 +218,25 @@ export class ElectionDetailsComponent
     });
   }
 
-  voteWithOTP(candidateId: any, electionId: any, otp: any) {
+  voteWithOTP(candidateId: any, electionId: any) {
+    console.log(this.value);
+    // Call your service
+    this.cd.detectChanges();
+
     this.VoteService.vote({
       candidateId: candidateId,
       electionId: electionId,
-      otp,
+      otp: this.value,
     }).subscribe({
       next: (res) => {
         console.log(res);
         this.toaster.success(res.message);
-        this.otpNum = '';
+        this.value = '';
         this.closeModal();
       },
       error: (err) => {
         this.toaster.error(err.error.message);
-        this.otpNum = '';
+        this.value = '';
       },
     });
   }
@@ -227,13 +251,12 @@ export class ElectionDetailsComponent
       },
       (reason) => {
         this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-        
       },
     );
   }
 
   closeModal() {
-    this.modalService.dismissAll(); 
+    this.modalService.dismissAll();
   }
 
   moveFocus(index: number, event: Event) {
@@ -255,7 +278,7 @@ export class ElectionDetailsComponent
 
   onSubmitOtp() {
     // const otp = this.otpArray.join('');
-    console.log('OTP Entered:', this.otpNum);
+    console.log('OTP Entered:', this.value);
   }
 
   private getDismissReason(reason: any): string {

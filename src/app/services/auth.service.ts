@@ -16,7 +16,9 @@ export class AuthService {
         this.router.navigate([`/candidate`]);
         break;
       case 'citizen':
-        this.router.navigate(['/user']);
+        this.router.navigate(['/user'], {
+          queryParams: { status: 'in-progress' },
+        });
         break;
       default:
         console.error('Unknown role:', role);

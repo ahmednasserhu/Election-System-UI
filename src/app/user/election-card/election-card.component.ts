@@ -12,6 +12,13 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { Chart, ChartConfiguration, registerables } from 'chart.js';
 import { Result } from '../../interface/result';
 import { jwtDecode, JwtPayload } from 'jwt-decode';
+import {  inject, TemplateRef } from '@angular/core';
+
+import {
+  ModalDismissReasons,
+  NgbDatepickerModule,
+  NgbModal,
+} from '@ng-bootstrap/ng-bootstrap';
 
 Chart.register(...registerables);
 
@@ -24,7 +31,7 @@ interface CandidateJwtPayload extends JwtPayload {
 @Component({
   selector: 'app-election-card',
   standalone: true,
-  imports: [DatePipe, CommonModule],
+  imports: [DatePipe, CommonModule, NgbDatepickerModule],
   templateUrl: './election-card.component.html',
   styleUrls: ['./election-card.component.css'],
 })
@@ -79,12 +86,17 @@ export class ElectionCardComponent
     this.statusDate =
       this.currentDate < new Date(this.result.startdate)
         ? 'Pending'
-        : this.currentDate > new Date(this.result.enddate)
+        : this.currentDate > new Date(this.result.enddate) ||
+            (this.currentDate > new Date(this.result.startdate) &&
+              this.currentDate < new Date(this.result.enddate) &&
+              this.result.candidates.length === 1)
           ? 'Finished'
           : 'In-progress';
 
     this.cdr.detectChanges(); // Ensure the view is updated before rendering the chart
   }
+
+  addTestimonial() {}
 
   goToDetails(): void {
     this.router.navigate(['/user', 'election-details', this.result._id]);
