@@ -37,6 +37,7 @@ export class RegisterComponent {
   eyeIcon = faEye;
   eyeSlashed = faEyeSlash;
   fileImage = faFileImage;
+  loading: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -55,6 +56,11 @@ export class RegisterComponent {
             this.customValidator.ssnValidator(),
           ]),
         ],
+        motherSSN: ['', Validators.compose([Validators.required, this.customValidator.ssnValidator()])],
+        motherName: ['', Validators.compose([
+          Validators.required,
+          this.customValidator.motherNameFullValidator()
+        ])],
         firstName: [
           '',
           Validators.compose([
@@ -115,17 +121,19 @@ export class RegisterComponent {
 
   onSubmit() {
     if (this.registerForm.valid) {
+      this.loading = true;
       const formData = this.registerForm.value;
       formData.image = this.selectedImage;
-      // console.log(formData);
       this.registerService.register(formData).subscribe({
         next: (res: any) => {
+          this.loading = false;
           if (res) {
             this.toastr.success('User registered successfully');
             this.route.navigate(['/login']);
           }
         },
         error: (error: HttpErrorResponse) => {
+          this.loading = false;
           this.toastr.error(error.error.message, 'Registration Failed');
         }
       });

@@ -1,5 +1,12 @@
 <div class="container form">
   <div class="row">
+    <!-- Loader -->
+    <div *ngIf="loading" class="loader">
+      <div class="spinner-border" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+
     <!-- Left Side: Input Fields -->
     <div class="col-md-6">
       <h2 class="text-center mb-4">Sign Up</h2>
@@ -129,6 +136,67 @@
               </div>
             </div>
           </div>
+          <!-- MOTHER SSN and Mother Name Field -->
+          <div class="col-md-6">
+            <div class="input-container ic1">
+              <input
+                placeholder=""
+                autocomplete="off"
+                type="text"
+                class="form-control"
+                id="motherSSN"
+                formControlName="motherSSN"
+              />
+              <label class="iLabel" for="motherSSN">Mother SSN</label>
+              <div
+                *ngIf="
+                  registerForm.controls['motherSSN'].invalid &&
+                  (registerForm.controls['motherSSN'].dirty ||
+                    registerForm.controls['motherSSN'].touched)
+                "
+              >
+                <app-form-error
+                  [formInput]="registerForm.controls['motherSSN']"
+                  [validationType]="'required'"
+                  [errorMsg]="'Required Field'"
+                ></app-form-error>
+                <div class="custom-alert" role="alert">Invalid SSN</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="input-container ic1">
+              <input
+                placeholder=""
+                autocomplete="off"
+                type="text"
+                class="form-control"
+                id="motherName"
+                formControlName="motherName"
+              />
+              <label class="iLabel" for="motherName">Mother Name</label>
+              <div
+                *ngIf="
+                  registerForm.controls['motherName'].invalid &&
+                  (registerForm.controls['motherName'].dirty ||
+                    registerForm.controls['motherName'].touched)
+                "
+              >
+                <app-form-error
+                  [formInput]="registerForm.controls['motherName']"
+                  [validationType]="'required'"
+                  [errorMsg]="'Required Field'"
+                ></app-form-error>
+                <div class="custom-alert" role="alert">
+                  {{
+                    registerForm.controls['motherName'].errors
+                      ?.['invalidMotherName']
+                  }}
+                </div>
+              </div>
+            </div>
+          </div>
+
           <!-- Password and Verify Password Field -->
           <div class="col-md-6">
             <div class="form-group position-relative input-container ic1">

@@ -21,6 +21,8 @@ export class RegisterServiceService {
     formData.append('email', data.email);
     formData.append('phoneNumber', data.phoneNumber);
     formData.append('password', data.password);
+    formData.append('motherSSN', data.motherSSN);
+    formData.append('motherName', data.motherName);
     formData.append('image', data.image);
 
     return this.http.post(`${this.apiUrl}/citizens/signup/`, formData);
