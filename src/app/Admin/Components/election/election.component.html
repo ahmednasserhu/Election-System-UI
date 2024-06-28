@@ -34,7 +34,7 @@
         <form #addElectionForm="ngForm" (ngSubmit)="saveElection()" class="text-light shadow p-3" style="border-radius: 10px; background-color: #333333" novalidate>
           <div class="mb-3">
             <label class="form-label">Title:</label>
-            <input class="form-control" [(ngModel)]="newElection.title" name="title" required #addTitle="ngModel" />
+            <input class="form-control" [(ngModel)]="newElection.title" name="title" required unique #addTitle="ngModel" />
             <div *ngIf="addTitle.invalid && (addTitle.dirty || addTitle.touched)" class="text-danger">
               Title is required.
             </div>
@@ -119,7 +119,7 @@
     <input
       type="date"
       class="form-control"
-      [(ngModel)]="selectedElection.startdate"
+      [(ngModel)]="newElection.startdate"
       name="startdate"
       required
       #editStartDate="ngModel"
@@ -136,7 +136,7 @@
     <input
       type="date"
       class="form-control"
-      [(ngModel)]="selectedElection.enddate"
+      [(ngModel)]="newElection.enddate"
       name="enddate"
       required
       #editEndDate="ngModel"
