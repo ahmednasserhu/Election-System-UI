@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ElectionService } from '../../Services/election.service';
 import { Election } from '../../Interfaces/election';
 import * as bootstrap from 'bootstrap';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -14,6 +14,7 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./election.component.css'],
 })
 export class ElectionComponent implements OnInit {
+  @ViewChild('addElectionForm') addElectionForm!: NgForm;
   elections: Election[] = [];
   selectedElection: Election = this.initializeElection();
   newElection: Election = this.initializeElection();
@@ -70,6 +71,16 @@ export class ElectionComponent implements OnInit {
   }
 
   saveElection(): void {
+    if (!this.newElection.title && !this.newElection.description && !this.newElection.startdate && !this.newElection.enddate) {
+      this.toastr.error('All fields are required.', 'Validation Error');
+      return;
+    }
+  
+    if (!this.newElection.title || !this.newElection.description || !this.newElection.startdate || !this.newElection.enddate) {
+      this.toastr.error('Please fill in all fields.', 'Validation Error');
+      return;
+    }
+    
     this.dateError = null; 
     this.endDateError = null; 
     this.electionService.createElection(this.newElection).subscribe({
@@ -108,10 +119,12 @@ export class ElectionComponent implements OnInit {
     });
   }
 
+
   clearNewElectionForm(): void {
     this.newElection = this.initializeElection();
-    this.dateError = null; 
-    this.endDateError = null; 
+    if (this.addElectionForm) {
+      this.addElectionForm.resetForm(); 
+    }
   }
 
   clearSelectedElectionForm(): void {
