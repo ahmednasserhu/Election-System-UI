@@ -6,21 +6,22 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 
-
 @Component({
   selector: 'app-election',
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './election.component.html',
-  styleUrl: './election.component.css',
+  styleUrls: ['./election.component.css'],
 })
 export class ElectionComponent implements OnInit {
   elections: Election[] = [];
   selectedElection: Election = this.initializeElection();
   newElection: Election = this.initializeElection();
   deleteElectionId: string | null = null;
+  dateError: string | null = null; 
+  endDateError: string | null = null; 
 
-  constructor(private electionService: ElectionService,private toastr: ToastrService) {}
+  constructor(private electionService: ElectionService, private toastr: ToastrService) {}
 
   ngOnInit(): void {
     this.loadElections();
@@ -39,24 +40,18 @@ export class ElectionComponent implements OnInit {
   }
 
   loadElections(): void {
-    this.electionService
-      .getElections()
-      .subscribe((data) => (this.elections = data));
+    this.electionService.getElections().subscribe((data) => (this.elections = data));
   }
 
   editElection(election: Election): void {
     this.selectedElection = { ...election };
-    const editModal = new bootstrap.Modal(
-      document.getElementById('editModal')!,
-    );
+    const editModal = new bootstrap.Modal(document.getElementById('editModal')!);
     editModal.show();
   }
 
   deleteElection(id: string): void {
     this.deleteElectionId = id;
-    const deleteModal = new bootstrap.Modal(
-      document.getElementById('deleteModal')!,
-    );
+    const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal')!);
     deleteModal.show();
   }
 
@@ -66,9 +61,7 @@ export class ElectionComponent implements OnInit {
         next: () => {
           this.loadElections();
           this.deleteElectionId = null;
-          const deleteModal = bootstrap.Modal.getInstance(
-            document.getElementById('deleteModal')!,
-          );
+          const deleteModal = bootstrap.Modal.getInstance(document.getElementById('deleteModal')!);
           deleteModal?.hide();
         },
         error: (err) => console.error('Delete error', err),
@@ -77,43 +70,63 @@ export class ElectionComponent implements OnInit {
   }
 
   saveElection(): void {
-    if (this.newElection.title && this.newElection.description) {
-      this.electionService.createElection(this.newElection).subscribe({
-        next: () => {
-          this.loadElections();
-          this.clearNewElectionForm();
-          this.toastr.success('Election created successfully.');
-        },
-        error: (err) => this.toastr.error(err.error.message)
-      });
-    } else {
-      this.toastr.error('Title and Description are required.', 'Validation Error');
-    }
+    this.dateError = null; 
+    this.endDateError = null; 
+    this.electionService.createElection(this.newElection).subscribe({
+      next: () => {
+        this.loadElections();
+        this.clearNewElectionForm();
+        this.toastr.success('Election created successfully.');
+      },
+      error: (err) => {
+        if (err.error.message) {
+          this.handleServerError(err.error.message);
+        } else {
+          this.toastr.error('Failed to create election.');
+        }
+      },
+    });
   }
 
   saveEditedElection(): void {
-    if (this.selectedElection.title && this.selectedElection.description) {
-      this.electionService.updateElection(this.selectedElection).subscribe({
-        next: () => {
-          this.loadElections();
-          this.clearSelectedElectionForm();
-          const editModal = bootstrap.Modal.getInstance(
-            document.getElementById('editModal')!,
-          );
-          editModal?.hide();
-        },
-        error: (err) => console.error('Update error', err),
-      });
-    } else {
-      console.error('Validation error: Title and Description are required.');
-    }
+    this.dateError = null; 
+    this.endDateError = null; 
+    this.electionService.updateElection(this.selectedElection).subscribe({
+      next: () => {
+        this.loadElections();
+        this.clearSelectedElectionForm();
+        const editModal = bootstrap.Modal.getInstance(document.getElementById('editModal')!);
+        editModal?.hide();
+      },
+      error: (err) => {
+        if (err.error.message) {
+          this.handleServerError(err.error.message);
+        } else {
+          console.error('Update error', err);
+        }
+      },
+    });
   }
 
   clearNewElectionForm(): void {
     this.newElection = this.initializeElection();
+    this.dateError = null; 
+    this.endDateError = null; 
   }
 
   clearSelectedElectionForm(): void {
     this.selectedElection = this.initializeElection();
+    this.dateError = null; 
+    this.endDateError = null; 
+  }
+
+  handleServerError(errorMessage: string): void {
+    if (errorMessage.includes('Start date must be at least one day after the current date.')) {
+      this.dateError = errorMessage;
+    } else if (errorMessage.includes('End date must be at least one day after the start date.')) {
+      this.endDateError = errorMessage;
+    } else {
+      this.toastr.error(errorMessage);
+    }
   }
 }

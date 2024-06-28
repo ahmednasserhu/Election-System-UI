@@ -1,130 +1,48 @@
 <div class="container election-management ms-5 shadow">
-  <h3
-    style="font-family: Verdana, Geneva, Tahoma, sans-serif"
-    class="text-light"
-  >
+  <h3 style="font-family: Verdana, Geneva, Tahoma, sans-serif" class="text-light">
     Election Management
   </h3>
-
   <!-- Bootstrap Tabs -->
   <ul class="nav nav-tabs" id="electionTabs" role="tablist">
     <li class="nav-item" role="presentation">
-      <a
-        class="nav-link active"
-        id="election-list-tab"
-        data-bs-toggle="tab"
-        href="#election-list"
-        role="tab"
-        aria-controls="election-list"
-        aria-selected="true"
-        >Election List</a
-      >
+      <a class="nav-link active" id="election-list-tab" data-bs-toggle="tab" href="#election-list" role="tab" aria-controls="election-list" aria-selected="true">Election List</a>
     </li>
     <li class="nav-item" role="presentation">
-      <a
-        class="nav-link"
-        id="election-form-tab"
-        data-bs-toggle="tab"
-        href="#election-form"
-        role="tab"
-        aria-controls="election-form"
-        aria-selected="false"
-        >Add Election</a
-      >
+      <a class="nav-link" id="election-form-tab" data-bs-toggle="tab" href="#election-form" role="tab" aria-controls="election-form" aria-selected="false">Add Election</a>
     </li>
   </ul>
-
   <div class="tab-content" id="electionTabsContent">
     <!-- Election List -->
-    <div
-      class="tab-pane fade show active"
-      id="election-list"
-      role="tabpanel"
-      aria-labelledby="election-list-tab"
-    >
+    <div class="tab-pane fade show active" id="election-list" role="tabpanel" aria-labelledby="election-list-tab">
       <div class="election-list mt-3">
         <h4 class="text-light">Election List</h4>
         <ul class="list-group">
-          <li
-            class="list-group-item d-flex justify-content-between align-items-center text-light border-black"
-            style="background-color: #333333"
-            *ngFor="let election of elections"
-          >
-            <span
-              >{{ election.title }} ({{ election.startdate | date }} -
-              {{ election.enddate | date }}) -
-              <span class="badge bg-success"
-                >Total Votes: {{ election.totalVotes }}</span
-              ></span
-            >
+          <li class="list-group-item d-flex justify-content-between align-items-center text-light border-black" style="background-color: #333333" *ngFor="let election of elections">
+            <span>{{ election.title }} ({{ election.startdate | date }} - {{ election.enddate | date }}) - <span class="badge bg-success">Total Votes: {{ election.totalVotes }}</span></span>
             <span>
-              <button
-                class="btn btn-sm btn-primary me-3"
-                (click)="editElection(election)"
-              >
-                Edit
-              </button>
-              <button
-                class="btn btn-sm btn-danger"
-                (click)="deleteElection(election._id)"
-              >
-                Delete
-              </button>
+              <button class="btn btn-sm btn-primary me-3" (click)="editElection(election)">Edit</button>
+              <button class="btn btn-sm btn-danger" (click)="deleteElection(election._id)">Delete</button>
             </span>
           </li>
         </ul>
       </div>
     </div>
-
     <!-- Add Election -->
-    <div
-      class="tab-pane fade"
-      id="election-form"
-      role="tabpanel"
-      aria-labelledby="election-form-tab"
-    >
+    <div class="tab-pane fade" id="election-form" role="tabpanel" aria-labelledby="election-form-tab">
       <div class="election-form mt-3">
         <h4 class="ms-2 text-light">Add Election</h4>
-        <form
-          #addElectionForm="ngForm"
-          (ngSubmit)="saveElection()"
-          class="text-light shadow p-3"
-          style="border-radius: 10px; background-color: #333333"
-          novalidate
-        >
+        <form #addElectionForm="ngForm" (ngSubmit)="saveElection()" class="text-light shadow p-3" style="border-radius: 10px; background-color: #333333" novalidate>
           <div class="mb-3">
             <label class="form-label">Title:</label>
-            <input
-              class="form-control"
-              [(ngModel)]="newElection.title"
-              name="title"
-              required
-              #addTitle="ngModel"
-            />
-            <div
-              *ngIf="addTitle.invalid && (addTitle.dirty || addTitle.touched)"
-              class="text-danger"
-            >
+            <input class="form-control" [(ngModel)]="newElection.title" name="title" required #addTitle="ngModel" />
+            <div *ngIf="addTitle.invalid && (addTitle.dirty || addTitle.touched)" class="text-danger">
               Title is required.
             </div>
           </div>
           <div class="mb-3">
             <label class="form-label">Description:</label>
-            <textarea
-              class="form-control"
-              [(ngModel)]="newElection.description"
-              name="description"
-              rows="4"
-              required
-              #addDescription="ngModel"
-            ></textarea>
-            <div
-              *ngIf="
-                addDescription.invalid &&
-                (addDescription.dirty || addDescription.touched)
-              "
-              class="text-danger"
-            >
+            <textarea class="form-control" [(ngModel)]="newElection.description" name="description" rows="4" required #addDescription="ngModel"></textarea>
+            <div *ngIf="addDescription.invalid && (addDescription.dirty || addDescription.touched)" class="text-danger">
               Description is required.
             </div>
           </div>
@@ -136,7 +54,14 @@
               [(ngModel)]="newElection.startdate"
               name="startdate"
               required
+              #startDate="ngModel"
             />
+            <div *ngIf="startDate.invalid && (startDate.dirty || startDate.touched)" class="text-danger">
+              Start date is required.
+            </div>
+            <div *ngIf="dateError" class="text-danger">
+              {{ dateError }}
+            </div>
           </div>
           <div class="mb-3">
             <label class="form-label">End Date:</label>
@@ -146,156 +71,104 @@
               [(ngModel)]="newElection.enddate"
               name="enddate"
               required
+              #endDate="ngModel"
             />
+            <div *ngIf="endDate.invalid && (endDate.dirty || endDate.touched)" class="text-danger">
+              End date is required.
+            </div>
+            <div *ngIf="endDateError" class="text-danger">
+              {{ endDateError }}
+            </div>
           </div>
-          <button
-            type="submit"
-            class="btn btn-primary me-3"
-            [disabled]="addElectionForm.invalid"
-          >
+          
+          <button type="submit" class="btn btn-primary me-3" [disabled]="addElectionForm.invalid ">
             Add
           </button>
-          <button
-            type="button"
-            class="btn btn-secondary"
-            (click)="clearNewElectionForm()"
-          >
-            Reset
-          </button>
+          <button type="button" class="btn btn-secondary" (click)="clearNewElectionForm()">Reset</button>
         </form>
       </div>
     </div>
   </div>
 </div>
-
 <!-- Edit Modal -->
-<div
-  class="modal fade"
-  id="editModal"
-  tabindex="-1"
-  aria-labelledby="editModalLabel"
-  aria-hidden="true"
->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="editModalLabel">Edit Election</h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <form #editForm="ngForm" (ngSubmit)="saveEditedElection()" novalidate>
           <div class="mb-3">
             <label class="form-label">Title:</label>
-            <input
-              class="form-control"
-              [(ngModel)]="selectedElection.title"
-              name="title"
-              required
-              #editTitle="ngModel"
-            />
-            <div
-              *ngIf="
-                editTitle.invalid && (editTitle.dirty || editTitle.touched)
-              "
-              class="text-danger"
-            >
+            <input class="form-control" [(ngModel)]="selectedElection.title" name="title" required #editTitle="ngModel" />
+            <div *ngIf="editTitle.invalid && (editTitle.dirty || editTitle.touched)" class="text-danger">
               Title is required.
             </div>
           </div>
           <div class="mb-3">
             <label class="form-label">Description:</label>
-            <textarea
-              class="form-control"
-              [(ngModel)]="selectedElection.description"
-              name="description"
-              rows="4"
-              required
-              #editDescription="ngModel"
-            ></textarea>
-            <div
-              *ngIf="
-                editDescription.invalid &&
-                (editDescription.dirty || editDescription.touched)
-              "
-              class="text-danger"
-            >
+            <textarea class="form-control" [(ngModel)]="selectedElection.description" name="description" rows="4" required #editDescription="ngModel"></textarea>
+            <div *ngIf="editDescription.invalid && (editDescription.dirty || editDescription.touched)" class="text-danger">
               Description is required.
             </div>
           </div>
-          <div class="mb-3">
-            <label class="form-label">Start Date:</label>
-            <input
-              type="date"
-              class="form-control"
-              [(ngModel)]="selectedElection.startdate"
-              name="startdate"
-              required
-            />
-          </div>
-          <div class="mb-3">
-            <label class="form-label">End Date:</label>
-            <input
-              type="date"
-              class="form-control"
-              [(ngModel)]="selectedElection.enddate"
-              name="enddate"
-              required
-            />
-          </div>
-          <button
-            type="submit"
-            class="btn btn-primary me-3"
-            [disabled]="editForm.invalid"
-          >
-            Save changes
-          </button>
-          <button
-            type="button"
-            class="btn btn-secondary"
-            data-bs-dismiss="modal"
-          >
-            Close
-          </button>
+         <div class="mb-3">
+    <label class="form-label">Start Date:</label>
+    <input
+      type="date"
+      class="form-control"
+      [(ngModel)]="selectedElection.startdate"
+      name="startdate"
+      required
+      #editStartDate="ngModel"
+    />
+    <div *ngIf="editStartDate.invalid && (editStartDate.dirty || editStartDate.touched)" class="text-danger">
+      Start date is required.
+    </div>
+    <div *ngIf="dateError" class="text-danger">
+      {{ dateError }}
+    </div>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">End Date:</label>
+    <input
+      type="date"
+      class="form-control"
+      [(ngModel)]="selectedElection.enddate"
+      name="enddate"
+      required
+      #editEndDate="ngModel"
+    />
+    <div *ngIf="editEndDate.invalid && (editEndDate.dirty || editEndDate.touched)" class="text-danger">
+      End date is required.
+    </div>
+    <div *ngIf="endDateError" class="text-danger">
+      {{ endDateError }}
+    </div>
+  </div>
+          
+          <button type="submit" class="btn btn-primary">Save</button>
         </form>
       </div>
     </div>
   </div>
 </div>
-
 <!-- Delete Modal -->
-<div
-  class="modal fade"
-  id="deleteModal"
-  tabindex="-1"
-  aria-labelledby="deleteModalLabel"
-  aria-hidden="true"
->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="deleteModalLabel">Delete Election</h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         Are you sure you want to delete this election?
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-danger" (click)="confirmDelete()">
-          Delete
-        </button>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-          Cancel
-        </button>
+        <button type="button" class="btn btn-danger" (click)="confirmDelete()">Delete</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
       </div>
     </div>
   </div>
