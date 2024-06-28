@@ -2,10 +2,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ElectionService } from './../../services/election.service';
 import { Component, OnInit } from '@angular/core';
 import { ElectionCardComponent } from '../election-card/election-card.component';
-import { Election } from '../../interface/election';
 import { CommonModule, DatePipe } from '@angular/common';
-import { Pipe, PipeTransform } from '@angular/core';
-import { Result } from '../../interface/result';
 
 @Component({
   selector: 'app-elections',
@@ -15,21 +12,41 @@ import { Result } from '../../interface/result';
   styleUrls: ['./elections.component.css'],
 })
 export class ElectionsComponent implements OnInit {
-  // elections!: Election[];
   results!: any;
   errorMessage: string = '';
+  status !: any
+  constructor(
+    private _ElectionService: ElectionService,
+    private activatedRoute: ActivatedRoute,
+  ) {}
 
-  constructor(private _ElectionService: ElectionService, private activatedRoute:ActivatedRoute) {}
   ngOnInit(): void {
-    let status = ''
     this.activatedRoute.queryParams.subscribe((params) => {
-       status = params['status'];
-    });
-    status = status !== undefined ? status : ''
-    console.log(status)
-    this._ElectionService.getStatusElection(status).subscribe((res) => {
-      console.log(res);
-      this.results = res;
+       status = params['status'] || '';
+      console.log(status);
+      this._ElectionService.getStatusElection(status).subscribe(
+        (res) => {
+          console.log(res);
+          // this.results = res;
+          if (status === 'finished') {
+            this.results = res.filter(
+              (res: any) => res.candidates.length !== 0,
+            );
+          }
+          else if (status === 'pending') {
+            this.results = res
+          }
+          else if (status === 'in-progress') {
+            this.results = res.filter(
+              (res: any) =>
+                res.candidates.length !== 0 && res.candidates.length !== 1,
+            );
+          }
+        },
+        (error) => {
+          this.errorMessage = error;
+        },
+      );
     });
   }
 }

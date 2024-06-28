@@ -5,7 +5,6 @@ import { Router } from '@angular/router';
 import { FormsModule, NgModel } from '@angular/forms';  // Import FormsModule
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
 import {
   Component,
   inject,
@@ -23,8 +22,15 @@ import {
 } from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule } from '@angular/common';
 import { Chart, ChartConfiguration, registerables } from 'chart.js';
+import { JwtPayload, jwtDecode } from 'jwt-decode';
 
 Chart.register(...registerables);
+
+interface CandidateJwtPayload extends JwtPayload {
+  candidate: {
+    _id: string;
+  };
+}
 
 @Component({
   selector: 'app-election-details',
@@ -38,9 +44,12 @@ export class ElectionDetailsComponent
 {
   private chart: Chart | undefined;
   result!: any;
+  currentDate!: Date;
+  statusDate!: string;
   @ViewChild('otpModalTemplate') otpModalTemplate!: TemplateRef<any>; // ViewChild to access the template
   private modalService = inject(NgbModal);
   closeResult = '';
+  alreadyCandidate = false;
   otpNum: any = '';
   otpArray = ['', '', '', '', '', '']; // Array to store OTP digits
 
@@ -48,13 +57,26 @@ export class ElectionDetailsComponent
     private router: Router,
     private _ElectionService: ElectionService,
     private VoteService: VoteService,
-    private toaster:ToastrService
+    private toaster: ToastrService,
   ) {
+    this.currentDate = new Date();
     this._ElectionService
       .getSpecificElection(this.router.url.split('/')[3])
       .subscribe((res) => {
-        this.result = res[0];
-        console.log(res);
+        this.result = res;
+        console.log(678, res);
+        let token = localStorage.getItem('token') || '';
+        let decodedToken = jwtDecode<CandidateJwtPayload>(token);
+        this.alreadyCandidate = this.result.candidates.some(
+          (candidate: any) => decodedToken?.candidate?._id === candidate?._id,
+        );
+        console.log(this.alreadyCandidate);
+        this.statusDate =
+          this.currentDate < new Date(this.result.startdate)
+            ? 'Pending'
+            : this.currentDate > new Date(this.result.enddate)
+              ? 'Finished'
+              : 'In-progress';
       });
   }
 
@@ -80,16 +102,16 @@ export class ElectionDetailsComponent
   }
 
   renderChart(): void {
-    if (
-      !this.result ||
-      !this.result.electionId ||
-      !this.result.electionId._id
-    ) {
-      console.warn('Missing or invalid data to render chart.');
-      return;
-    }
+    // if (
+    //   !this.result ||
+    //   !this.result.electionId ||
+    //   !this.result.electionId._id
+    // ) {
+    //   console.warn('Missing or invalid data to render chart.');
+    //   return;
+    // }
 
-    const canvasId = `barchart-${this.result.electionId._id}`;
+    const canvasId = `barchart-${this.result._id}`;
     console.log('Canvas ID:', canvasId);
 
     const canvasElement = document.getElementById(
@@ -107,11 +129,12 @@ export class ElectionDetailsComponent
       type: 'bar',
       data: {
         labels: this.result.candidates.map(
-          (candidate: any) => candidate.candidateName,
+          (candidate: any) =>
+            `${candidate.citizenDetails.firstName} ${candidate.citizenDetails.lastName}`,
         ),
         datasets: [
           {
-            label: this.result.electionId.title,
+            label: this.result.title,
             data: this.result.candidates.map((candidate: any) =>
               Number(candidate.percentage),
             ),
@@ -157,7 +180,7 @@ export class ElectionDetailsComponent
   }
 
   navigateToApplyForm() {
-    this.router.navigate(['/user', 'apply', this.result.electionId._id]);
+    this.router.navigate(['/user', 'apply', this.result._id]);
   }
 
   vote(candidateId: any, electionId: any) {
@@ -170,8 +193,7 @@ export class ElectionDetailsComponent
         this.openModal();
       },
       error: (err) => {
-
-          this.toaster.error(err.error.message)
+        this.toaster.error(err.error.message);
       },
     });
   }
@@ -183,11 +205,14 @@ export class ElectionDetailsComponent
       otp,
     }).subscribe({
       next: (res) => {
-        console.log(res)
-          this.toaster.success(res.message);
+        console.log(res);
+        this.toaster.success(res.message);
+        this.otpNum = '';
+        this.closeModal();
       },
       error: (err) => {
-          this.toaster.error(err.error.message);
+        this.toaster.error(err.error.message);
+        this.otpNum = '';
       },
     });
   }
@@ -202,8 +227,13 @@ export class ElectionDetailsComponent
       },
       (reason) => {
         this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        
       },
     );
+  }
+
+  closeModal() {
+    this.modalService.dismissAll(); 
   }
 
   moveFocus(index: number, event: Event) {

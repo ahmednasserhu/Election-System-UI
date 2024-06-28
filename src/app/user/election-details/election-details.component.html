@@ -2,45 +2,72 @@
   <div class="row p-4">
     <div class="card-body col-md-4">
       <h5 class="card-title">
-        {{ result.electionId.title }}
+        {{ result?.title }}
         <span
           [class]="
-            result.candidates.length === 0
+             this.statusDate === 'Pending' || this.statusDate === 'Finished' 
               ? 'bg-danger badge ms-1'
               : 'bg-success badge ms-1'
           "
         >
-          {{ result?.candidates.length === 0 ? 'Pending' : 'In Progress' }}
+                {{this.statusDate}}
         </span>
       </h5>
-      <ng-container *ngIf="result?.candidates.length">
+      <ng-container *ngIf="result?.length">
         <h6 class="card-subtitle mb-2 text-muted my-votes">
           <i class="fas fa-users me-2"></i>
-          {{ result?.electionId.totalVotes }}
+          {{ result?.totalVotes }}
         </h6>
       </ng-container>
       <p class="card-text mb-1">
         <i class="fas fa-file-code me-2"></i>
-        {{ result.electionId.description }}
+        {{ result?.description }}
       </p>
       <p class="card-text mb-1">
         <i class="fas fa-calendar-week me-2"></i>
         <span class="sub-head me-2">Start Date</span
-        >{{ result.electionId.startdate | date }}
+        >{{ result?.startdate | date }}
       </p>
       <p class="card-text mb-1">
         <i class="fas fa-calendar-week me-2"></i>
         <span class="sub-head me-2">End Date</span
-        >{{ result.electionId.enddate | date }}
+        >{{ result?.enddate | date }}
       </p>
       <div class="contain-btns d-flex gap-2 mt-4">
-        <button class="btn mybtn" (click)="navigateToApplyForm()">
-          Want to be a candidate
-        </button>
+        @if(this.statusDate === 'Pending' && !this.alreadyCandidate){
+          <button class="btn mybtn" (click)="navigateToApplyForm()">
+            Want to be a candidate
+          </button>
+        }
+        @if(this.statusDate === 'Pending' && this.alreadyCandidate){
+          <p>
+            You have already apply for this candidate !
+          </p>
+        }
+        <!-- @if(this.statusDate === 'In-progress'){
+          <button class="btn mybtn" (click)="navigateToApplyForm()">
+            Vote
+            </button>
+        } -->
       </div>
     </div>
     <div class="col-md-8">
-      <canvas [id]="'barchart-' + result.electionId._id"></canvas>
+      <div class="col-md-8">
+              @if(this.statusDate === 'Finished'){
+                <canvas [id]="'barchart-' + result._id"></canvas>
+              }
+              @else if(this.statusDate === 'In-progress'){
+                <div class="d-flex justify-content-center align-items-center w-100 h-100">
+                  <p>Statistics will be displyed after election finished</p>
+                </div>
+              }
+              @else if(this.statusDate === 'Pending'){
+                <div class="d-flex justify-content-center align-items-center w-100 h-100">
+                  <p>You will be able to vote after election starts</p>
+                </div>
+              }
+
+      </div>
     </div>
   </div>
   <div class="row p-4">
@@ -66,7 +93,7 @@
               />
             </div>
             <div class="contain-words col-md-8">
-              <h3>{{ candidate.candidateName }}</h3>
+              <h3>{{ candidate.citizenDetails.firstName }} {{ candidate.citizenDetails.secondName }}</h3>
               <p>{{ candidate.candidateDetails.brief }}</p>
               <div class="d-flex gap-5 align-items-center">
                 <p>
@@ -87,7 +114,12 @@
                   ><i class="fas fa-landmark pe-2"></i>Part</span
                 >{{ candidate.candidateDetails.party }}
               </p>
-              <button class="btn mybtn" (click)="vote(candidate.candidateId,result.electionId._id)">Vote</button>
+              @if(this.statusDate === 'In-progress'){
+              <button class="btn mybtn" (click)="vote(candidate._id,result._id)">Vote</button>
+              }
+              @else {
+                <p>Election will start at   <span class="ms-1">{{this.result.startdate | date}}</span> </p>
+              }
             </div>
           </div>
         </div>
@@ -108,7 +140,7 @@
     </form>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline-secondary" (click)="this.voteWithOTP(candidate.candidateId,result.electionId._id,otpNum)">send</button>
+    <button type="button" class="btn btn-outline-secondary" (click)="this.voteWithOTP(candidate._id,result._id,otpNum)">send</button>
   </div>
 </ng-template>
     }

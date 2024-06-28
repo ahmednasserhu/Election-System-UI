@@ -1,18 +1,17 @@
-<a (click)="this.goToDetails()">
   <div class="card mb-3 my-container">
     <div class="row p-4">
       <div class="card-body col-md-4">
         <h5 class="card-title">
           {{ result.title }}
           <span
-            [class]="
-              this.currentDate > result.startdate
-                ? 'bg-danger badge ms-1'
-                : 'bg-success badge ms-1'
-            "
-          >
-            {{ this.currentDate > result.startDate ? 'Pending' : 'In Progress' }}
-          </span>
+          [class]="
+             this.statusDate === 'Pending' || this.statusDate === 'Finished' 
+              ? 'bg-danger badge ms-1'
+              : 'bg-success badge ms-1'
+          "
+        >
+                {{this.statusDate}}
+        </span>
         </h5>
         <ng-container *ngIf="result.candidates.length">
           <h6 class="card-subtitle mb-2 text-muted my-votes">
@@ -35,13 +34,39 @@
           >{{ result.enddate | date }}
         </p>
         <div class="contain-btns d-flex gap-2 mt-4">
-          <button class="btn mybtn">Want to be a candidate</button>
-          <button class="btn mybtn">Vote</button>
+           @if(this.statusDate === 'Pending' && !this.alreadyCandidate){
+          <button class="btn mybtn" (click)="navigateToApplyForm()">
+            Want to be a candidate
+          </button>
+        }
+        @if(this.statusDate === 'Pending' && this.alreadyCandidate){
+          <p>
+            You have already apply for this election as candidate!
+          </p>
+        }
+          <!-- <button class="btn mybtn" >Want to be a candidate</button> -->
+          
+         @if(this.statusDate === 'In-progress'){
+           <button class="btn mybtn" (click)="this.goToDetails()">Vote</button>
+         }
+         
         </div>
       </div>
       <div class="col-md-8">
-        <canvas [id]="'barchart-' + result._id"></canvas>
+              @if(this.statusDate === 'Finished'){
+                <canvas [id]="'barchart-' + result._id"></canvas>
+              }
+              @else if(this.statusDate === 'In-progress'){
+                <div class="d-flex justify-content-center align-items-center w-100 h-100">
+                  <p>Statistics will be displyed after election finished</p>
+                </div>
+              }
+              @else if(this.statusDate === 'Pending'){
+                <div class="d-flex justify-content-center align-items-center w-100 h-100">
+                  <p>You will be able to vote after election starts</p>
+                </div>
+              }
+
       </div>
     </div>
   </div>
-</a>

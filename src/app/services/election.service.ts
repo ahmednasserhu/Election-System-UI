@@ -22,8 +22,7 @@ export class ElectionService {
   }
   getSpecificElection(id: any): Observable<any> {
     return this._HttpClient
-      .get<{ results: any }>(`http://localhost:3000/results/election/${id}`)
-      .pipe(map((response) => response.results));
+      .get<{ results: any }>(`http://localhost:3000/elections/${id}`)
   }
 
   getStatusElection(status:any): Observable<any> {

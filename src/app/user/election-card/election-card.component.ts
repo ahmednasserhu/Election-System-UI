@@ -6,11 +6,20 @@ import {
   OnChanges,
   SimpleChanges,
   AfterViewInit,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { Chart, ChartConfiguration, registerables } from 'chart.js';
 import { Result } from '../../interface/result';
+import { jwtDecode, JwtPayload } from 'jwt-decode';
+
 Chart.register(...registerables);
+
+interface CandidateJwtPayload extends JwtPayload {
+  candidate: {
+    _id: string;
+  };
+}
 
 @Component({
   selector: 'app-election-card',
@@ -22,34 +31,37 @@ Chart.register(...registerables);
 export class ElectionCardComponent
   implements OnDestroy, OnChanges, AfterViewInit
 {
+  currentDate!: Date;
+  statusDate!: string;
   @Input() result!: any;
+  alreadyCandidate!: boolean;
   private chart: Chart | undefined;
-  currentDate !: Date | number;
 
-  constructor(private router: Router) {
-      this.currentDate = Date.now();
-      console.log(this.currentDate)
+  constructor(
+    private router: Router,
+    private cdr: ChangeDetectorRef,
+  ) {
+    this.currentDate = new Date();
+    console.log(this.currentDate);
   }
 
-  goToDetails(): void {
-    this.router.navigate([
-      '/user',
-      'election-details',
-      this.result.electionId._id,
-    ]);
-  }
-
-  ngAfterViewInit(): void {
-    this.renderChart();
+  ngOnInit(): void {
+    this.updateCandidateStatusAndDate();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['result'] && !changes['result'].firstChange) {
+      this.updateCandidateStatusAndDate();
       if (this.chart) {
         this.chart.destroy();
+        this.chart = undefined;
       }
       this.renderChart();
     }
+  }
+
+  ngAfterViewInit(): void {
+    this.renderChart();
   }
 
   ngOnDestroy(): void {
@@ -58,17 +70,36 @@ export class ElectionCardComponent
     }
   }
 
+  updateCandidateStatusAndDate(): void {
+    let token = localStorage.getItem('token') || '';
+    let decodedToken = jwtDecode<CandidateJwtPayload>(token);
+    this.alreadyCandidate = this.result.candidates.some(
+      (candidate: any) => decodedToken?.candidate?._id === candidate?._id,
+    );
+    this.statusDate =
+      this.currentDate < new Date(this.result.startdate)
+        ? 'Pending'
+        : this.currentDate > new Date(this.result.enddate)
+          ? 'Finished'
+          : 'In-progress';
+
+    this.cdr.detectChanges(); // Ensure the view is updated before rendering the chart
+  }
+
+  goToDetails(): void {
+    this.router.navigate(['/user', 'election-details', this.result._id]);
+  }
+
+  navigateToApplyForm() {
+    this.router.navigate(['/user', 'apply', this.result._id]);
+  }
+
   renderChart(): void {
-    if (
-      !this.result ||
-      !this.result.electionId ||
-      !this.result.electionId._id
-    ) {
-      console.warn('Missing or invalid data to render chart.');
+    if (!this.result) {
       return;
     }
 
-    const canvasId = `barchart-${this.result.electionId._id}`;
+    const canvasId = `barchart-${this.result._id}`;
     console.log('Canvas ID:', canvasId);
 
     const canvasElement = document.getElementById(
@@ -80,17 +111,19 @@ export class ElectionCardComponent
       console.warn(`Canvas element with ID ${canvasId} not found.`);
       return;
     }
+
     let delayed: any;
     const chartConfig: ChartConfiguration = {
       type: 'bar',
       data: {
         labels: this.result.candidates.map(
-          (candidate :any) => candidate.candidateName,
+          (candidate: any) =>
+            `${candidate.citizenDetails.firstName} ${candidate.citizenDetails.lastName}`,
         ),
         datasets: [
           {
-            label: this.result.electionId.title,
-            data: this.result.candidates.map((candidate :any) =>
+            label: this.result.title,
+            data: this.result.candidates.map((candidate: any) =>
               Number(candidate.percentage),
             ),
             backgroundColor: 'rgba(75, 192, 192, 0.2)',
