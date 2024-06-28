@@ -48,7 +48,6 @@ export class ElectionComponent implements OnInit {
     this.selectedElection = { ...election };
     const editModal = new bootstrap.Modal(document.getElementById('editModal')!);
     editModal.show();
-
   }
 
   deleteElection(id: string): void {
@@ -65,20 +64,17 @@ export class ElectionComponent implements OnInit {
           this.deleteElectionId = null;
           const deleteModal = bootstrap.Modal.getInstance(document.getElementById('deleteModal')!);
           deleteModal?.hide();
-          this.toastr.success('Election Deleted successfully');
-
+          this.toastr.success('Election deleted successfully.');
         },
-        error: (err) => console.error('Delete error', err),
+        error: (err) => {
+          console.error('Delete error', err);
+          this.toastr.error('Failed to delete election.');
+        },
       });
     }
   }
 
   saveElection(): void {
-    if (!this.newElection.title && !this.newElection.description && !this.newElection.startdate && !this.newElection.enddate) {
-      this.toastr.error('All fields are required.', 'Validation Error');
-      return;
-    }
-  
     if (!this.newElection.title || !this.newElection.description || !this.newElection.startdate || !this.newElection.enddate) {
       this.toastr.error('Please fill in all fields.', 'Validation Error');
       return;
@@ -86,6 +82,7 @@ export class ElectionComponent implements OnInit {
 
     this.dateError = null; 
     this.endDateError = null; 
+
     this.electionService.createElection(this.newElection).subscribe({
       next: () => {
         this.loadElections();
@@ -111,20 +108,17 @@ export class ElectionComponent implements OnInit {
         this.clearSelectedElectionForm();
         const editModal = bootstrap.Modal.getInstance(document.getElementById('editModal')!);
         editModal?.hide();
-        this.toastr.success('Election Edited successfully');
-
+        this.toastr.success('Election updated successfully.');
       },
       error: (err) => {
         if (err.error.message) {
-          this.toastr.success('Election Failed to be Edited');
           this.handleServerError(err.error.message);
         } else {
-          console.error('Update error', err);
+          this.toastr.error('Failed to update election.');
         }
       },
     });
   }
-
 
   clearNewElectionForm(): void {
     this.newElection = this.initializeElection();
@@ -140,7 +134,9 @@ export class ElectionComponent implements OnInit {
   }
 
   handleServerError(errorMessage: string): void {
-    if (errorMessage.includes('Start date must be at least one day after the current date.')) {
+    if (errorMessage.includes('duplicate key error')) {
+      this.toastr.error('An election with this title already exists.', 'Duplicate Title');
+    } else if (errorMessage.includes('Start date must be at least one day after the current date.')) {
       this.dateError = errorMessage;
     } else if (errorMessage.includes('End date must be at least one day after the start date.')) {
       this.endDateError = errorMessage;
