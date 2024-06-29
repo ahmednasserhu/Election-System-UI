@@ -7,3 +7,42 @@
 .btn-warning {
   margin-left: 10px;
 }
+/* Center the pagination controls */
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+/* Style the pagination buttons */
+.pagination-controls .ng-pagination li {
+  display: inline-block;
+  margin: 0 5px;
+}
+
+.pagination-controls .ng-pagination li a {
+  color: white; /* Set text color */
+  background-color: #212529; /* Set background color */
+  border: 1px solid #343a40; /* Set border color */
+  padding: 5px 10px;
+  border-radius: 3px;
+  text-decoration: none;
+}
+
+.pagination-controls .ng-pagination li a:hover {
+  background-color: #343a40;
+  color: white;
+}
+
+.pagination-controls .ng-pagination li.active a {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.pagination-controls .ng-pagination li.disabled a {
+  color: #6c757d;
+  background-color: #343a40;
+  border-color: #343a40;
+  pointer-events: none;
+}
