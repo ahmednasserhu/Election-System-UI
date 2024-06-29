@@ -100,10 +100,26 @@ export const routes: Routes = [
     canActivate: [candidateGuard],
     
   },
+    {
+    path: "admin",
+    component: AdminComponent,
+    canActivate: [authGuard],
+    children: [
+        { path: "", component: HomeComponentAdmin },
+        { path: "candidate", component: CandidateComponent },
+        { path: "election", component: ElectionComponent },
+        { path: "citizen", component: CitizenComponent },
+        { path: "profile", component: AdminProfileComponent },
+        { path: "add-admin", component: AddAdminComponent },
+       
+        { path: "**", component: PageNotFoundComponent },
+    
+    ],
+},
   {
     path: "admin",
     component: AdminComponent,
-    // canActivate: [authGuard],
+    canActivate: [authGuard],
     children: [
         { path: "", component: HomeComponentAdmin },
         { path: "candidate", component: CandidateComponent },
