@@ -13,6 +13,7 @@ import {
   PercentPipe,
 } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ElectionService } from '../../Services/election.service'; // Ensure this service exists and is correctly implemented
 
 @Component({
   selector: 'app-candidate',
@@ -34,16 +35,22 @@ export class CandidateComponent implements OnInit {
   candidates: Candidate[] = [];
   pendingCandidates: Candidate[] = [];
   approvedCandidates: Candidate[] = [];
+  elections: Election[] = [];
   selectedCandidate: Candidate | undefined;
   rejectComment: string = '';
 
   @ViewChild('candidateModal') candidateModal: ElementRef | undefined;
   @ViewChild('rejectModal') rejectModal: ElementRef | undefined;
 
-  constructor(private candidateService: CandidateService, private toastr: ToastrService) {}
+  constructor(
+    private candidateService: CandidateService,
+    private electionService: ElectionService, // Add ElectionService
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit(): void {
     this.loadCandidates();
+    this.loadElections(); // Fetch elections on initialization
   }
 
   loadCandidates(): void {
@@ -58,6 +65,26 @@ export class CandidateComponent implements OnInit {
       },
     );
   }
+
+  loadElections(): void {
+    this.electionService.getElections().subscribe(
+      (data) => {
+        this.elections = data;
+      },
+      (error) => {
+        console.error('Error loading elections:', error);
+      },
+    );
+  }
+
+  getElectionTitle(electionId?: string): string {
+    if (!electionId) {
+      return 'Unknown Election';
+    }
+    const election = this.elections.find(e => e._id === electionId);
+    return election ? election.title : 'Unknown Election';
+  }
+  
 
   approveCandidate(candidate: Candidate): void {
     this.candidateService.approveCandidate(candidate._id).subscribe(
