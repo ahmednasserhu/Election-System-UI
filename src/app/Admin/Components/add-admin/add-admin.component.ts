@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormErrorMsgComponent } from '../../../form-error/form-error.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ToastrService } from 'ngx-toastr';
@@ -12,6 +12,7 @@ import {
   ValidatorFn,
   AbstractControl,
   ValidationErrors,
+  NgForm,
 } from '@angular/forms';
 import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
 import { faFileImage } from '@fortawesome/free-solid-svg-icons';
@@ -32,6 +33,7 @@ import { HttpErrorResponse } from '@angular/common/http';
   styleUrls: ['./add-admin.component.css'],
 })
 export class AddAdminComponent {
+  @ViewChild('addAdminForm') addAdminForm!: NgForm;
   registerForm: FormGroup;
   passwordVisible = false;
   verifyPasswordVisible = false;
@@ -143,6 +145,8 @@ export class AddAdminComponent {
         (res) => {
           this.loading = false;
           this.toastr.success('Admin Added Succuflly');
+          this.clearNewAdminForm();
+
         },
         (error) => {
           this.loading = false;
@@ -204,4 +208,12 @@ export class AddAdminComponent {
         : 'password';
     }
   }
+  clearNewAdminForm(): void {
+    this.registerForm.reset();
+    this.selectedImage = null;
+    if (this.addAdminForm) {
+      this.addAdminForm.resetForm();
+    }
+  }
+  
 }
