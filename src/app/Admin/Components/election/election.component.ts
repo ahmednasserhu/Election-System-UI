@@ -49,11 +49,11 @@ export class ElectionComponent implements OnInit {
   }
 
   loadElections(): void {
-    this.electionService
-      .getElections()
-      .subscribe((data) => (this.elections = data));
+    this.electionService.getElections().subscribe((data) => {
+      console.log(data); 
+      this.elections = data;
+    });
   }
-
   editElection(election: Election): void {
     // Make a copy of the election object to avoid mutating the original
     this.selectedElection = { ...election };
