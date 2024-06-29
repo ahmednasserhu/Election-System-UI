@@ -7,18 +7,21 @@ import {
   SimpleChanges,
   AfterViewInit,
   ChangeDetectorRef,
+  ViewChild,
 } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { Chart, ChartConfiguration, registerables } from 'chart.js';
 import { Result } from '../../interface/result';
 import { jwtDecode, JwtPayload } from 'jwt-decode';
-import {  inject, TemplateRef } from '@angular/core';
+import { inject, TemplateRef } from '@angular/core';
 
 import {
   ModalDismissReasons,
   NgbDatepickerModule,
   NgbModal,
 } from '@ng-bootstrap/ng-bootstrap';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { TestimonialModalComponent } from '../../Modals/testimonial-modal/testimonial-modal.component';
 
 Chart.register(...registerables);
 
@@ -31,25 +34,32 @@ interface CandidateJwtPayload extends JwtPayload {
 @Component({
   selector: 'app-election-card',
   standalone: true,
-  imports: [DatePipe, CommonModule, NgbDatepickerModule],
+  imports: [DatePipe, CommonModule, NgbDatepickerModule, TestimonialModalComponent],
   templateUrl: './election-card.component.html',
   styleUrls: ['./election-card.component.css'],
 })
 export class ElectionCardComponent
-  implements OnDestroy, OnChanges, AfterViewInit
-{
+  implements OnDestroy, OnChanges, AfterViewInit {
+  testimonialForm: FormGroup;
   currentDate!: Date;
   statusDate!: string;
   @Input() result!: any;
   alreadyCandidate!: boolean;
   private chart: Chart | undefined;
+  @ViewChild(TestimonialModalComponent) testimonialModal!: TestimonialModalComponent;
+
 
   constructor(
     private router: Router,
     private cdr: ChangeDetectorRef,
+    private modalService: NgbModal,
+    private fb: FormBuilder
   ) {
     this.currentDate = new Date();
     console.log(this.currentDate);
+    this.testimonialForm = this.fb.group({
+      message: ['', Validators.required, Validators.maxLength(255), Validators.min(3)]
+    });
   }
 
   ngOnInit(): void {
@@ -87,16 +97,24 @@ export class ElectionCardComponent
       this.currentDate < new Date(this.result.startdate)
         ? 'Pending'
         : this.currentDate > new Date(this.result.enddate) ||
-            (this.currentDate > new Date(this.result.startdate) &&
-              this.currentDate < new Date(this.result.enddate) &&
-              this.result.candidates.length === 1)
+          (this.currentDate > new Date(this.result.startdate) &&
+            this.currentDate < new Date(this.result.enddate) &&
+            this.result.candidates.length === 1)
           ? 'Finished'
           : 'In-progress';
 
     this.cdr.detectChanges(); // Ensure the view is updated before rendering the chart
   }
 
-  addTestimonial() {}
+  addTestimonial(content: TemplateRef<any>) {
+    if (this.testimonialModal) {
+      this.testimonialModal.open(content);
+    } else {
+      console.error('Testimonial modal is not initialized.');
+    }
+  }
+  
+
 
   goToDetails(): void {
     this.router.navigate(['/user', 'election-details', this.result._id]);

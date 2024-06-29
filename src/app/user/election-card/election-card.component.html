@@ -49,7 +49,9 @@
          @if(this.statusDate === 'In-progress'){
            <button class="btn mybtn" (click)="this.goToDetails()">Vote</button>
          }
-          <button class="btn mybtn" (click)="this.addTestimonial()">Tell us your opinion <i class="fas fa-heart"></i></button>
+         <app-testimonial-modal #testimonialModal [testimonialForm]="testimonialForm"></app-testimonial-modal>
+          <button class="btn mybtn" (click)="addTestimonial(testimonialModal)">Tell us your opinion <i class="fas fa-heart"></i></button>
+         
         </div>
       </div>
       <div class="col-md-8">
@@ -72,10 +74,3 @@
       </div>
     </div>
   </div>
-
-
-
-
-
-
-  
