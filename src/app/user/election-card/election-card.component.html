@@ -1,81 +1,160 @@
-  <div class="card mb-3 my-container">
-    <div class="row p-4">
-      <div class="card-body col-md-4">
-        <h5 class="card-title">
-          {{ result.title }}
-          <span
+<div class="card mb-3 my-container">
+  <div class="row p-4">
+    <div class="card-body col-md-4">
+      <h5 class="card-title">
+        {{ result.title }}
+        <span
           [class]="
-             this.statusDate === 'Pending' || this.statusDate === 'Finished' 
+            this.statusDate === 'Pending' || this.statusDate === 'Finished'
               ? 'bg-danger badge ms-1'
               : 'bg-success badge ms-1'
           "
         >
-                {{this.statusDate}}
+          {{ this.statusDate }}
         </span>
-        </h5>
-        <ng-container *ngIf="result.candidates.length">
-          <h6 class="card-subtitle mb-2 text-muted my-votes">
-            <i class="fas fa-users me-2"></i>
-            {{ result.candidates.length }}
-          </h6>
-        </ng-container>
-        <p class="card-text mb-1">
-          <i class="fas fa-file-code me-2"></i>
-          {{ result.description }}
-        </p>
-        <p class="card-text mb-1">
-          <i class="fas fa-calendar-week me-2"></i>
-          <span class="sub-head me-2">Start Date</span
-          >{{ result.startdate | date }}
-        </p>
-        <p class="card-text mb-1">
-          <i class="fas fa-calendar-week me-2"></i>
-          <span class="sub-head me-2">End Date</span
-          >{{ result.enddate | date }}
-        </p>
-        <div class="contain-btns d-flex gap-2 mt-4">
-           @if(this.statusDate === 'Pending' && !this.alreadyCandidate){
+      </h5>
+      <ng-container *ngIf="result.candidates.length">
+        <h6 class="card-subtitle mb-2 text-muted my-votes">
+          <i class="fas fa-users me-2"></i>
+          {{ result.candidates.length }}
+        </h6>
+      </ng-container>
+      <p class="card-text mb-1">
+        <i class="fas fa-file-code me-2"></i>
+        {{ result.description }}
+      </p>
+      <p class="card-text mb-1">
+        <i class="fas fa-calendar-week me-2"></i>
+        <span class="sub-head me-2">Start Date</span
+        >{{ result.startdate | date }}
+      </p>
+      <p class="card-text mb-1">
+        <i class="fas fa-calendar-week me-2"></i>
+        <span class="sub-head me-2">End Date</span>{{ result.enddate | date }}
+      </p>
+      <div class="contain-btns d-flex gap-2 mt-4">
+        <ng-container
+          *ngIf="this.statusDate === 'Pending' && !this.alreadyCandidate"
+        >
           <button class="btn mybtn" (click)="navigateToApplyForm()">
             Want to be a candidate
           </button>
-        }
-        @if(this.statusDate === 'Pending' && this.alreadyCandidate){
-          <p>
-            You have already apply for this election as candidate!
-          </p>
-        }
-          <!-- <button class="btn mybtn" >Want to be a candidate</button> -->
-          
-         @if(this.statusDate === 'In-progress'){
-           <button class="btn mybtn" (click)="this.goToDetails()">Vote</button>
-         }
-          <button class="btn mybtn" (click)="this.addTestimonial()">Tell us your opinion <i class="fas fa-heart"></i></button>
-        </div>
-      </div>
-      <div class="col-md-8">
-              @if(this.statusDate === 'Finished'){
-                <canvas [id]="'barchart-' + result._id"></canvas>
-              }
-              @else if(this.statusDate === 'In-progress'){
-                <div class="d-flex justify-content-center align-items-center w-100 h-100">
-                  <p>Statistics will be displyed after election finished</p>
-                </div>
-              }
-              @else if(this.statusDate === 'Pending'){
-                <div class="d-flex justify-content-center align-items-center w-100 h-100">
-                  <p>You will be able to vote after election starts</p>
-                </div>
-              }
-
-
-
+        </ng-container>
+        <ng-container
+          *ngIf="this.statusDate === 'Pending' && this.alreadyCandidate"
+        >
+          <p>You have already applied for this election as a candidate!</p>
+        </ng-container>
+        <ng-container *ngIf="this.statusDate === 'In-progress'">
+          <button class="btn mybtn" (click)="this.goToDetails()">Vote</button>
+        </ng-container>
+        <button
+          class="btn mybtn"
+          (click)="addTestimonial(testimonialModal, result._id)"
+        >
+          Tell us your opinion <i class="fas fa-heart"></i>
+        </button>
       </div>
     </div>
+    <div class="col-md-8">
+      <ng-container *ngIf="this.statusDate === 'Finished'">
+        <canvas [id]="'barchart-' + result._id"></canvas>
+      </ng-container>
+      <ng-container *ngIf="this.statusDate === 'In-progress'">
+        <div
+          class="d-flex justify-content-center align-items-center w-100 h-100"
+        >
+          <p>Statistics will be displayed after the election is finished</p>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="this.statusDate === 'Pending'">
+        <div
+          class="d-flex justify-content-center align-items-center w-100 h-100"
+        >
+          <p>You will be able to vote after the election starts</p>
+        </div>
+      </ng-container>
+    </div>
   </div>
+</div>
 
+<!-- Modal Template -->
+<ng-template #testimonialModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Add Testimonial</h4>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="testimonialForm">
+      <div class="form-group">
+        <div class="input-container ic1">
+          <!-- <label class="iLabel" for="message">Testimonial</label> -->
+          <textarea
+            placeholder=""
+            autocomplete="off"
+            class="form-control"
+            id="message"
+            formControlName="message"
+            rows="3"
+            name="message"
+          ></textarea>
 
-
-
-
-
-  
+          <div
+            *ngIf="
+              testimonialForm.controls['message'].invalid &&
+              (testimonialForm.controls['message'].dirty ||
+                testimonialForm.controls['message'].touched)
+            "
+          >
+            <app-form-error
+              [formInput]="testimonialForm.controls['message']"
+              [validationType]="'required'"
+              [errorMsg]="'Required Field'"
+            ></app-form-error>
+            <app-form-error
+              [formInput]="testimonialForm.controls['message']"
+              [validationType]="'minlength'"
+              [errorMsg]="'Minimum length is 10 characters.'"
+            ></app-form-error>
+            <app-form-error
+              [formInput]="testimonialForm.controls['message']"
+              [validationType]="'maxlength'"
+              [errorMsg]="'Maximum length is 255 characters.'"
+            ></app-form-error>
+            <app-form-error
+              [formInput]="testimonialForm.controls['message']"
+              [validationType]="'pattern'"
+              [errorMsg]="'Message must start with a letter.'"
+            ></app-form-error>
+          </div>
+        </div>
+      </div>
+      <button
+        type="submit"
+        class="btn btn-primary mt-2"
+        [class.btn-primary]="testimonialForm.valid"
+        [class.btn-secondary]="testimonialForm.invalid"
+        [disabled]="testimonialForm.invalid"
+        (click)="sendTestimonial()"
+      >
+        Submit
+      </button>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-secondary"
+      (click)="modal.close('Close click')"
+    >
+      Close
+    </button>
+  </div>
+</ng-template>

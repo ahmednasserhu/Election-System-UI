@@ -7,18 +7,24 @@ import {
   SimpleChanges,
   AfterViewInit,
   ChangeDetectorRef,
+  ViewChild,
 } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { Chart, ChartConfiguration, registerables } from 'chart.js';
 import { Result } from '../../interface/result';
 import { jwtDecode, JwtPayload } from 'jwt-decode';
-import {  inject, TemplateRef } from '@angular/core';
+import { inject, TemplateRef } from '@angular/core';
 
 import {
   ModalDismissReasons,
   NgbDatepickerModule,
   NgbModal,
 } from '@ng-bootstrap/ng-bootstrap';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'; // Correct import
+import { FormErrorMsgComponent } from '../../form-error/form-error.component';
+import { TestimonialService } from '../../services/testimonial.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { ToastrService } from 'ngx-toastr';
 
 Chart.register(...registerables);
 
@@ -31,25 +37,38 @@ interface CandidateJwtPayload extends JwtPayload {
 @Component({
   selector: 'app-election-card',
   standalone: true,
-  imports: [DatePipe, CommonModule, NgbDatepickerModule],
+  imports: [DatePipe, CommonModule, NgbDatepickerModule, ReactiveFormsModule, FormErrorMsgComponent],
   templateUrl: './election-card.component.html',
   styleUrls: ['./election-card.component.css'],
 })
 export class ElectionCardComponent
-  implements OnDestroy, OnChanges, AfterViewInit
-{
+  implements OnDestroy, OnChanges, AfterViewInit {
+  testimonialForm: FormGroup;
   currentDate!: Date;
   statusDate!: string;
   @Input() result!: any;
   alreadyCandidate!: boolean;
   private chart: Chart | undefined;
+  electionId!: string;
 
   constructor(
     private router: Router,
     private cdr: ChangeDetectorRef,
+    private modalService: NgbModal,
+    private fb: FormBuilder,
+    private testimonialService: TestimonialService,
+    private toastr: ToastrService
   ) {
     this.currentDate = new Date();
     console.log(this.currentDate);
+    this.testimonialForm = this.fb.group({
+      message: ['', [
+        Validators.required,
+        Validators.maxLength(255),
+        Validators.minLength(10),
+        Validators.pattern('^[A-Za-z].*')
+      ]]
+    });
   }
 
   ngOnInit(): void {
@@ -87,16 +106,45 @@ export class ElectionCardComponent
       this.currentDate < new Date(this.result.startdate)
         ? 'Pending'
         : this.currentDate > new Date(this.result.enddate) ||
-            (this.currentDate > new Date(this.result.startdate) &&
-              this.currentDate < new Date(this.result.enddate) &&
-              this.result.candidates.length === 1)
+          (this.currentDate > new Date(this.result.startdate) &&
+            this.currentDate < new Date(this.result.enddate) &&
+            this.result.candidates.length === 1)
           ? 'Finished'
-          : 'In-progress';
+        : 'In-progress';
 
     this.cdr.detectChanges(); // Ensure the view is updated before rendering the chart
   }
 
-  addTestimonial() {}
+  addTestimonial(content: TemplateRef<any>, electionId: string) {
+    this.electionId = electionId;
+    this.modalService.open(content, { centered: true });
+  }
+
+  sendTestimonial() {
+    if (this.testimonialForm.valid) {
+      const formData = {
+        ...this.testimonialForm.value,
+        electionId: this.electionId
+      };
+      console.log('Form Data:', formData);
+      this.testimonialService.sendTestimonial(formData).subscribe(
+        (res) => {
+          if (res) {
+            console.log(res);
+            this.toastr.success('Testimonial submitted successfully!');
+            this.testimonialForm.reset(); // Reset the form
+            // this.modalService.dismissAll(); // Close the modal
+          }
+        },
+        (error: HttpErrorResponse) => {
+          console.log(error);
+          this.toastr.error('Failed to submit testimonial. Please try again.');
+        }
+      );
+    } else {
+      this.toastr.warning('Please fill out the form correctly before submitting.');
+    }
+  }
 
   goToDetails(): void {
     this.router.navigate(['/user', 'election-details', this.result._id]);
