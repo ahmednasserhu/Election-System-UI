@@ -33,16 +33,16 @@
       <div class="approved-list mt-3">
         <h4 class="text-light">Approved Candidates</h4>
         <ul class="list-group text-light">
-          <li class="list-group-item text-light border-black" style="background-color: rgb(31,31,31);" *ngFor="let candidate of approvedCandidates | paginate: { itemsPerPage: 5, currentPage: page }">
+          <li class="list-group-item text-light border-black" style="background-color: rgb(31,31,31);" *ngFor="let candidate of approvedCandidates">
             <span (click)="openCandidateModal(candidate)" style="cursor: pointer;">
               <img *ngIf="candidate.logoImage" [src]="candidate.logoImage" alt="{{ candidate.logoName }}" style="max-width: 50px; max-height: 50px; margin-right: 10px;" />
               {{ candidate.logoName }}
             </span>
           </li>
         </ul>
-        <div class="pagination-container">
+        <!-- <div class="pagination-container">
           <pagination-controls class="pagination-controls" (pageChange)="page = $event"></pagination-controls>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
