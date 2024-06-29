@@ -47,11 +47,21 @@ export class ElectionComponent implements OnInit {
   }
 
   editElection(election: Election): void {
+    // Make a copy of the election object to avoid mutating the original
     this.selectedElection = { ...election };
+  
+    // Convert dates to proper format (YYYY-MM-DD) if they are not already formatted
+    if (this.selectedElection.startdate) {
+      this.selectedElection.startdate = new Date(this.selectedElection.startdate).toISOString().split('T')[0];
+    }
+    if (this.selectedElection.enddate) {
+      this.selectedElection.enddate = new Date(this.selectedElection.enddate).toISOString().split('T')[0];
+    }
+  
     const editModal = new bootstrap.Modal(document.getElementById('editModal')!);
     editModal.show();
   }
-
+  
   deleteElection(id: string): void {
     this.deleteElectionId = id;
     const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal')!);

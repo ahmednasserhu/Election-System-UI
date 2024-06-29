@@ -59,8 +59,8 @@
               {{ selectedCandidate?.criminalRecord }}
             </a>
          </p>
-          <!-- <p><strong>Election: </strong> {{ selectedCandidate?.election?.title }}</p> -->
-          <p><strong>Status: </strong> {{ selectedCandidate?.status }}</p>
+         <p><strong>Election: </strong> {{ getElectionTitle(selectedCandidate?.electionId) }}</p>
+         <p><strong>Status: </strong> {{ selectedCandidate?.status }}</p>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" (click)="closeCandidateModal()">Close</button>
