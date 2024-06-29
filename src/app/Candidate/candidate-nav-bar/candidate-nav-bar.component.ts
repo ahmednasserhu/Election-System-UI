@@ -3,7 +3,6 @@ import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/rou
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { jwtDecode } from 'jwt-decode';
 
-
 @Component({
   selector: 'app-candidate-nav-bar',
   standalone: true,
@@ -24,9 +23,8 @@ export class CandidateNavBarComponent {
     console.log(this.userId);
   }
 
-  logout(){
-    localStorage.removeItem("token");
-    this.router.navigate(["/"]);
+  logout() {
+    localStorage.removeItem('token');
+    this.router.navigate(['/']);
   }
-
 }

@@ -1,34 +1,34 @@
 /* src/app/candidates/candidate-management/candidate-management.component.css */
 .candidate-management {
-    padding: 20px;
-    background-color: #444444;
-  }
-  
-  .candidate-list,
-  .candidate-form,
-  .bulk-upload,
-  .candidate-analytics {
-    margin-top: 20px;
-  }
-  .modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .modal-header .close {
-    margin: 0;
-    padding: 0;
-  }
-  
-  .modal-header .modal-title {
-    margin-right: auto; /* Pushes the title to the left */
-  }
-  .break-link {
-    white-space: pre-wrap; /* To handle preformatted text */
-    word-break: break-all; /* Break words when necessary */
-  }
-  /* Center the pagination controls */
+  padding: 20px;
+  background-color: #444444;
+}
+
+.candidate-list,
+.candidate-form,
+.bulk-upload,
+.candidate-analytics {
+  margin-top: 20px;
+}
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header .close {
+  margin: 0;
+  padding: 0;
+}
+
+.modal-header .modal-title {
+  margin-right: auto; /* Pushes the title to the left */
+}
+.break-link {
+  white-space: pre-wrap; /* To handle preformatted text */
+  word-break: break-all; /* Break words when necessary */
+}
+/* Center the pagination controls */
 .pagination-container {
   display: flex;
   justify-content: center;

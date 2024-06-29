@@ -9,7 +9,7 @@ import { Citizen } from '../Interfaces/citizen';
 })
 export class CitizenService {
   private apiUrl = 'http://localhost:3000/citizens/';
-  private statusUrl = 'http://localhost:3000/citizens/status'; 
+  private statusUrl = 'http://localhost:3000/citizens/status';
   // Adjust as per your API endpoint structure
   private adminUrl = 'http://127.0.0.1:3000/citizens/newAdmin';
   private httpOptions = {
@@ -22,9 +22,9 @@ export class CitizenService {
   }
 
   addAdmin(adminData: FormData): Observable<any> {
-    return this.http.post<any>(this.adminUrl, adminData)
+    return this.http.post<any>(this.adminUrl, adminData);
   }
-  
+
   getCitizens(): Observable<Citizen[]> {
     return this.http.get<any>(this.apiUrl).pipe(
       map((response) => response.paginationResults.results as Citizen[]),

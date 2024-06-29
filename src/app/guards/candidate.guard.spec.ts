@@ -4,7 +4,7 @@
 // import { candidateGuard } from './candidate.guard';
 
 // describe('candidateGuard', () => {
-//   const executeGuard: CanActivateFn = (...guardParameters) => 
+//   const executeGuard: CanActivateFn = (...guardParameters) =>
 //       TestBed.runInInjectionContext(() => candidateGuard(...guardParameters));
 
 //   beforeEach(() => {

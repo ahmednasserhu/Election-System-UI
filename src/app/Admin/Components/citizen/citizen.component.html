@@ -1,13 +1,40 @@
 <div class="container shadow p-3 ms-5">
-  <h3 style="font-family: Verdana, Geneva, Tahoma, sans-serif" class="pt-3 text-light">Citizens Management</h3>
+  <h3
+    style="font-family: Verdana, Geneva, Tahoma, sans-serif"
+    class="pt-3 text-light"
+  >
+    Citizens Management
+  </h3>
   <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
 
   <ul class="nav nav-tabs" id="citizenTabs" role="tablist">
     <li class="nav-item" role="presentation">
-      <button class="nav-link active" id="list-tab" data-bs-toggle="tab" data-bs-target="#list" type="button" role="tab" aria-controls="list" aria-selected="true">List of Citizens</button>
+      <button
+        class="nav-link active"
+        id="list-tab"
+        data-bs-toggle="tab"
+        data-bs-target="#list"
+        type="button"
+        role="tab"
+        aria-controls="list"
+        aria-selected="true"
+      >
+        List of Citizens
+      </button>
     </li>
     <li class="nav-item" role="presentation">
-      <button class="nav-link" id="blocked-tab" data-bs-toggle="tab" data-bs-target="#blocked" type="button" role="tab" aria-controls="blocked" aria-selected="false">Blocked Citizens</button>
+      <button
+        class="nav-link"
+        id="blocked-tab"
+        data-bs-toggle="tab"
+        data-bs-target="#blocked"
+        type="button"
+        role="tab"
+        aria-controls="blocked"
+        aria-selected="false"
+      >
+        Blocked Citizens
+      </button>
     </li>
   </ul>
 
@@ -21,7 +48,12 @@
           <li *ngFor="let citizen of citizens | paginate: { itemsPerPage: itemsPerPage, currentPage: page }" class="list-group-item d-flex justify-content-between align-items-center text-light border-black" style="background-color: rgb(31,31,31)">
             <span>{{ citizen.firstName }} {{ citizen.lastName }}</span>
             <span>
-              <button class="btn btn-sm btn-warning" (click)="blockCitizen(citizen, 'blocked')">Block</button>
+              <button
+                class="btn btn-sm btn-warning"
+                (click)="blockCitizen(citizen, 'blocked')"
+              >
+                Block
+              </button>
             </span>
           </li>
         </ul>
@@ -43,7 +75,13 @@
               <span class="badge bg-danger">Blocked</span>
             </span>
             <span>
-              <button *ngIf="citizen.status === 'blocked'" class="btn btn-sm btn-success" (click)="blockCitizen(citizen, 'unblocked')">Unblock</button>
+              <button
+                *ngIf="citizen.status === 'blocked'"
+                class="btn btn-sm btn-success"
+                (click)="blockCitizen(citizen, 'unblocked')"
+              >
+                Unblock
+              </button>
             </span>
           </li>
         </ul>

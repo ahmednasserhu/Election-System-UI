@@ -1,7 +1,7 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import {jwtDecode} from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 
 export const authGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
@@ -13,7 +13,7 @@ export const authGuard: CanActivateFn = (route, state) => {
       const decodedToken: any = jwtDecode(token);
       const role = decodedToken.citizen.role;
       if (role === 'admin') {
-        return true; 
+        return true;
       } else {
         toastr.error('Not Authorized To Access Admin Pages');
         localStorage.removeItem('token');
@@ -28,6 +28,6 @@ export const authGuard: CanActivateFn = (route, state) => {
   localStorage.removeItem('token');
   localStorage.removeItem('role');
   toastr.error('Not Authorized To Access Admin Pages');
-  router.navigate(['/login']); 
+  router.navigate(['/login']);
   return false;
 };

@@ -20,14 +20,14 @@ export const userGuardGuard: CanActivateFn = (route, state) => {
   } else {
     try {
       const codedToken = jwtDecode<CandidateJwtPayload>(undecodeToken);
-      console.log('me',codedToken.citizen.role);
-      if(codedToken.citizen.role !== 'admin') return true
+      console.log('me', codedToken.citizen.role);
+      if (codedToken.citizen.role !== 'admin') return true;
       else {
         toastr.error(
           'You are admin and can not be treated as user instead you can easily register as user',
         );
         router.navigate(['/register']);
-        return false
+        return false;
       }
     } catch (error) {
       router.navigate(['/login']);

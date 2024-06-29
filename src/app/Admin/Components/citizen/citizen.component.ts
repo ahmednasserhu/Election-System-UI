@@ -41,7 +41,9 @@ export class CitizenComponent implements OnInit {
   loadBlockedCitizens(): void {
     this.citizenService.getCitizens().subscribe(
       (data) => {
-        this.blockedCitizens = data.filter((citizen) => citizen.status === 'blocked');
+        this.blockedCitizens = data.filter(
+          (citizen) => citizen.status === 'blocked',
+        );
       },
       (error) => {
         this.error = 'Error loading blocked citizens: ' + error.message;
