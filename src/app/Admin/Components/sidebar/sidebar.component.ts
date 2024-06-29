@@ -16,7 +16,7 @@ interface TokenPayload {
   standalone: true,
   imports: [CommonModule, RouterLink],
   templateUrl: './sidebar.component.html',
-  styleUrls: ['./sidebar.component.css'], // Correct property name
+  styleUrls: ['./sidebar.component.css'],
 })
 export class SidebarComponent implements OnInit {
   isClosed = false;
@@ -24,6 +24,7 @@ export class SidebarComponent implements OnInit {
   adminImage: string | null = '';
 
   constructor(private router: Router) {}
+
   menuItems = [
     { name: 'Home', icon: 'home', route: '/admin' },
     { name: 'Candidates', icon: 'tachometer', route: '/admin/candidate' },
@@ -37,7 +38,7 @@ export class SidebarComponent implements OnInit {
     if (token) {
       const decodedToken = jwtDecode<TokenPayload>(token);
       console.log(decodedToken);
-     
+
       this.adminName = decodedToken.citizen.firstName;
       this.adminImage = decodedToken.citizen.image;
     }
@@ -48,9 +49,12 @@ export class SidebarComponent implements OnInit {
     localStorage.removeItem('role');
     this.router.navigate(['/login']);
   }
-  
 
   toggleSidebar() {
     this.isClosed = !this.isClosed;
+  }
+
+  closeSidebar() {
+    this.isClosed = true;
   }
 }
