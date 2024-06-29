@@ -17,7 +17,7 @@
       <div class="election-list mt-3">
         <h4 class="text-light">Election List</h4>
         <ul class="list-group">
-          <li class="list-group-item d-flex justify-content-between align-items-center text-light border-black" style="background-color: rgb(31,31,31)" *ngFor="let election of elections">
+          <li class="list-group-item d-flex justify-content-between align-items-center text-light border-black" style="background-color: rgb(31,31,31)" *ngFor="let election of elections | paginate: { itemsPerPage: 5, currentPage: page }">
             <span>{{ election.title }} ({{ election.startdate | date }} - {{ election.enddate | date }}) - <span class="badge bg-success">Total Votes: {{ election.totalVotes }}</span></span>
             <span>
               <button class="btn btn-sm btn-primary me-3" (click)="editElection(election)">Edit</button>
@@ -25,6 +25,9 @@
             </span>
           </li>
         </ul>
+        <div class="pagination-container">
+          <pagination-controls class="pagination-controls" (pageChange)="page = $event"></pagination-controls>
+        </div>
       </div>
     </div>
     <!-- Add Election -->
