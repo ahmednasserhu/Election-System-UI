@@ -1,7 +1,12 @@
 <div class="outer-container " >
     <div class="container form w-100">
       <div class="row">
-    
+      <!-- Loader -->
+      <div *ngIf="loading" class="loader ms-3">
+        <div class="spinner-border" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
         <!-- Left Side: Input Fields -->
         <div class="col-md-6">
           <h2 class="text-center mb-4">Add Admin</h2>
@@ -340,7 +345,7 @@
 <input type="hidden" formControlName="role" value="admin" />
 
               <!-- Submit Button -->
-              <div class="col-6 mt-4">
+              <div class="col-12 mt-4">
                 <div class="d-flex justify-content-between align-items-center">
                   <button
                     type="submit"
@@ -349,12 +354,6 @@
                   >
                     Add Admin
                   </button>
-                   <!-- Loader -->
-                <div *ngIf="loading" class="loader ms-3">
-                  <div class="spinner-border" role="status">
-                    <span class="sr-only">Loading...</span>
-                  </div>
-                </div>
                 </div>
               </div>
             </div>
