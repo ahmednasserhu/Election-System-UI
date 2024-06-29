@@ -236,3 +236,88 @@ a {
   text-decoration: none;
   cursor: pointer;
 }
+
+.btn.btn-primary {
+  cursor: pointer;
+}
+
+.btn.btn-secondary {
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+  border-color: #004085;
+}
+
+.btn-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #000;
+  cursor: pointer;
+}
+
+.btn-close:hover {
+  color: #dc3545; /* Bootstrap danger color */
+}
+
+.input-container {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.iLabel {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  background: #fff;
+  padding: 0 0.5rem;
+  transition: all 0.2s;
+  pointer-events: none;
+}
+
+.form-control:focus + .iLabel,
+.form-control:not(:placeholder-shown) + .iLabel {
+  top: -0.5rem;
+  left: 0.75rem;
+  font-size: 0.75rem;
+  color: #007bff; /* Bootstrap primary color */
+}
+
+.form-control {
+  padding: 1rem 0.75rem;
+}
+
+.form-control:focus {
+  border-color: #007bff; /* Bootstrap primary color */
+  box-shadow: none;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  border-color: #6c757d;
+}
+
+.btn-primary:disabled {
+  background-color: #6c757d;
+  border-color: #6c757d;
+}
+
+.modal-header {
+  border-bottom: none;
+}
+
+.modal-footer {
+  border-top: none;
+}
