@@ -9,6 +9,9 @@ import {
   FormBuilder,
   FormGroup,
   Validators,
+  ValidatorFn,
+  AbstractControl,
+  ValidationErrors,
 } from '@angular/forms';
 import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
 import { faFileImage } from '@fortawesome/free-solid-svg-icons';
@@ -36,6 +39,7 @@ export class AddAdminComponent {
   eyeIcon = faEye;
   eyeSlashed = faEyeSlash;
   fileImage = faFileImage;
+  loading: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -74,6 +78,11 @@ export class AddAdminComponent {
             Validators.pattern(/^\S+@\S+\.\S+$/),
           ]),
         ],
+        motherSSN: ['', Validators.compose([Validators.required, this.customValidator.ssnValidator()])],
+        motherName: ['', Validators.compose([
+          Validators.required,
+          this.customValidator.motherNameFullValidator()
+        ])],
         phoneNumber: [
           '',
           Validators.compose([
@@ -112,6 +121,7 @@ export class AddAdminComponent {
 
   onSubmit() {
     if (this.registerForm.valid) {
+      this.loading = true;
       const formData = this.registerForm.value;
       formData.image = this.selectedImage;
 
@@ -119,6 +129,8 @@ export class AddAdminComponent {
       formDataToSend.append('firstName', formData.firstName);
       formDataToSend.append('lastName', formData.lastName);
       formDataToSend.append('ssn', formData.SSN);
+      formDataToSend.append('motherSSN', formData.motherSSN);
+      formDataToSend.append('motherName', formData.motherName);
       formDataToSend.append('email', formData.email);
       formDataToSend.append('phoneNumber', formData.phoneNumber);
       formDataToSend.append('password', formData.password);
@@ -129,15 +141,52 @@ export class AddAdminComponent {
 
       this.citizenService.addAdmin(formDataToSend).subscribe(
         (res) => {
+          this.loading = false;
           this.toastr.success('Admin Added Succuflly');
         },
         (error) => {
-          this.toastr.error(error.error);
+          this.loading = false;
+          this.toastr.error(error.error.message);
         },
       );
     }
   }
 
+  
+  motherNameFullValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const name = control.value;
+      const result = this.motherNameValidator(name);
+
+      if (!result.valid) {
+        return { invalidMotherName: result.message };
+      }
+
+      return null;
+    };
+  }
+
+  private motherNameValidator(name: string): { valid: boolean; message: string } {
+    if (typeof name !== 'string') {
+      return { valid: false, message: 'Name must be a string.' };
+    }
+
+    const words = name.trim().split(/\s+/);
+
+    if (words.length !== 4) {
+      return { valid: false, message: 'Full Name must consist of exactly four names.' };
+    }
+
+    const nameRegex = /^[a-zA-Z]+$/;
+
+    for (let word of words) {
+      if (!nameRegex.test(word)) {
+        return { valid: false, message: 'Each name in the full name must contain only alphabetic characters.' };
+      }
+    }
+
+    return { valid: true, message: 'Valid name.' };
+  }
   togglePasswordVisibility(field: string) {
     if (field === 'password') {
       this.passwordVisible = !this.passwordVisible;
