@@ -27,10 +27,7 @@ export class ElectionComponent implements OnInit {
   page: number = 1; 
   blockedPage: number = 1; 
 
-  constructor(
-    private electionService: ElectionService,
-    private toastr: ToastrService,
-  ) {}
+  constructor(private electionService: ElectionService, private toastr: ToastrService) {}
 
   ngOnInit(): void {
     this.loadElections();
@@ -49,40 +46,41 @@ export class ElectionComponent implements OnInit {
   }
 
   loadElections(): void {
-    this.electionService.getElections().subscribe((data) => {
-      console.log(data); 
-      this.elections = data;
+    this.electionService.getElections().subscribe({
+      next: (data) => {
+        if (Array.isArray(data)) {
+          this.elections = data;
+        } else {
+          console.error('Data is not an array', data);
+        }
+      },
+      error: (err) => {
+        console.error('Error fetching elections:', err);
+      },
     });
   }
+  
+  
+  
   editElection(election: Election): void {
     // Make a copy of the election object to avoid mutating the original
     this.selectedElection = { ...election };
-
+  
     // Convert dates to proper format (YYYY-MM-DD) if they are not already formatted
     if (this.selectedElection.startdate) {
-      this.selectedElection.startdate = new Date(
-        this.selectedElection.startdate,
-      )
-        .toISOString()
-        .split('T')[0];
+      this.selectedElection.startdate = new Date(this.selectedElection.startdate).toISOString().split('T')[0];
     }
     if (this.selectedElection.enddate) {
-      this.selectedElection.enddate = new Date(this.selectedElection.enddate)
-        .toISOString()
-        .split('T')[0];
+      this.selectedElection.enddate = new Date(this.selectedElection.enddate).toISOString().split('T')[0];
     }
-
-    const editModal = new bootstrap.Modal(
-      document.getElementById('editModal')!,
-    );
+  
+    const editModal = new bootstrap.Modal(document.getElementById('editModal')!);
     editModal.show();
   }
-
+  
   deleteElection(id: string): void {
     this.deleteElectionId = id;
-    const deleteModal = new bootstrap.Modal(
-      document.getElementById('deleteModal')!,
-    );
+    const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal')!);
     deleteModal.show();
   }
 
@@ -92,9 +90,7 @@ export class ElectionComponent implements OnInit {
         next: () => {
           this.loadElections();
           this.deleteElectionId = null;
-          const deleteModal = bootstrap.Modal.getInstance(
-            document.getElementById('deleteModal')!,
-          );
+          const deleteModal = bootstrap.Modal.getInstance(document.getElementById('deleteModal')!);
           deleteModal?.hide();
           this.toastr.success('Election deleted successfully.');
         },
@@ -107,23 +103,13 @@ export class ElectionComponent implements OnInit {
   }
 
   saveElection(): void {
-    this.validateNewElectionDates();
-    if (
-      !this.newElection.title &&
-      !this.newElection.description &&
-      !this.newElection.startdate &&
-      !this.newElection.enddate
-    ) {
+    this.validateNewElectionDates(); 
+    if (!this.newElection.title && !this.newElection.description && !this.newElection.startdate && !this.newElection.enddate) {
       this.toastr.error('All fields are required.', 'Validation Error');
       return;
     }
 
-    if (
-      !this.newElection.title ||
-      !this.newElection.description ||
-      !this.newElection.startdate ||
-      !this.newElection.enddate
-    ) {
+    if (!this.newElection.title || !this.newElection.description || !this.newElection.startdate || !this.newElection.enddate) {
       this.toastr.error('Please fill in all fields.', 'Validation Error');
       return;
     }
@@ -145,12 +131,7 @@ export class ElectionComponent implements OnInit {
   }
 
   saveEditedElection(): void {
-    if (
-      !this.selectedElection.title ||
-      !this.selectedElection.description ||
-      !this.selectedElection.startdate ||
-      !this.selectedElection.enddate
-    ) {
+    if (!this.selectedElection.title || !this.selectedElection.description || !this.selectedElection.startdate || !this.selectedElection.enddate) {
       this.toastr.error('Please fill in all fields.', 'Validation Error');
       return;
     }
@@ -159,9 +140,7 @@ export class ElectionComponent implements OnInit {
       next: () => {
         this.loadElections();
         this.clearSelectedElectionForm();
-        const editModal = bootstrap.Modal.getInstance(
-          document.getElementById('editModal')!,
-        );
+        const editModal = bootstrap.Modal.getInstance(document.getElementById('editModal')!);
         editModal?.hide();
         this.toastr.success('Election updated successfully.');
       },
@@ -179,53 +158,45 @@ export class ElectionComponent implements OnInit {
     const endDate = new Date(this.newElection.enddate);
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-
-    if (startDate <= today) {
+  
+    if (startDate <= today ) {
       this.startDateError = 'Start date must be at least one day after today.';
     } else {
       this.startDateError = null;
     }
-
+  
     if (endDate <= startDate) {
-      this.endDateError =
-        'End date must be at least one day after the start date.';
+      this.endDateError = 'End date must be at least one day after the start date.';
     } else {
       this.endDateError = null;
     }
   }
-
+  
   validateDates(): void {
     const startDate = new Date(this.selectedElection.startdate);
     const endDate = new Date(this.selectedElection.enddate);
     const today = new Date();
     today.setHours(0, 0, 0, 0); // Reset time to midnight
-
+  
     // Check if the start date is at least one day after today
-    this.startDateError =
-      startDate <= new Date(today.getTime() + 24 * 60 * 60 * 1000)
-        ? 'Start date must be at least one day after today.'
-        : null;
-
-    this.endDateError =
-      endDate <= startDate
-        ? 'End date must be at least one day after the start date.'
-        : null;
+    this.startDateError = startDate <= new Date(today.getTime() + 24 * 60 * 60 * 1000) ? 'Start date must be at least one day after today.' : null;
+    
+    this.endDateError = endDate <= startDate ? 'End date must be at least one day after the start date.' : null;
   }
+  
 
   checkDuplicateTitle(title: string): void {
-    this.duplicateTitleError = this.elections.some(
-      (e) => e.title === title && e._id !== this.selectedElection._id,
-    )
+    this.duplicateTitleError = this.elections.some(e => e.title === title && e._id !== this.selectedElection._id)
       ? 'An election with this title already exists.'
       : null;
   }
 
   clearNewElectionForm(): void {
     this.newElection = this.initializeElection();
-    this.startDateError = null;
-    this.endDateError = null;
+    this.startDateError = null; 
+    this.endDateError = null; 
     if (this.addElectionForm) {
-      this.addElectionForm.resetForm();
+      this.addElectionForm.resetForm(); 
     }
   }
 
@@ -235,24 +206,16 @@ export class ElectionComponent implements OnInit {
     this.startDateError = null;
     this.endDateError = null;
     if (this.editForm) {
-      this.editForm.resetForm();
+      this.editForm.resetForm(); 
     }
   }
 
   handleServerError(errorMessage: string): void {
     if (errorMessage.includes('duplicate key error')) {
       this.duplicateTitleError = 'An election with this title already exists.';
-    } else if (
-      errorMessage.includes(
-        'Start date must be at least one day after the current date.',
-      )
-    ) {
+    } else if (errorMessage.includes('Start date must be at least one day after the current date.')) {
       this.startDateError = errorMessage;
-    } else if (
-      errorMessage.includes(
-        'End date must be at least one day after the start date.',
-      )
-    ) {
+    } else if (errorMessage.includes('End date must be at least one day after the start date.')) {
       this.endDateError = errorMessage;
     } else {
       this.toastr.error(errorMessage);
