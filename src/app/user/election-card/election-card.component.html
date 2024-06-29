@@ -4,12 +4,6 @@
       <h5 class="card-title">
         {{ result.title }}
         <span
-<div class="card mb-3 my-container">
-  <div class="row p-4">
-    <div class="card-body col-md-4">
-      <h5 class="card-title">
-        {{ result.title }}
-        <span
           [class]="
             this.statusDate === 'Pending' || this.statusDate === 'Finished'
               ? 'bg-danger badge ms-1'
@@ -39,7 +33,9 @@
         <span class="sub-head me-2">End Date</span>{{ result.enddate | date }}
       </p>
       <div class="contain-btns d-flex gap-2 mt-4">
-        @if (this.statusDate === 'Pending' && !this.alreadyCandidate) {
+        <ng-container
+          *ngIf="this.statusDate === 'Pending' && !this.alreadyCandidate"
+        >
           <button class="btn mybtn" (click)="navigateToApplyForm()">
             Want to be a candidate
           </button>
