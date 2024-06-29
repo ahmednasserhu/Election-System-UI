@@ -15,7 +15,7 @@ export const authGuard: CanActivateFn = (route, state) => {
       if (role === 'admin') {
         return true; 
       } else {
-        toastr.error('please to access these pages lOGIN AS ADMIN PLEASE');
+        toastr.error('Not Authorized To Access Admin Pages');
         localStorage.removeItem('token');
         localStorage.removeItem('role');
         router.navigate(['/login']);
@@ -27,7 +27,7 @@ export const authGuard: CanActivateFn = (route, state) => {
   }
   localStorage.removeItem('token');
   localStorage.removeItem('role');
-  toastr.error('please to access these pages lOGIN AS ADMIN PLEASE');
+  toastr.error('Not Authorized To Access Admin Pages');
   router.navigate(['/login']); 
   return false;
 };

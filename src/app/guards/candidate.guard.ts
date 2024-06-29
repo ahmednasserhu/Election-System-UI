@@ -17,7 +17,7 @@ export const candidateGuard: CanActivateFn = (route, state) => {
       if (role === 'candidate') {
         return true; 
       } else {
-        toastr.error('please to access these pages lOGIN AS CANDIDATE PLEASE');
+        toastr.error('Not Authorized To Access Candidate Pages');
         localStorage.removeItem('token');
         localStorage.removeItem('role');
         router.navigate(['/login']);
@@ -28,7 +28,7 @@ export const candidateGuard: CanActivateFn = (route, state) => {
     }
   }
 
-  toastr.error('please to access these pages lOGIN AS CANDIDATE PLEASE');
+  toastr.error('Not Authorized To Access Candidate Pages');
   localStorage.removeItem('token');
   localStorage.removeItem('role');
   router.navigate(['/login']); 
