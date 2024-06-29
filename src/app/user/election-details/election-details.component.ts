@@ -2,7 +2,7 @@ import { ToastrService } from 'ngx-toastr';
 import { VoteService } from '../../services/vote.service';
 import { ElectionService } from './../../services/election.service';
 import { Router } from '@angular/router';
-import { FormsModule, NgModel } from '@angular/forms';  // Import FormsModule
+import { FormGroup, FormsModule, NgModel } from '@angular/forms';  // Import FormsModule
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { InputOtpModule } from 'primeng/inputotp';
@@ -60,13 +60,16 @@ export class ElectionDetailsComponent
   result!: any;
   currentDate!: Date;
   statusDate!: string;
+
   @ViewChild('otpModalTemplate') otpModalTemplate!: TemplateRef<any>; // ViewChild to access the template
   private modalService = inject(NgbModal);
   closeResult = '';
   alreadyCandidate = false;
   otpNum: any = '';
   otpArray = ['', '', '', '', '', '']; // Array to store OTP digits
-
+  countFinished = false;
+  registerForm !: FormGroup;
+  otpForm!: FormGroup;
   constructor(
     private router: Router,
     private _ElectionService: ElectionService,
@@ -111,10 +114,7 @@ export class ElectionDetailsComponent
     }
   }
 
-  ngOnInit(): void {
-    
-  }
-
+  ngOnInit(): void {}
   ngOnDestroy(): void {
     if (this.chart) {
       this.chart.destroy();
@@ -217,11 +217,34 @@ export class ElectionDetailsComponent
       },
     });
   }
-
+  resendOTP(candidateId: any, electionId: any) {
+    this.VoteService.vote({
+      candidateId: candidateId,
+      electionId: electionId,
+    }).subscribe({
+      next: (res) => {
+        // Open the modal after receiving a successful response
+        this.toaster.info('A new OTP was sent to your email');
+        this.countFinished = false;
+      },
+      error: (err) => {
+        this.toaster.error(err.error.message);
+      },
+    });
+  }
+  handleCount(event: any) {
+    if (event.action === 'done') {
+      this.countFinished = true;
+    }
+  }
   voteWithOTP(candidateId: any, electionId: any) {
     console.log(this.value);
-    // Call your service
-    this.cd.detectChanges();
+      if (!this.value || this.value.length !== 6) {
+    this.toaster.error('Please enter a valid 6-digit OTP');
+    return;
+      }
+      // Call your service
+      this.cd.detectChanges();
 
     this.VoteService.vote({
       candidateId: candidateId,

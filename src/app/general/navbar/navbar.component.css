@@ -23,3 +23,7 @@ img {
   color: #ac8500 !important;
   font-size: 24px;
 }
+
+.navbar-toggler{
+  color: white;
+}
