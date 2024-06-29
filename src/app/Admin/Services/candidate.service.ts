@@ -20,9 +20,9 @@ export class CandidateService {
     return this.http.post(url, { candidateId, status: 'approved' });
   }
 
-  rejectCandidate(candidateId: string): Observable<any> {
+  rejectCandidate(candidateId: string,comment: string): Observable<any> {
     const url = `${this.apiUrl}review`;
-    return this.http.post(url, { candidateId, status: 'rejected' });
+    return this.http.post(url, { candidateId, status: 'rejected',comment  });
   }
 
   getLastCandidate(): Observable<any> {
