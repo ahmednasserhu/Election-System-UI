@@ -1,46 +1,43 @@
-<div class="home text-dark w-100 shadow ms-5">
-  <div class="header">
-    <h1 style="color: #fff; font-family: Verdana, Geneva, Tahoma, sans-serif">
-      Election Management Dashboard
-    </h1>
-    <div class="date text-white">{{ currentDate | date: 'fullDate' }}</div>
-  </div>
-
-  <div class="stats-cards">
-    <div class="card">
-      <div class="card-icon"><i class="fa fa-users"></i></div>
-      <div class="card-content">
-        <h2 class="text-center">Citizens</h2>
-        <p class="text-center">{{ totalVoters }}</p>
-      </div>
+<div class="home text-dark w-100  shadow ms-5" style="background-color: rgb(41, 41, 41);border-radius: 5px;">
+    <div class="header">
+      <h1 style="color: #fff; font-family: Verdana, Geneva, Tahoma, sans-serif;">Election Management Dashboard</h1>
+      <div class="date text-white">{{ currentDate | date:'fullDate' }}</div>
     </div>
-    <div class="card">
-      <div class="card-icon">
-        <i class="fa fa-check-square text-center"></i>
+  
+    <div class="stats-cards " >
+      <div class="card">
+        <div class="card-icon"><img style="height: 140px;width: 200px; margin-bottom: 10px;margin-left: 15px;border-radius: 5px;" src="https://as2.ftcdn.net/v2/jpg/05/06/75/11/1000_F_506751155_fJ5Ko5T0wsTH7Q9VNwEgo6J81da8arlD.jpg"></div>
+        <div class="card-content">
+          <h2 class="text-center">Citizens</h2>
+          <p class="text-center">{{ totalVoters }}</p>
+        </div>
       </div>
-      <div class="card-content">
-        <h2 class="text-center">Registered Candidates</h2>
-        <p class="text-center">{{ registeredCandidates }}</p>
+      <div class="card">
+        <div class="card-icon"><img style="height: 140px;width: 200px; margin-bottom: 10px;margin-left: 15px;border-radius: 5px;" src="https://img.freepik.com/premium-photo/group-people-stand-row-wearing-suits-ties_896360-371.jpg"></div>
+        <div class="card-content">
+          <h2 class="text-center">Registered Candidates</h2>
+          <p class="text-center">{{ registeredCandidates }}</p>
+        </div>
       </div>
+      <div class="card">
+        <div class="card-icon"><img style="height: 140px;width: 200px; margin-bottom: 10px;margin-left: 15px;border-radius: 5px;" src="https://thumbs.dreamstime.com/b/group-smiling-students-voting-education-teamwork-people-concept-papers-raising-hands-indoors-45471692.jpg"></div>
+        <div class="card-content">
+          <h2 class="text-center">Votes Cast</h2>
+          <p class="text-center">{{ votesCast }}</p>
+        </div>
+      </div>
+      
     </div>
-    <div class="card">
-      <div class="card-icon"><i class="fa fa-user text-center"></i></div>
-      <div class="card-content">
-        <h2 class="text-center">Votes Cast</h2>
-        <p class="text-center">{{ votesCast }}</p>
-      </div>
+  
+  
+    <div class="recent-activity text-light">
+      <h2>Recent Activity</h2>
+      <ul>
+        <li *ngFor="let activity of recentActivities">
+         <span class="badge bg-secondary me-2"> {{ activity.timestamp | date:'short' }}: </span> <span [innerHTML]="activity.description"></span>
+        </li>
+      </ul>
     </div>
+    
   </div>
-
-  <div class="recent-activity text-light">
-    <h2>Recent Activity</h2>
-    <ul>
-      <li *ngFor="let activity of recentActivities">
-        <span class="badge bg-secondary me-2">
-          {{ activity.timestamp | date: 'short' }}:
-        </span>
-        <span [innerHTML]="activity.description"></span>
-      </li>
-    </ul>
-  </div>
-</div>
+  
