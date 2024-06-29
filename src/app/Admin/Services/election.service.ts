@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { Election } from '../Interfaces/election';
 
 @Injectable({
@@ -15,8 +15,19 @@ export class ElectionService {
     return this.http.get<any>(`${this.apiUrl}/last-election`);
   }
   getElections(): Observable<Election[]> {
-    return this.http.get<Election[]>(this.apiUrl);
+    return this.http.get<{ data: Election[] }>(this.apiUrl).pipe(
+      map((response) => {
+        if (response.data && Array.isArray(response.data)) {
+          return response.data;
+        } else {
+          console.error('Invalid response format:', response);
+          return [];
+        }
+      })
+    );
   }
+  
+  
 
   createElection(election: Election): Observable<Election> {
     return this.http.post<Election>(this.apiUrl, election, {
