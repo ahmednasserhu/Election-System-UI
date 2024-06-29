@@ -118,6 +118,7 @@ export class ApplyComponent {
               title: "Application sent successfully",
               icon: "success"
             });
+            this.clearForm();
           }
         },
         (error: HttpErrorResponse) => {
@@ -128,5 +129,11 @@ export class ApplyComponent {
         }
       );
     }
+  }
+
+  clearForm(): void {
+    this.registerForm.reset();
+    this.selectedImage = null;
+    this.selectedCriminal = null;
   }
 }
