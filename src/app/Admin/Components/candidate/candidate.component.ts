@@ -14,6 +14,7 @@ import {
 } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ElectionService } from '../../Services/election.service'; // Ensure this service exists and is correctly implemented
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @Component({
   selector: 'app-candidate',
@@ -27,6 +28,7 @@ import { ElectionService } from '../../Services/election.service'; // Ensure thi
     CurrencyPipe,
     PercentPipe,
     FilterByStatusPipe,
+    NgxPaginationModule
   ],
   templateUrl: './candidate.component.html',
   styleUrls: ['./candidate.component.css'],
@@ -38,7 +40,8 @@ export class CandidateComponent implements OnInit {
   elections: Election[] = [];
   selectedCandidate: Candidate | undefined;
   rejectComment: string = '';
-
+  page: number = 1; 
+  blockedPage: number = 1;
   @ViewChild('candidateModal') candidateModal: ElementRef | undefined;
   @ViewChild('rejectModal') rejectModal: ElementRef | undefined;
 
