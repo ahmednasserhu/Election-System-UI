@@ -15,6 +15,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class ElectionComponent implements OnInit {
   @ViewChild('editForm') editForm!: NgForm;
+  @ViewChild('addElectionForm') addElectionForm!: NgForm;
   elections: Election[] = [];
   selectedElection: Election = this.initializeElection();
   newElection: Election = this.initializeElection();
@@ -76,6 +77,12 @@ export class ElectionComponent implements OnInit {
   }
 
   saveElection(): void {
+    this.validateNewElectionDates(); 
+    if (!this.newElection.title && !this.newElection.description && !this.newElection.startdate && !this.newElection.enddate) {
+      this.toastr.error('All fields are required.', 'Validation Error');
+      return;
+    }
+
     if (!this.newElection.title || !this.newElection.description || !this.newElection.startdate || !this.newElection.enddate) {
       this.toastr.error('Please fill in all fields.', 'Validation Error');
       return;
@@ -120,16 +127,37 @@ export class ElectionComponent implements OnInit {
       },
     });
   }
-
+  validateNewElectionDates(): void {
+    const startDate = new Date(this.newElection.startdate);
+    const endDate = new Date(this.newElection.enddate);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+  
+    if (startDate <= today ) {
+      this.startDateError = 'Start date must be at least one day after today.';
+    } else {
+      this.startDateError = null;
+    }
+  
+    if (endDate <= startDate) {
+      this.endDateError = 'End date must be at least one day after the start date.';
+    } else {
+      this.endDateError = null;
+    }
+  }
+  
   validateDates(): void {
     const startDate = new Date(this.selectedElection.startdate);
     const endDate = new Date(this.selectedElection.enddate);
     const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    this.startDateError = startDate <= today ? 'Start date must be at least one day after today.' : null;
+    today.setHours(0, 0, 0, 0); // Reset time to midnight
+  
+    // Check if the start date is at least one day after today
+    this.startDateError = startDate <= new Date(today.getTime() + 24 * 60 * 60 * 1000) ? 'Start date must be at least one day after today.' : null;
+    
     this.endDateError = endDate <= startDate ? 'End date must be at least one day after the start date.' : null;
   }
+  
 
   checkDuplicateTitle(title: string): void {
     this.duplicateTitleError = this.elections.some(e => e.title === title && e._id !== this.selectedElection._id)
@@ -139,6 +167,11 @@ export class ElectionComponent implements OnInit {
 
   clearNewElectionForm(): void {
     this.newElection = this.initializeElection();
+    this.startDateError = null; 
+    this.endDateError = null; 
+    if (this.addElectionForm) {
+      this.addElectionForm.resetForm(); 
+    }
   }
 
   clearSelectedElectionForm(): void {
@@ -146,6 +179,9 @@ export class ElectionComponent implements OnInit {
     this.duplicateTitleError = null;
     this.startDateError = null;
     this.endDateError = null;
+    if (this.editForm) {
+      this.editForm.resetForm(); 
+    }
   }
 
   handleServerError(errorMessage: string): void {
