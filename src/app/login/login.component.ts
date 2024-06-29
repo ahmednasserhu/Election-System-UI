@@ -94,6 +94,7 @@ export class LoginComponent {
               this.showToast('Please confirm your email before logging in.');
             } else {
               localStorage.setItem('token', response.token);
+              this.toastr.success('Login successfully.');
               this.authService.navigateBasedOnRole(response.role);
             }
           }
