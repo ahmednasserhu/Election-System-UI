@@ -5,14 +5,11 @@ import { Citizen } from '../../Admin/Interfaces/citizen';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerModule } from 'ngx-spinner';
 
-
-
 interface TokenPayload {
   name: string;
   image: string;
   citizen: Citizen;
 }
-
 
 @Component({
   selector: 'app-user-navbar',

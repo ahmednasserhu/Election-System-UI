@@ -10,7 +10,10 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class ElectionService {
-  constructor(private _HttpClient: HttpClient, private router:Router) {}
+  constructor(
+    private _HttpClient: HttpClient,
+    private router: Router,
+  ) {}
   getElections(): Observable<Election[]> {
     return this._HttpClient.get<Election[]>('http://localhost:3000/elections');
   }
@@ -21,12 +24,15 @@ export class ElectionService {
       .pipe(map((response) => response.results));
   }
   getSpecificElection(id: any): Observable<any> {
-    return this._HttpClient
-      .get<{ results: any }>(`http://localhost:3000/elections/${id}`)
+    return this._HttpClient.get<{ results: any }>(
+      `http://localhost:3000/elections/${id}`,
+    );
   }
 
-  getStatusElection(status:any): Observable<any> {
-    status = status === '' ? '' : `?status=${status}`
-    return this._HttpClient.get<{ results: any }>(`http://localhost:3000/elections${status}`)
+  getStatusElection(status: any): Observable<any> {
+    status = status === '' ? '' : `?status=${status}`;
+    return this._HttpClient.get<{ results: any }>(
+      `http://localhost:3000/elections${status}`,
+    );
   }
 }

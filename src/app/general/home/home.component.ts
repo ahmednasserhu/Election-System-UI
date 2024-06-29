@@ -14,15 +14,17 @@ import { ElectionResultComponent } from '../election-result/election-result.comp
 })
 export class HomeComponent {
   ElectionDetails!: any;
+  dataCame = false;
   image = '../../../assets/images/election_image.jpeg';
   constructor(
     private ElectionService: ElectionService,
     private Router: Router,
   ) {}
   ngOnInit(): void {
-    this.ElectionService.getSpecificElections().subscribe((res) => {
+    this.ElectionService.getStatusElection('finished').subscribe((res) => {
       this.ElectionDetails = res;
       console.log(res);
+      this.dataCame = true;
     });
   }
 

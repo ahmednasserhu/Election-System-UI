@@ -189,8 +189,9 @@
                 ></app-form-error>
                 <div class="custom-alert" role="alert">
                   {{
-                    registerForm.controls['motherName'].errors
-                      ?.['invalidMotherName']
+                    registerForm.controls['motherName'].errors?.[
+                      'invalidMotherName'
+                    ]
                   }}
                 </div>
               </div>

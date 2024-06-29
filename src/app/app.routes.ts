@@ -55,7 +55,6 @@ export const routes: Routes = [
         path: 'login',
         component: LoginComponent,
       },
-      
     ],
     component: ParentComponent,
   },
@@ -92,57 +91,53 @@ export const routes: Routes = [
     component: CandidateDashboardComponent,
     title: 'Candidate Dashboard',
     canActivate: [candidateGuard],
-
   },
   {
     path: 'candidate/profile/:id',
     component: CandidateProfileComponent,
     title: 'Candidate Profile',
     canActivate: [candidateGuard],
-    
   },
-    {
-    path: "admin",
-    component: AdminComponent,
-    canActivate: [authGuard],
-    children: [
-        { path: "", component: HomeComponentAdmin },
-        { path: "candidate", component: CandidateComponent },
-        { path: "election", component: ElectionComponent },
-        { path: "citizen", component: CitizenComponent },
-        { path: "profile", component: AdminProfileComponent },
-        { path: "add-admin", component: AddAdminComponent },
-       
-        { path: "**", component: PageNotFoundComponent },
-    
-    ],
-},
   {
-    path: "admin",
+    path: 'admin',
     component: AdminComponent,
     canActivate: [authGuard],
     children: [
-        { path: "", component: HomeComponentAdmin },
-        { path: "candidate", component: CandidateComponent },
-        { path: "election", component: ElectionComponent },
-        { path: "citizen", component: CitizenComponent },
-        { path: "profile", component: AdminProfileComponent },
-        { path: "add-admin", component: AddAdminComponent },
-       
-        { path: "**", component: PageNotFoundComponent },
-    
+      { path: '', component: HomeComponentAdmin },
+      { path: 'candidate', component: CandidateComponent },
+      { path: 'election', component: ElectionComponent },
+      { path: 'citizen', component: CitizenComponent },
+      { path: 'profile', component: AdminProfileComponent },
+      { path: 'add-admin', component: AddAdminComponent },
+
+      { path: '**', component: PageNotFoundComponent },
     ],
-},
-{
-    path: "login",
-    component: LoginComponent
-},
-{
-    path: "reset-password",
-    component: ResetPasswordComponent
-},
-{
-    path: "homeDetails/:id",
-    component: HomeDetailsComponent
-},
+  },
+  {
+    path: 'admin',
+    component: AdminComponent,
+    canActivate: [authGuard],
+    children: [
+      { path: '', component: HomeComponentAdmin },
+      { path: 'candidate', component: CandidateComponent },
+      { path: 'election', component: ElectionComponent },
+      { path: 'citizen', component: CitizenComponent },
+      { path: 'profile', component: AdminProfileComponent },
+      { path: 'add-admin', component: AddAdminComponent },
+
+      { path: '**', component: PageNotFoundComponent },
+    ],
+  },
+  {
+    path: 'login',
+    component: LoginComponent,
+  },
+  {
+    path: 'reset-password',
+    component: ResetPasswordComponent,
+  },
+  {
+    path: 'homeDetails/:id',
+    component: HomeDetailsComponent,
+  },
 ];

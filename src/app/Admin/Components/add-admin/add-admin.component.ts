@@ -80,11 +80,20 @@ export class AddAdminComponent {
             Validators.pattern(/^\S+@\S+\.\S+$/),
           ]),
         ],
-        motherSSN: ['', Validators.compose([Validators.required, this.customValidator.ssnValidator()])],
-        motherName: ['', Validators.compose([
-          Validators.required,
-          this.customValidator.motherNameFullValidator()
-        ])],
+        motherSSN: [
+          '',
+          Validators.compose([
+            Validators.required,
+            this.customValidator.ssnValidator(),
+          ]),
+        ],
+        motherName: [
+          '',
+          Validators.compose([
+            Validators.required,
+            this.customValidator.motherNameFullValidator(),
+          ]),
+        ],
         phoneNumber: [
           '',
           Validators.compose([
@@ -146,7 +155,6 @@ export class AddAdminComponent {
           this.loading = false;
           this.toastr.success('Admin Added Succuflly');
           this.clearNewAdminForm();
-
         },
         (error) => {
           this.loading = false;
@@ -156,7 +164,6 @@ export class AddAdminComponent {
     }
   }
 
-  
   motherNameFullValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       const name = control.value;
@@ -170,7 +177,10 @@ export class AddAdminComponent {
     };
   }
 
-  private motherNameValidator(name: string): { valid: boolean; message: string } {
+  private motherNameValidator(name: string): {
+    valid: boolean;
+    message: string;
+  } {
     if (typeof name !== 'string') {
       return { valid: false, message: 'Name must be a string.' };
     }
@@ -178,14 +188,21 @@ export class AddAdminComponent {
     const words = name.trim().split(/\s+/);
 
     if (words.length !== 4) {
-      return { valid: false, message: 'Full Name must consist of exactly four names.' };
+      return {
+        valid: false,
+        message: 'Full Name must consist of exactly four names.',
+      };
     }
 
     const nameRegex = /^[a-zA-Z]+$/;
 
     for (let word of words) {
       if (!nameRegex.test(word)) {
-        return { valid: false, message: 'Each name in the full name must contain only alphabetic characters.' };
+        return {
+          valid: false,
+          message:
+            'Each name in the full name must contain only alphabetic characters.',
+        };
       }
     }
 
@@ -215,5 +232,4 @@ export class AddAdminComponent {
       this.addAdminForm.resetForm();
     }
   }
-  
 }

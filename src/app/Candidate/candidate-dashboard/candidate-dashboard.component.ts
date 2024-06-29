@@ -20,14 +20,17 @@ import { ElectionService } from '../../services/election.service';
 })
 export class CandidateDashboardComponent {
   candidateId!: string;
-  candidateData!:any;
-  elections!:Array<any>;
-  constructor(private electionservice:ElectionService,private route: ActivatedRoute,){}
+  candidateData!: any;
+  elections!: Array<any>;
+  constructor(
+    private electionservice: ElectionService,
+    private route: ActivatedRoute,
+  ) {}
 
   ngOnInit() {
-    this.electionservice.getElections().subscribe((e)=>{
+    this.electionservice.getElections().subscribe((e) => {
       this.elections = e;
-      console.log(this.elections)
-    })
+      console.log(this.elections);
+    });
   }
 }

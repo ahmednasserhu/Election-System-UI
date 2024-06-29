@@ -6,18 +6,18 @@ import { ElectionService } from '../../services/election.service';
 @Component({
   selector: 'app-elections',
   standalone: true,
-  imports: [CandidateNavBarComponent ,CommonModule ],
+  imports: [CandidateNavBarComponent, CommonModule],
   templateUrl: './elections.component.html',
-  styleUrl: './elections.component.css'
+  styleUrl: './elections.component.css',
 })
 export class ElectionsComponent {
-  elections!:Array<any>;
-constructor(private electionservice:ElectionService){}
+  elections!: Array<any>;
+  constructor(private electionservice: ElectionService) {}
 
-ngOnInit(){
-this.electionservice.getElections().subscribe((e)=>{
-  this.elections = e;
-  console.log(this.elections)
-})
-}
+  ngOnInit() {
+    this.electionservice.getElections().subscribe((e) => {
+      this.elections = e;
+      console.log(this.elections);
+    });
+  }
 }

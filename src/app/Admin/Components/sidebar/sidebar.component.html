@@ -1,13 +1,19 @@
 <div class="sidebar" [class.closed]="isClosed">
   <div class="sidebar-header">
-    <h4 *ngIf="!isClosed" class="m-0">{{ adminName || 'Admin Dashboard' }} Dashboard</h4>
+    <h4 *ngIf="!isClosed" class="m-0">
+      {{ adminName || 'Admin Dashboard' }} Dashboard
+    </h4>
     <button class="toggle-btn" (click)="toggleSidebar()">
       <i [class]="isClosed ? 'fa fa-chevron-right' : 'fa fa-chevron-left'"></i>
     </button>
   </div>
   <ul class="list-group">
     <li class="list-group-item fs-5" *ngFor="let item of menuItems">
-      <a [routerLink]="item.route" routerLinkActive="active" (click)="closeSidebar()">
+      <a
+        [routerLink]="item.route"
+        routerLinkActive="active"
+        (click)="closeSidebar()"
+      >
         <i [class]="'fa fa-' + item.icon" class="me-2"></i>
         <span *ngIf="!isClosed">{{ item.name }}</span>
       </a>
@@ -17,7 +23,10 @@
   <hr class="mt-5" />
   <div class="dropdown ms-3 text-light">
     <img
-      [src]="adminImage || 'https://w7.pngwing.com/pngs/178/595/png-transparent-user-profile-computer-icons-login-user-avatars-thumbnail.png'"
+      [src]="
+        adminImage ||
+        'https://w7.pngwing.com/pngs/178/595/png-transparent-user-profile-computer-icons-login-user-avatars-thumbnail.png'
+      "
       alt="Admin Image"
       width="32"
       height="32"
@@ -25,8 +34,12 @@
     />
     <span *ngIf="!isClosed">
       <strong class="text-light ms-1">{{ adminName || 'Admin' }}</strong>
-      <button (click)="logout()" style="background-color: transparent;" class="ms-1 mt-2">
-        <i class="fa-solid fa-right-from-bracket ms-2 fs-5 text-danger "></i>
+      <button
+        (click)="logout()"
+        style="background-color: transparent"
+        class="ms-1 mt-2"
+      >
+        <i class="fa-solid fa-right-from-bracket ms-2 fs-5 text-danger"></i>
       </button>
     </span>
   </div>

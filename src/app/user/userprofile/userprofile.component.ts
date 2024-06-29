@@ -21,10 +21,11 @@ import Swal from 'sweetalert2';
     FormErrorMsgComponent,
   ],
   templateUrl: './userprofile.component.html',
-  styleUrl: './userprofile.component.css'
+  styleUrl: './userprofile.component.css',
 })
 export class UserprofileComponent {
   citizenId!: string;
+  dataCame = false;
   profileForm!: FormGroup;
   pen = faPen;
   apiUrl: String = environment.apiUrl;
@@ -35,7 +36,7 @@ export class UserprofileComponent {
     private profileService: UserProfileService,
     private fb: FormBuilder,
     private route: ActivatedRoute,
-  ){
+  ) {
     this.profileForm = this.fb.group({
       ssn: [{ value: '', disabled: true }],
       firstName: [
@@ -55,20 +56,15 @@ export class UserprofileComponent {
         { value: '', disabled: true },
         [Validators.required, Validators.pattern(/^\+20\d{10}$/)],
       ],
-      governorate: [
-        { value: '', disabled: true },
-        [Validators.required],
-      ],
-      gender: [
-        { value: '', disabled: true },
-        [Validators.required],
-      ],
+      governorate: [{ value: '', disabled: true }, [Validators.required]],
+      gender: [{ value: '', disabled: true }, [Validators.required]],
     });
   }
 
   ngOnInit() {
     this.route.params.subscribe((params) => {
       this.citizenId = params['id'];
+      this.dataCame = true;
     });
     this.loadProfile();
   }
@@ -126,10 +122,10 @@ export class UserprofileComponent {
           if (res) {
             console.log(res);
             Swal.fire({
-              title:"citizen updated successfully",
-              "icon":"success",
-              "timer":2000
-            })
+              title: 'citizen updated successfully',
+              icon: 'success',
+              timer: 2000,
+            });
             this.loadProfile();
           }
         }),
@@ -138,8 +134,4 @@ export class UserprofileComponent {
         };
     }
   }
-
-
-
-
 }

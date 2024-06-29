@@ -10,7 +10,7 @@ import {
   providedIn: 'root',
 })
 export class RegisterCustomValidator {
-  constructor() { }
+  constructor() {}
 
   ssnValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
@@ -173,7 +173,10 @@ export class RegisterCustomValidator {
     };
   }
 
-  private motherNameValidator(name: string): { valid: boolean; message: string } {
+  private motherNameValidator(name: string): {
+    valid: boolean;
+    message: string;
+  } {
     if (typeof name !== 'string') {
       return { valid: false, message: 'Name must be a string.' };
     }
@@ -181,14 +184,21 @@ export class RegisterCustomValidator {
     const words = name.trim().split(/\s+/);
 
     if (words.length !== 4) {
-      return { valid: false, message: 'Full Name must consist of exactly four names.' };
+      return {
+        valid: false,
+        message: 'Full Name must consist of exactly four names.',
+      };
     }
 
     const nameRegex = /^[a-zA-Z]+$/;
 
     for (let word of words) {
       if (!nameRegex.test(word)) {
-        return { valid: false, message: 'Each name in the full name must contain only alphabetic characters.' };
+        return {
+          valid: false,
+          message:
+            'Each name in the full name must contain only alphabetic characters.',
+        };
       }
     }
 

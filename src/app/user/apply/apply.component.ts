@@ -18,7 +18,6 @@ import { Router } from '@angular/router';
 import { ApplyService } from '../../services/apply.service';
 import Swal from 'sweetalert2';
 
-
 @Component({
   selector: 'app-apply',
   standalone: true,
@@ -47,7 +46,7 @@ export class ApplyComponent {
     private registerService: RegisterServiceService,
     private router: Router,
     private _ElectionService: ElectionService,
-    private applyservice:ApplyService,
+    private applyservice: ApplyService,
   ) {
     this.registerForm = this.fb.group({
       logoName: [
@@ -100,7 +99,6 @@ export class ApplyComponent {
 
     if (file) {
       this.selectedCriminal = file;
-      
     }
   }
 
@@ -115,8 +113,8 @@ export class ApplyComponent {
         (res: any) => {
           if (res) {
             Swal.fire({
-              title: "Application sent successfully",
-              icon: "success"
+              title: 'Application sent successfully',
+              icon: 'success',
             });
             this.clearForm();
           }
@@ -124,9 +122,9 @@ export class ApplyComponent {
         (error: HttpErrorResponse) => {
           Swal.fire({
             title: `${error.error.message}`,
-            icon: "error"
+            icon: 'error',
           });
-        }
+        },
       );
     }
   }

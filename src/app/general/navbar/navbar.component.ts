@@ -4,11 +4,10 @@ import { Router, RouterModule } from '@angular/router';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { JwtPayload, jwtDecode } from 'jwt-decode';
 
-
 interface CandidateJwtPayload extends JwtPayload {
   citizen: {
     role: string;
-    image: string
+    image: string;
   };
 }
 @Component({
@@ -22,7 +21,7 @@ export class NavbarComponent {
   isMenuCollapsed = true;
   isLogged = false;
   image!: any;
-  role !:any
+  role!: any;
   decodedToken;
 
   constructor() {
@@ -44,6 +43,6 @@ export class NavbarComponent {
   logout() {
     localStorage.removeItem('token');
     localStorage.removeItem('role');
-    this.isLogged=false
+    this.isLogged = false;
   }
 }

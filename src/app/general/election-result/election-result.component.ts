@@ -14,10 +14,10 @@ import { PieChartComponent } from '../../user/pie-chart/pie-chart.component';
 export class ElectionResultComponent {
   number = '99999';
   previousNumber = '';
-  elections !: any;
+  elections!: any;
   constructor(private ElectionService: ElectionService) {}
   ngOnInit(): void {
-    this.ElectionService.getSpecificElections().subscribe((res) => {
+    this.ElectionService.getStatusElection('finished').subscribe((res) => {
       console.log(555555, res);
       this.elections = res;
     });

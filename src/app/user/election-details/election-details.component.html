@@ -121,7 +121,7 @@
           </div>
         </div>
       </div>
-      <ng-template #otpModalTemplate let-modal>
+      <ng-template #otpModalTemplate let-modal >
   <div class="modal-header">
     <h4 class="modal-title" id="modal-basic-title">Enter OTP</h4>
     <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
@@ -167,7 +167,7 @@
     </form>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline-secondary" (click)="this.voteWithOTP(candidate._id,result._id)">send</button>
+    <button type="button" class="btn btn-outline-secondary" (click)="this.voteWithOTP(result._id)">send</button>
   </div>
 </ng-template>
     }

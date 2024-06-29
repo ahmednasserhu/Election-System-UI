@@ -26,20 +26,22 @@
   </div>
 </nav> -->
 
-
-
-
 <!-- <p>A responsive navbar can be achieved with an <code>ngbCollapse</code> directive.</p> -->
 
-<nav class="navbar navbar-expand-lg navbar-light bg-body-tertiary mb-3">
-	<div class="container-fluid">
+<nav class="navbar navbar-expand-lg navbar-light bg-body-tertiary mb-5">
+  <div class="container-fluid">
+    <!-- Step 3: Toggle the value of the property when the toggler button is clicked. -->
+    <button
+      class="navbar-toggler"
+      type="button"
+      (click)="isMenuCollapsed = !isMenuCollapsed"
+    >
+      &#9776;
+    </button>
 
-		<!-- Step 3: Toggle the value of the property when the toggler button is clicked. -->
-		<button class="navbar-toggler" type="button" (click)="isMenuCollapsed = !isMenuCollapsed">&#9776;</button>
-
-		<!-- Step 2: Add the ngbCollapse directive to the element below. -->
-		<div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse">
-			<!-- <ul class="navbar-nav">
+    <!-- Step 2: Add the ngbCollapse directive to the element below. -->
+    <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse">
+      <!-- <ul class="navbar-nav">
 				<li class="nav-item active">
 					<a class="nav-link" [routerLink]="'.'" (click)="isMenuCollapsed = true">Features</a>
 				</li>
@@ -50,39 +52,71 @@
 					<a class="nav-link" [routerLink]="'.'" (click)="isMenuCollapsed = true">About</a>
 				</li>
 			</ul> -->
-       <ul class="navbar-nav mr-auto">
+      <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
-        <a class="nav-link" routerLink="/" (click)="isMenuCollapsed = true">Home</a>
-      </li>
-      <li class="nav-item active">
-        <a class="nav-link" routerLink="elections" [queryParams]="{ status: 'pending' }" (click)="isMenuCollapsed = true">Pending Elections</a>
-      </li>
-      <li class="nav-item active">
-        <a class="nav-link" routerLink="elections" [queryParams]="{ status: 'in-progress' }" (click)="isMenuCollapsed = true">In-progress Elections</a>
-      </li>
-      <li class="nav-item active">
-        <a class="nav-link" routerLink="elections" [queryParams]="{ status: 'finished' }" (click)="isMenuCollapsed = true">Finished Elections</a>
-      </li>
-      <li class="nav-item active">
-        <a class="nav-link"  [routerLink]="['/user/profile', userId]" (click)="isMenuCollapsed = true">Profile</a>
-      </li>
-    </ul>
-    <ul class="navbar-nav ms-auto">
-      
-      <li class="nav-item ">
-        <img
-        [src]="citizenImage || 'https://w7.pngwing.com/pngs/178/595/png-transparent-user-profile-computer-icons-login-user-avatars-thumbnail.png'"
-        alt="Citizen Image"
-        
-        style="width: 40px; height: 100%;"
-        class="rounded-circle me-2"
-      />
-      </li>
+          <a class="nav-link" routerLink="/" (click)="isMenuCollapsed = true"
+            >Home</a
+          >
+        </li>
+        <li class="nav-item active">
+          <a
+            class="nav-link"
+            routerLink="elections"
+            [queryParams]="{ status: 'pending' }"
+            (click)="isMenuCollapsed = true"
+            >Pending Elections</a
+          >
+        </li>
+        <li class="nav-item active">
+          <a
+            class="nav-link"
+            routerLink="elections"
+            [queryParams]="{ status: 'in-progress' }"
+            (click)="isMenuCollapsed = true"
+            >In-progress Elections</a
+          >
+        </li>
+        <li class="nav-item active">
+          <a
+            class="nav-link"
+            routerLink="elections"
+            [queryParams]="{ status: 'finished' }"
+            (click)="isMenuCollapsed = true"
+            >Finished Elections</a
+          >
+        </li>
+        <li class="nav-item active">
+          <a
+            class="nav-link"
+            [routerLink]="['/user/profile', userId]"
+            (click)="isMenuCollapsed = true"
+            >Profile</a
+          >
+        </li>
+      </ul>
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <img
+            [src]="
+              citizenImage ||
+              'https://w7.pngwing.com/pngs/178/595/png-transparent-user-profile-computer-icons-login-user-avatars-thumbnail.png'
+            "
+            alt="Citizen Image"
+            style="width: 40px; height: 100%"
+            class="rounded-circle me-2"
+          />
+        </li>
 
-      <li class="nav-item" (click)="isMenuCollapsed = true">
-        <button (click)="logout()" style="background-color: transparent;" class="nav-link "><i class="fa-solid fa-right-from-bracket ms-2 fs-5 text-danger "></i></button>
-      </li>
-    </ul>
-		</div>
-	</div>
+        <li class="nav-item" (click)="isMenuCollapsed = true">
+          <button
+            (click)="logout()"
+            style="background-color: transparent"
+            class="nav-link"
+          >
+            <i class="fa-solid fa-right-from-bracket ms-2 fs-5 text-danger"></i>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
 </nav>

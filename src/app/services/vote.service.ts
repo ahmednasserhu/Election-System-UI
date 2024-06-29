@@ -8,14 +8,12 @@ import { Observable } from 'rxjs';
 export class VoteService {
   constructor(private _HttpClient: HttpClient) {}
 
-  vote(body:any): Observable<any> {
+  vote(body: any): Observable<any> {
     console.log(body);
-return this._HttpClient.post('http://localhost:3000/votes', body, {
-  headers: {
-    token: `${localStorage.getItem('token')}`,
-  },
-});
+    return this._HttpClient.post('http://localhost:3000/votes', body, {
+      headers: {
+        token: `${localStorage.getItem('token')}`,
+      },
+    });
   }
-
-
 }

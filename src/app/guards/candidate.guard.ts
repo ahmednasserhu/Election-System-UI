@@ -13,9 +13,9 @@ export const candidateGuard: CanActivateFn = (route, state) => {
       const decodedToken: any = jwtDecode(token);
       const role = decodedToken.citizen.role;
       console.log(role);
-      
+
       if (role === 'candidate') {
-        return true; 
+        return true;
       } else {
         toastr.error('Not Authorized To Access Candidate Pages');
         localStorage.removeItem('token');
@@ -31,6 +31,6 @@ export const candidateGuard: CanActivateFn = (route, state) => {
   toastr.error('Not Authorized To Access Candidate Pages');
   localStorage.removeItem('token');
   localStorage.removeItem('role');
-  router.navigate(['/login']); 
+  router.navigate(['/login']);
   return false;
 };

@@ -44,8 +44,7 @@ export class RegisterComponent {
     private customValidator: RegisterCustomValidator,
     private registerService: RegisterServiceService,
     private route: Router,
-    private toastr: ToastrService
-
+    private toastr: ToastrService,
   ) {
     this.registerForm = this.fb.group(
       {
@@ -56,11 +55,20 @@ export class RegisterComponent {
             this.customValidator.ssnValidator(),
           ]),
         ],
-        motherSSN: ['', Validators.compose([Validators.required, this.customValidator.ssnValidator()])],
-        motherName: ['', Validators.compose([
-          Validators.required,
-          this.customValidator.motherNameFullValidator()
-        ])],
+        motherSSN: [
+          '',
+          Validators.compose([
+            Validators.required,
+            this.customValidator.ssnValidator(),
+          ]),
+        ],
+        motherName: [
+          '',
+          Validators.compose([
+            Validators.required,
+            this.customValidator.motherNameFullValidator(),
+          ]),
+        ],
         firstName: [
           '',
           Validators.compose([
@@ -135,7 +143,7 @@ export class RegisterComponent {
         error: (error: HttpErrorResponse) => {
           this.loading = false;
           this.toastr.error(error.error.message, 'Registration Failed');
-        }
+        },
       });
     }
   }

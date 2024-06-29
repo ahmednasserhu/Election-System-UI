@@ -29,7 +29,7 @@ export class ElectionsComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe((params) => {
-      this.dataCame=false
+      this.dataCame = false;
       status = params['status'] || '';
       console.log(status);
       this._ElectionService.getStatusElection(status).subscribe(

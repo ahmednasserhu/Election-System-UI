@@ -1,4 +1,10 @@
-import { Component, OnInit, ViewChild, ElementRef, NgModule } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  ElementRef,
+  NgModule,
+} from '@angular/core';
 import { Candidate } from '../../Interfaces/candidate';
 import { CommonModule } from '@angular/common';
 import { CandidateService } from '../../Services/candidate.service';
@@ -28,7 +34,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
     CurrencyPipe,
     PercentPipe,
     FilterByStatusPipe,
-    NgxPaginationModule
+    NgxPaginationModule,
   ],
   templateUrl: './candidate.component.html',
   styleUrls: ['./candidate.component.css'],
@@ -40,7 +46,7 @@ export class CandidateComponent implements OnInit {
   elections: Election[] = [];
   selectedCandidate: Candidate | undefined;
   rejectComment: string = '';
-  page: number = 1; 
+  page: number = 1;
   blockedPage: number = 1;
   @ViewChild('candidateModal') candidateModal: ElementRef | undefined;
   @ViewChild('rejectModal') rejectModal: ElementRef | undefined;
@@ -48,7 +54,7 @@ export class CandidateComponent implements OnInit {
   constructor(
     private candidateService: CandidateService,
     private electionService: ElectionService, // Add ElectionService
-    private toastr: ToastrService
+    private toastr: ToastrService,
   ) {}
 
   ngOnInit(): void {
@@ -60,8 +66,12 @@ export class CandidateComponent implements OnInit {
     this.candidateService.getCandidates().subscribe(
       (data) => {
         this.candidates = data.paginationResults?.results || [];
-        this.pendingCandidates = this.candidates.filter(c => c.status === 'pending');
-        this.approvedCandidates = this.candidates.filter(c => c.status === 'approved');
+        this.pendingCandidates = this.candidates.filter(
+          (c) => c.status === 'pending',
+        );
+        this.approvedCandidates = this.candidates.filter(
+          (c) => c.status === 'approved',
+        );
       },
       (error) => {
         console.error('Error loading candidates:', error);
@@ -84,18 +94,21 @@ export class CandidateComponent implements OnInit {
     if (!electionId) {
       return 'Unknown Election';
     }
-    const election = this.elections.find(e => e._id === electionId);
+    const election = this.elections.find((e) => e._id === electionId);
     return election ? election.title : 'Unknown Election';
   }
-  
 
   approveCandidate(candidate: Candidate): void {
     this.candidateService.approveCandidate(candidate._id).subscribe(
       () => {
         candidate.status = 'approved';
-        this.pendingCandidates = this.pendingCandidates.filter(c => c._id !== candidate._id);
+        this.pendingCandidates = this.pendingCandidates.filter(
+          (c) => c._id !== candidate._id,
+        );
         this.approvedCandidates.push(candidate);
-        this.toastr.success(`Candidate '${candidate.logoName}' approved successfully.`);
+        this.toastr.success(
+          `Candidate '${candidate.logoName}' approved successfully.`,
+        );
       },
       (error) => {
         console.error('Error approving candidate:', error);
@@ -108,13 +121,16 @@ export class CandidateComponent implements OnInit {
     this.selectedCandidate = candidate;
     if (this.candidateModal) {
       (this.candidateModal.nativeElement as HTMLElement).classList.add('show');
-      (this.candidateModal.nativeElement as HTMLElement).style.display = 'block';
+      (this.candidateModal.nativeElement as HTMLElement).style.display =
+        'block';
     }
   }
 
   closeCandidateModal(): void {
     if (this.candidateModal) {
-      (this.candidateModal.nativeElement as HTMLElement).classList.remove('show');
+      (this.candidateModal.nativeElement as HTMLElement).classList.remove(
+        'show',
+      );
       (this.candidateModal.nativeElement as HTMLElement).style.display = 'none';
     }
   }
@@ -142,17 +158,25 @@ export class CandidateComponent implements OnInit {
     }
 
     if (this.selectedCandidate) {
-      this.candidateService.rejectCandidate(this.selectedCandidate._id, this.rejectComment).subscribe(
-        () => {
-          this.pendingCandidates = this.pendingCandidates.filter(c => c._id !== this.selectedCandidate!._id);
-          this.toastr.success(`Candidate '${this.selectedCandidate!.logoName}' rejected successfully.`);
-          this.closeRejectModal();
-        },
-        (error) => {
-          console.error('Error rejecting candidate:', error);
-          this.toastr.error(`Error rejecting candidate '${this.selectedCandidate!.logoName}'.`);
-        },
-      );
+      this.candidateService
+        .rejectCandidate(this.selectedCandidate._id, this.rejectComment)
+        .subscribe(
+          () => {
+            this.pendingCandidates = this.pendingCandidates.filter(
+              (c) => c._id !== this.selectedCandidate!._id,
+            );
+            this.toastr.success(
+              `Candidate '${this.selectedCandidate!.logoName}' rejected successfully.`,
+            );
+            this.closeRejectModal();
+          },
+          (error) => {
+            console.error('Error rejecting candidate:', error);
+            this.toastr.error(
+              `Error rejecting candidate '${this.selectedCandidate!.logoName}'.`,
+            );
+          },
+        );
     }
   }
 }

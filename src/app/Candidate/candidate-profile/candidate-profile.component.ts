@@ -141,10 +141,10 @@ export class CandidateProfileComponent {
           if (res) {
             console.log(res);
             Swal.fire({
-              icon:"success",
-              title:"profile updated successfully",
-              timer:2000
-            })
+              icon: 'success',
+              title: 'profile updated successfully',
+              timer: 2000,
+            });
             this.loadProfile();
           }
         }),

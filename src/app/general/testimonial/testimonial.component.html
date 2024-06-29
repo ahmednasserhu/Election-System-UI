@@ -1,37 +1,73 @@
-<div class="p-4 bg-white d-flex ">
+<div class="p-4 bg-white d-flex">
   <div class="my-card gap-2 w-100 myTest">
-    <div class="layer"></div>
-    <div>
+    <h4 class="card-header p-2 ps-3" style="background-color: #d1d1d1">
+      Testimonial
+    </h4>
+    <div class="circle ms-5"></div>
 
-    </div>
-    <h4 class="card-header p-2 ps-3 "
-    style="background-color: #d1d1d1;"
-    >Testimonial</h4>
-    <div class="circle ms-5 "></div>
-    <ngb-carousel class="d-flex justify-content-center align-items-center pt-4 my-carouser py-5" >
-      @for(testimonial of this.testimonials; track testimonial._id){
-          <ng-template ngbSlide
-        ><div
-          class="carousel-item active d-flex align-items-center flex-column align-item-center"
-        >
-          <p class="lead font-italic mx-4 mx-md-5">
-            {{testimonial.message}}
-          </p>
-          <div class="">
-            <img
-              [src]="testimonial.citizenId?.image
-              "
-              class="rounded-circle img-fluid shadow-1-strong"
-              alt="smaple image"
-              width="100"
-              height="100"
-            />
+    <ngb-carousel
+      class="d-flex align-items-center pt-4 my-carouser py-5 flex-column"
+    >
+      <div class="layer"></div>
+      @for (testimonial of this.testimonials; track testimonial._id) {
+        <ng-template ngbSlide
+          ><div
+            class="carousel-item active d-flex align-items-center flex-column align-item-center"
+          >
+            <p class="lead font-italic mx-4 mx-md-5">
+              {{ testimonial.message }}
+            </p>
+            <div class="contain-image">
+              <img
+                [src]="testimonial.citizenId?.image"
+                class="my-img"
+                alt="smaple image"
+              />
+            </div>
+            <p class="text-muted mb-0">
+              {{ testimonial.citizenId?.firstName }}
+              {{ testimonial.citizenId?.lastName }}
+            </p>
           </div>
-          <p class="text-muted mb-0">{{testimonial.citizenId?.firstName}} {{testimonial.citizenId?.lastName}}</p>
-        </div>
-      </ng-template>
+        </ng-template>
       }
-      
     </ngb-carousel>
   </div>
 </div>
+
+<!-- <div class="card">
+    <p-carousel 
+        [value]="testimonials" 
+        [numVisible]="3" 
+        [numScroll]="3" 
+        [circular]="true" 
+        [responsiveOptions]="responsiveOptions" 
+        autoplayInterval="3000">
+        <ng-template let-testimonial pTemplate="item">
+                <div class="border-1 surface-border border-round m-2 p-3">
+                    <div class="mb-3">
+                        <div class="relative mx-auto">
+                            <img 
+                                [src]="testimonialcitizenId?.image" 
+                                class="w-full border-round" />
+                            <p-tag 
+                                class="absolute" 
+                                [ngStyle]="{ 'left.px': 5, 'top.px': 5 }" />
+                        </div>
+                    </div>
+                    <div class="mb-3 font-medium">
+                      name
+                    </div>
+                    <div class="flex justify-content-between align-items-center">
+                    <div class="mt-0 font-semibold text-xl">
+                        {{ '$' + product.price }}
+                    </div>
+                        <span>
+                            <p-button icon="pi pi-heart" severity="secondary" [outlined]="true" />
+                            <p-button icon="pi pi-shopping-cart" styleClass="ml-2" />
+                        </span>
+                    </div>
+                </div>
+            </ng-template>
+    </p-carousel>
+</div> -->

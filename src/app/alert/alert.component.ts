@@ -12,6 +12,5 @@ export class AlertComponent {
   /**
    *
    */
-  constructor(private  toastr: ToastrService) {}
-  
+  constructor(private toastr: ToastrService) {}
 }

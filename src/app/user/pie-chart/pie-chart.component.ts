@@ -19,17 +19,19 @@ Chart.register(...registerables);
   templateUrl: './pie-chart.component.html',
   styleUrl: './pie-chart.component.css',
 })
-export class PieChartComponent  implements OnDestroy, OnChanges, AfterViewInit
-{
+export class PieChartComponent implements OnDestroy, OnChanges, AfterViewInit {
   private chart: Chart | undefined;
-  @Input()  result : any;
+  @Input() result: any;
   constructor(
     private router: Router,
     private _ElectionService: ElectionService,
-  ) {
-  }
+  ) {}
   ngAfterViewInit(): void {
-    console.log(111111111111,this.result)
+    if (!this.result || !this.result._id) {
+      console.warn('Result data is not available:', this.result);
+      return;
+    }
+    console.log('Data available for rendering:', this.result);
     this.renderChart();
   }
 
@@ -41,23 +43,21 @@ export class PieChartComponent  implements OnDestroy, OnChanges, AfterViewInit
       this.renderChart();
     }
   }
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    console.log(this.result);
+  }
   ngOnDestroy(): void {
     if (this.chart) {
       this.chart.destroy();
     }
   }
   renderChart(): void {
-    if (
-      !this.result ||
-      !this.result.electionId ||
-      !this.result.electionId._id
-    ) {
+    if (!this.result || !this.result._id) {
       console.warn('Missing or invalid data to render chart.');
       return;
     }
 
-    const canvasId = `barchart-${this.result.electionId._id}`;
+    const canvasId = `barchart-${this.result._id}`;
     console.log('Canvas ID:', canvasId);
 
     const canvasElement = document.getElementById(
@@ -71,18 +71,30 @@ export class PieChartComponent  implements OnDestroy, OnChanges, AfterViewInit
     }
     let delayed: any;
     const chartConfig: ChartConfiguration = {
-      type: 'pie',
+      type: 'doughnut',
       data: {
         labels: this.result.candidates.map(
-          (candidate: any) => candidate.candidateName,
+          (candidate: any) =>
+            `${candidate.citizenDetails.firstName} ${candidate.citizenDetails.lastName}`,
         ),
         datasets: [
           {
-            label: this.result.electionId.title,
+            label: this.result.title,
             data: this.result.candidates.map((candidate: any) =>
               Number(candidate.percentage),
             ),
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            backgroundColor: [
+              'rgb(255, 99, 132)', // Red
+              'rgb(54, 162, 235)', // Blue
+              'rgb(255, 205, 86)', // Yellow
+              'rgb(75, 192, 192)', // Teal
+              'rgb(153, 102, 255)', // Purple
+              'rgb(255, 159, 64)', // Orange
+              'rgb(201, 203, 207)', // Light Gray
+              'rgb(255, 180, 90)', // Peach
+              'rgb(0, 204, 153)', // Sea Green
+              'rgb(102, 255, 102)', // Lime Green
+            ],
             borderColor: 'rgba(75, 192, 192, 1)',
             borderWidth: 1,
           },
@@ -107,7 +119,6 @@ export class PieChartComponent  implements OnDestroy, OnChanges, AfterViewInit
             return delay;
           },
         },
-        
       },
     };
 
@@ -119,6 +130,6 @@ export class PieChartComponent  implements OnDestroy, OnChanges, AfterViewInit
     }
   }
   navigateToApplyForm() {
-    this.router.navigate(['/user', 'apply', this.result.electionId._id]);
+    this.router.navigate(['/user', 'apply', this.result._id]);
   }
 }

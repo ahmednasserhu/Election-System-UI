@@ -2,7 +2,7 @@ import { ToastrService } from 'ngx-toastr';
 import { VoteService } from '../../services/vote.service';
 import { ElectionService } from './../../services/election.service';
 import { Router } from '@angular/router';
-import { FormGroup, FormsModule, NgModel } from '@angular/forms';  // Import FormsModule
+import { FormGroup, FormsModule, NgModel } from '@angular/forms'; // Import FormsModule
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { InputOtpModule } from 'primeng/inputotp';
@@ -60,6 +60,7 @@ export class ElectionDetailsComponent
   result!: any;
   currentDate!: Date;
   statusDate!: string;
+  candidateId!: string; // Add this property
 
   @ViewChild('otpModalTemplate') otpModalTemplate!: TemplateRef<any>; // ViewChild to access the template
   private modalService = inject(NgbModal);
@@ -68,7 +69,7 @@ export class ElectionDetailsComponent
   otpNum: any = '';
   otpArray = ['', '', '', '', '', '']; // Array to store OTP digits
   countFinished = false;
-  registerForm !: FormGroup;
+  registerForm!: FormGroup;
   otpForm!: FormGroup;
   constructor(
     private router: Router,
@@ -204,13 +205,14 @@ export class ElectionDetailsComponent
   }
 
   vote(candidateId: any, electionId: any) {
+    this.candidateId = candidateId;
     this.VoteService.vote({
       candidateId: candidateId,
       electionId: electionId,
     }).subscribe({
       next: (res) => {
-        // Open the modal after receiving a successful response
-        this.openModal();
+        console.log('MMMMMMMMMMMMMMMM', candidateId);
+        this.openModal(candidateId); // Pass the candidateId here
       },
       error: (err) => {
         this.toaster.error(err.error.message);
@@ -237,17 +239,16 @@ export class ElectionDetailsComponent
       this.countFinished = true;
     }
   }
-  voteWithOTP(candidateId: any, electionId: any) {
-    console.log(this.value);
-      if (!this.value || this.value.length !== 6) {
-    this.toaster.error('Please enter a valid 6-digit OTP');
-    return;
-      }
-      // Call your service
-      this.cd.detectChanges();
+  voteWithOTP(electionId: any) {
+    if (!this.value || this.value.length !== 6) {
+      this.toaster.error('Please enter a valid 6-digit OTP');
+      return;
+    }
+    // Call your service
+    this.cd.detectChanges();
 
     this.VoteService.vote({
-      candidateId: candidateId,
+      candidateId: this.candidateId,
       electionId: electionId,
       otp: this.value,
     }).subscribe({
@@ -264,7 +265,9 @@ export class ElectionDetailsComponent
     });
   }
 
-  openModal() {
+  openModal(candidateId: string) {
+    this.candidateId = candidateId; // Store the candidateId
+    console.log(this.candidateId);
     const modalRef = this.modalService.open(this.otpModalTemplate, {
       ariaLabelledBy: 'modal-basic-title',
     });
