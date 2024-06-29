@@ -1,21 +1,23 @@
-import { jwtDecode } from 'jwt-decode';
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import {jwtDecode} from 'jwt-decode';
 
 export const authGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
+  const toastr = inject(ToastrService);
   const token = localStorage.getItem('token');
 
   if (token) {
     try {
       const decodedToken: any = jwtDecode(token);
-      const role = decodedToken.role;
-
+      const role = decodedToken.citizen.role;
       if (role === 'admin') {
-        // router.navigate(['/admin']);
-        return true; // Allow navigation if role is 'admin'
+        return true; 
       } else {
-        // Navigate to unauthorized page or candidate page
+        toastr.error('please to access these pages lOGIN AS ADMIN PLEASE');
+        localStorage.removeItem('token');
+        localStorage.removeItem('role');
         router.navigate(['/login']);
         return false;
       }
@@ -23,7 +25,9 @@ export const authGuard: CanActivateFn = (route, state) => {
       console.error('Invalid token:', e);
     }
   }
-
-  router.navigate(['/login']); // Navigate to login page if not authorized
+  localStorage.removeItem('token');
+  localStorage.removeItem('role');
+  toastr.error('please to access these pages lOGIN AS ADMIN PLEASE');
+  router.navigate(['/login']); 
   return false;
 };
