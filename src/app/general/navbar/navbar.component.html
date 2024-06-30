@@ -8,53 +8,88 @@
   </div>
 </div>
 
-
-
 <nav class="navbar navbar-expand-lg navbar-light bg-body-tertiary mb-3">
-	<div class="container-fluid">
+  <div class="container-fluid">
+    <!-- Step 3: Toggle the value of the property when the toggler button is clicked. -->
+    <button
+      class="navbar-toggler"
+      type="button"
+      (click)="isMenuCollapsed = !isMenuCollapsed"
+    >
+      &#9776;
+    </button>
 
-		<!-- Step 3: Toggle the value of the property when the toggler button is clicked. -->
-		<button class="navbar-toggler" type="button" (click)="isMenuCollapsed = !isMenuCollapsed">&#9776;</button>
-
-		<div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse">
-       <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" routerLink="home" (click)="isMenuCollapsed = true">Home</a>
-      </li>
-      @if(this.isLogged && this.role !== 'admin'){
-          <li class="nav-item ">
-        <a class="nav-link" routerLink="user/elections" [queryParams]="{ status: 'pending' }" (click)="isMenuCollapsed = true">User Dashboard</a>
-      </li>
-      }
-     
-    </ul>
-    <ul class="navbar-nav ms-auto">
-      @if(!this.isLogged){
+    <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" routerLink="home" (click)="isMenuCollapsed = true"
+            >Home</a
+          >
+        </li>
+        @if (this.isLogged && this.role !== 'admin') {
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              routerLink="user/elections"
+              [queryParams]="{ status: 'pending' }"
+              (click)="isMenuCollapsed = true"
+              >User Dashboard</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              routerLink="candidate"
+              (click)="isMenuCollapsed = true"
+              >Candidate Dashboard</a
+            >
+          </li>
+        }
+      </ul>
+      <ul class="navbar-nav ms-auto">
+        @if (!this.isLogged) {
           <li class="nav-item active">
-        <a class="nav-link" routerLink="register"  (click)="isMenuCollapsed = true">Register</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="login"  (click)="isMenuCollapsed = true">Login</a>
-      </li>
-      }
-      @else {
-           <li class="nav-item ">
-        <img
-        [src]="this.image || 'https://w7.pngwing.com/pngs/178/595/png-transparent-user-profile-computer-icons-login-user-avatars-thumbnail.png'"
-        alt="Citizen Image"
-        
-        style="width: 40px; height: 100%;"
-        class="rounded-circle me-2"
-      />
-      </li>
+            <a
+              class="nav-link"
+              routerLink="register"
+              (click)="isMenuCollapsed = true"
+              >Register</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              routerLink="login"
+              (click)="isMenuCollapsed = true"
+              >Login</a
+            >
+          </li>
+        } @else {
+          <li class="nav-item">
+            <img
+              [src]="
+                this.image ||
+                'https://w7.pngwing.com/pngs/178/595/png-transparent-user-profile-computer-icons-login-user-avatars-thumbnail.png'
+              "
+              alt="Citizen Image"
+              style="width: 40px; height: 100%"
+              class="rounded-circle me-2"
+            />
+          </li>
 
-      <li class="nav-item" (click)="isMenuCollapsed = true">
-        <button (click)="logout()" style="background-color: transparent;" class="nav-link "><i class="fa-solid fa-right-from-bracket ms-2 fs-5 text-danger "></i></button>
-      </li>
-      }
-     
-    </ul>
-		</div>
-	</div>
+          <li class="nav-item" (click)="isMenuCollapsed = true">
+            <button
+              (click)="logout()"
+              style="background-color: transparent"
+              class="nav-link"
+            >
+              <i
+                class="fa-solid fa-right-from-bracket ms-2 fs-5 text-danger"
+              ></i>
+            </button>
+          </li>
+        }
+      </ul>
+    </div>
+  </div>
 </nav>
-
