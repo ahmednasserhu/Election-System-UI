@@ -6,15 +6,37 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 
+interface PageEvent {
+  first: number;
+  rows: number;
+  page: number;
+  pageCount: number;
+}
 @Component({
   selector: 'app-elections',
   standalone: true,
-  imports: [CommonModule, DatePipe, ElectionCardComponent, NgxSpinnerModule],
+  imports: [
+    CommonModule,
+    DatePipe,
+    ElectionCardComponent,
+    NgxSpinnerModule,
+    PaginatorModule,
+  ],
   templateUrl: './elections.component.html',
   styleUrls: ['./elections.component.css'],
 })
 export class ElectionsComponent implements OnInit {
+  first: number = 0;
+
+  rows: number = 10;
+
+  onPageChange(event: PaginatorState) {
+    this.first = event.first || 0; // Use default value if undefined
+    this.rows = event.rows || 10; // Use default value if undefined
+  }
+
   results!: any;
   private routeSubscription: any; // Variable to hold the subscription
   errorMessage: string = '';

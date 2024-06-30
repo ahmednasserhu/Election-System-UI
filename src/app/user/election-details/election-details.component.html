@@ -5,12 +5,12 @@
         {{ result?.title }}
         <span
           [class]="
-             this.statusDate === 'Pending' || this.statusDate === 'Finished' 
+            this.statusDate === 'Pending' || this.statusDate === 'Finished'
               ? 'bg-danger badge ms-1'
               : 'bg-success badge ms-1'
           "
         >
-                {{this.statusDate}}
+          {{ this.statusDate }}
         </span>
       </h5>
       <ng-container *ngIf="result?.length">
@@ -30,19 +30,16 @@
       </p>
       <p class="card-text mb-1">
         <i class="fas fa-calendar-week me-2"></i>
-        <span class="sub-head me-2">End Date</span
-        >{{ result?.enddate | date }}
+        <span class="sub-head me-2">End Date</span>{{ result?.enddate | date }}
       </p>
       <div class="contain-btns d-flex gap-2 mt-4">
-        @if(this.statusDate === 'Pending' && !this.alreadyCandidate){
+        @if (this.statusDate === 'Pending' && !this.alreadyCandidate) {
           <button class="btn mybtn" (click)="navigateToApplyForm()">
             Want to be a candidate
           </button>
         }
-        @if(this.statusDate === 'Pending' && this.alreadyCandidate){
-          <p>
-            You have already apply for this candidate !
-          </p>
+        @if (this.statusDate === 'Pending' && this.alreadyCandidate) {
+          <p>You have already apply for this candidate !</p>
         }
         <!-- @if(this.statusDate === 'In-progress'){
           <button class="btn mybtn" (click)="navigateToApplyForm()">
@@ -52,19 +49,21 @@
       </div>
     </div>
     <div class="col-md-8">
-              @if(this.statusDate === 'Finished'){
-                <canvas [id]="'barchart-' + result._id"></canvas>
-              }
-              @else if(this.statusDate === 'In-progress'){
-                <div class="d-flex justify-content-center align-items-center w-100 h-100">
-                  <p>Statistics will be displyed after election finished</p>
-                </div>
-              }
-              @else if(this.statusDate === 'Pending'){
-                <div class="d-flex justify-content-center align-items-center w-100 h-100">
-                  <p>You will be able to vote after election starts</p>
-                </div>
-              }
+      @if (this.statusDate === 'Finished') {
+        <canvas [id]="'barchart-' + result._id"></canvas>
+      } @else if (this.statusDate === 'In-progress') {
+        <div
+          class="d-flex justify-content-center align-items-center w-100 h-100"
+        >
+          <p>Statistics will be displyed after election finished</p>
+        </div>
+      } @else if (this.statusDate === 'Pending') {
+        <div
+          class="d-flex justify-content-center align-items-center w-100 h-100"
+        >
+          <p>You will be able to vote after election starts</p>
+        </div>
+      }
     </div>
   </div>
   <div class="row p-4">
@@ -82,7 +81,9 @@
           class="my-container-2 p-5 d-flex container-fluid"
         >
           <div class="row w-100">
-            <div class="contain-img col-lg-4 d-flex justify-content-center align-items-center">
+            <div
+              class="contain-img col-lg-4 d-flex justify-content-center align-items-center"
+            >
               <img
                 class="my-img"
                 [src]="candidate.citizenDetails.image"
@@ -90,7 +91,10 @@
               />
             </div>
             <div class="contain-words col-lg-8">
-              <h3>{{ candidate.citizenDetails.firstName }} {{ candidate.citizenDetails.secondName }}</h3>
+              <h3>
+                {{ candidate.citizenDetails.firstName }}
+                {{ candidate.citizenDetails.secondName }}
+              </h3>
               <p>{{ candidate.candidateDetails.brief }}</p>
               <div class="d-flex gap-5 align-items-center">
                 <p>
@@ -111,76 +115,120 @@
                   ><i class="fas fa-landmark pe-2"></i>Part</span
                 >{{ candidate.candidateDetails.party }}
               </p>
-              @if(this.statusDate === 'In-progress'){
-              <button class="btn mybtn" (click)="vote(candidate._id,result._id)">Vote</button>
-              }
-              @else {
-                <p>Election will start at   <span class="ms-1">{{this.result.startdate | date}}</span> </p>
+              @if (this.statusDate === 'In-progress') {
+                <button
+                  class="btn mybtn"
+                  (click)="vote(candidate._id, result._id)"
+                >
+                  Vote
+                </button>
+              } @else {
+                <p>
+                  Election will start at
+                  <span class="ms-1">{{ this.result.startdate | date }}</span>
+                </p>
               }
             </div>
           </div>
         </div>
       </div>
-      <ng-template #otpModalTemplate let-modal >
-  <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Enter OTP</h4>
-    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
-  </div>
-  <div class="modal-body">
-    <form (submit)="onSubmitOtp()">
-      <div class="otp-container d-flex flex-column align-items-center">
-        <p>Enter OTP sent on your email</p>
-        <div>
-<div class="">
-    <div class="d-flex flex-column align-items-center justify-content-center">
-        <p-inputOtp [(ngModel)]="value" [length]="6" style="gap: 0" name="value" class="mb-5" required>
-  <ng-template pTemplate="input" let-token let-events="events" let-index="index">
-    <input 
-      pInputText 
-      type="text" 
-      [maxLength]="1" 
-      (input)="events.input($event)" 
-      (keydown)="events.keydown($event)" 
-      [attr.value]="token" 
-      class="custom-otp-input" 
-    />
-    <div *ngIf="index === 3" class="px-3">
-      <i class="pi pi-minus"></i>
-    </div>
-  </ng-template>
-</p-inputOtp>
-
-<div *ngIf="!countFinished" class="d-flex justify-content-center align-items-center flex-column gap-2" >
-  <span style="display: block;">This OTP will expire in</span>
-  <countdown style="color: green; font-size: 20px;" [config]="{leftTime: 600}" (event)="handleCount($event)"></countdown>
-</div>
-<div *ngIf="countFinished">
-  <button class="btn btn-info" (click)="resendOTP(candidate._id,result._id)">Resend OTP</button>
-</div>
-       
-        <div class="flex justify-content-between mt-5 align-self-stretch">
-
+      <ng-template #otpModalTemplate let-modal>
+        <div class="modal-header">
+          <h4 class="modal-title" id="modal-basic-title">Enter OTP</h4>
+          <button
+            type="button"
+            class="btn-close"
+            aria-label="Close"
+            (click)="modal.dismiss('Cross click')"
+          ></button>
         </div>
-    </div>
-</div>        </div>
-      </div>
-    </form>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-outline-secondary" (click)="this.voteWithOTP(result._id)">send</button>
-  </div>
-</ng-template>
+        <div class="modal-body">
+          <form (submit)="onSubmitOtp()">
+            <div class="otp-container d-flex flex-column align-items-center">
+              <p>Enter OTP sent on your email</p>
+              <div>
+                <div class="">
+                  <div
+                    class="d-flex flex-column align-items-center justify-content-center"
+                  >
+                    <p-inputOtp
+                      [(ngModel)]="value"
+                      [length]="6"
+                      style="gap: 0"
+                      name="value"
+                      class="mb-5"
+                      required
+                    >
+                      <ng-template
+                        pTemplate="input"
+                        let-token
+                        let-events="events"
+                        let-index="index"
+                      >
+                        <input
+                          pInputText
+                          type="text"
+                          [maxLength]="1"
+                          (input)="events.input($event)"
+                          (keydown)="events.keydown($event)"
+                          [attr.value]="token"
+                          class="custom-otp-input"
+                        />
+                        <div *ngIf="index === 3" class="px-3">
+                          <i class="pi pi-minus"></i>
+                        </div>
+                      </ng-template>
+                    </p-inputOtp>
+
+                    <div
+                      *ngIf="!countFinished"
+                      class="d-flex justify-content-center align-items-center flex-column gap-2"
+                    >
+                      <span style="display: block"
+                        >This OTP will expire in</span
+                      >
+                      <countdown
+                        style="color: green; font-size: 20px"
+                        [config]="{ leftTime: 600 }"
+                        (event)="handleCount($event)"
+                      ></countdown>
+                    </div>
+                    <div *ngIf="countFinished">
+                      <button
+                        class="btn btn-info"
+                        (click)="resendOTP(candidate._id, result._id)"
+                      >
+                        Resend OTP
+                      </button>
+                    </div>
+
+                    <div
+                      class="flex justify-content-between mt-5 align-self-stretch"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-outline-secondary"
+            (click)="this.voteWithOTP(result._id)"
+          >
+            send
+          </button>
+        </div>
+      </ng-template>
     }
   </div>
 </div>
 
+<!-- <button class="btn btn-lg btn-outline-primary" (click)="open(content)">Launch demo modal</button> -->
 
-        
-        <!-- <button class="btn btn-lg btn-outline-primary" (click)="open(content)">Launch demo modal</button> -->
-        
-        <hr />
-        
-        
+<hr />
+
 <!-- candidateDetails
 : 
 brief
@@ -206,6 +254,3 @@ status
 "approved"
 
  -->
-
-
- 

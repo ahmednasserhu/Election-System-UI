@@ -10,7 +10,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 @Component({
   selector: 'app-election',
   standalone: true,
-  imports: [CommonModule, FormsModule,NgxPaginationModule],
+  imports: [CommonModule, FormsModule, NgxPaginationModule],
   templateUrl: './election.component.html',
   styleUrls: ['./election.component.css'],
 })
@@ -24,8 +24,8 @@ export class ElectionComponent implements OnInit {
   duplicateTitleError: string | null = null;
   startDateError: string | null = null;
   endDateError: string | null = null;
-  page: number = 1; 
-  blockedPage: number = 1; 
+  page: number = 1;
+  blockedPage: number = 1;
 
   constructor(private electionService: ElectionService, private toastr: ToastrService) {}
 

@@ -76,6 +76,7 @@
             >In-progress Elections</a
           >
         </li>
+        
         <li class="nav-item active">
           <a
             class="nav-link"
@@ -83,6 +84,14 @@
             [queryParams]="{ status: 'finished' }"
             (click)="isMenuCollapsed = true"
             >Finished Elections</a
+          >
+        </li>
+        <li class="nav-item active">
+          <a
+            class="nav-link"
+            routerLink="status"
+            (click)="isMenuCollapsed = true"
+            >Application Status</a
           >
         </li>
         <li class="nav-item active">
