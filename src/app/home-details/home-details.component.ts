@@ -43,19 +43,20 @@ export class HomeDetailsComponent
   }
 
   ngAfterViewInit(): void {
-    this.renderChart();
+    if (this.election) {
+      this.renderChart();
+    }
   }
   ngOnChanges(): void {
-      if (this.chart) {
-        this.chart.destroy();
-        this.chart = undefined;
-      }
+    if (this.election && !this.chart) {
       this.renderChart();
-
+    }
   }
+
   ngOnDestroy(): void {
     if (this.chart) {
       this.chart.destroy();
+      this.chart = undefined;
     }
   }
 
@@ -127,7 +128,6 @@ export class HomeDetailsComponent
             return delay;
           },
         },
-       
       },
     };
 

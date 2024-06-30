@@ -2,7 +2,8 @@
   <div class="card p-4" style="width: 75%;" style=" background: #313131;
 ">
     <h4 class="events-title">Election Details</h4>
-    <div *ngIf="election">
+    <div class="d-flex justify-content-between">
+      <div *ngIf="election">
       <h4
         style="
           font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
@@ -34,9 +35,11 @@
     <div *ngIf="!election">
       <p>Loading election details...</p>
     </div>
-    <div  id="chart" class="container">
+    <div class="contain me-5">
                 <canvas [id]="'barchart-' + election._id"></canvas>
       </div>
+    </div>
+    
   </div>
   
 </div>
