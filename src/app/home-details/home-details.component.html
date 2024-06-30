@@ -1,37 +1,45 @@
 <div class="container my-5 d-flex justify-content-center">
-  <div class="card p-4" style="width: 75%; max-width: 800px">
+  <div class="card p-4" style="width: 75%;" style=" background: #313131;
+">
     <h4 class="events-title">Election Details</h4>
     <div *ngIf="election">
       <h4
         style="
           font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
             'Lucida Sans Unicode', Geneva, Verdana, sans-serif; font-weight: bold;
-        "
+        "class="text-light"
       >
         {{ election?.title }}
       </h4>
-      <p style="font-size: 15px;">{{ election?.description }}</p>
-      <p class="badge bg-secondary">
+      <p style="font-size: 15px;" class="text-light">{{ election?.description }}</p>
+      <p class="badge bg-secondary text-light">
         Start Date:
         {{ election?.startdate | date: 'yyyy-MM-dd' }}
       </p>
-      <p class="badge bg-secondary ms-2">
+      <p class="badge bg-secondary ms-2 ">
         End Date: {{ election?.enddate | date: 'yyyy-MM-dd' }}
       </p>
-      <p>
-        <strong>Total Votes:</strong> {{ election?.totalVotes }}
+      <p class="text-light">
+        <strong class="text-light">Total Votes:</strong> {{ election?.totalVotes }}
       </p>
-      <h5>Candidates</h5>
-      <ul>
-        <li *ngFor="let candidate of election?.candidates">
-          {{ candidate.citizenDetails?.firstName }}      {{ candidate.citizenDetails?.lastName }}
+      <h5 class="text-light">Candidates</h5>
+      <ul style="list-style-type: none;padding-bottom: 120px;">
+        <li class="text-light" *ngFor="let candidate of election?.candidates">
+          <img style="margin-left: -35px;height: 60px;width: 60px;border-radius: 50%;margin-top: 10px; margin-right: 5px;" src="{{ candidate.citizenDetails?.image }}">{{ candidate.citizenDetails?.firstName }}      {{ candidate.citizenDetails?.lastName }}
         </li>
+         
       </ul>
+     
     </div>
     <div *ngIf="!election">
       <p>Loading election details...</p>
     </div>
-    <img class="img-fluid" src="https://png.pngtree.com/thumb_back/fh260/background/20230625/pngtree-web-banner-investment-3d-rendered-user-interface-for-seo-data-and-image_3673084.jpg"> 
+    <div  id="chart" class="container">
+                <canvas [id]="'barchart-' + election._id"></canvas>
+      </div>
   </div>
   
 </div>
+
+
+

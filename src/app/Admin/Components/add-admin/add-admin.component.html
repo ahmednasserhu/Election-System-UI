@@ -347,7 +347,11 @@
                   [errorMsg]="'Required Field'"
                 ></app-form-error>
               </div>
+              <div *ngIf="imageInvalid" class="custom-alert" role="alert">
+                Invalid Image. Please select a valid image file.
+              </div> <!-- Add this block -->
             </div>
+            
             <!-- Add this hidden field inside your form -->
             <input type="hidden" formControlName="role" value="admin" />
 
