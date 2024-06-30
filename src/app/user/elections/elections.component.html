@@ -20,13 +20,14 @@
             </p>
           </div>
         }
-        <div class="card flex justify-content-center">
+        <div class="mypag flex justify-content-center pb-3">
     <p-paginator 
         (onPageChange)="onPageChange($event)" 
         [first]="first" 
         [rows]="rows" 
-        [totalRecords]="120" 
-        [rowsPerPageOptions]="[10, 20, 30]" />
+        [totalRecords]="totalRecord" 
+        class="mypag"
+         />
 </div>
       </div>
     </div>
