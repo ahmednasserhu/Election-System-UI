@@ -38,7 +38,7 @@ export class RegisterComponent {
   eyeSlashed = faEyeSlash;
   fileImage = faFileImage;
   loading: boolean = false;
-
+  imageInvalid: boolean = false; 
   constructor(
     private fb: FormBuilder,
     private customValidator: RegisterCustomValidator,
@@ -122,8 +122,14 @@ export class RegisterComponent {
     const file: File = event.target.files[0];
 
     if (file) {
-      this.selectedImage = file;
-      console.log(this.selectedImage);
+      if (file.type.startsWith('image/')) { 
+        this.selectedImage = file;
+        this.imageInvalid = false; 
+      } else {
+        this.imageInvalid = true; 
+        this.selectedImage = null;
+        (event.target as HTMLInputElement).value = ''; 
+      }
     }
   }
 

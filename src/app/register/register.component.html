@@ -340,6 +340,9 @@
                 [errorMsg]="'Required Field'"
               ></app-form-error>
             </div>
+            <div *ngIf="imageInvalid" class="custom-alert" role="alert">
+              Invalid Image. Please select a valid image file.
+            </div>
           </div>
           <!-- Submit Button -->
           <div class="col-12 mt-4">
