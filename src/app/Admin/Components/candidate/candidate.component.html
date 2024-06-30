@@ -35,14 +35,14 @@
     >
       <div class="candidate-list mt-3">
         <h4 class="text-light">Candidate List</h4>
+        <form class="d-flex mb-3" (ngSubmit)="searchByLogoName()">
+          <input [(ngModel)]="searchTerm" (ngModelChange)="searchByLogoName()" class="form-control me-2" type="search" placeholder="Search by logoName" aria-label="Search" name="search">
+        </form>
         <ul class="list-group">
           <li
             class="list-group-item d-flex justify-content-between align-items-center text-white border-black"
             style="background-color: rgb(31, 31, 31)"
-            *ngFor="
-              let candidate of pendingCandidates
-                | paginate: { itemsPerPage: 5, currentPage: page }
-            "
+            *ngFor="let candidate of filteredCandidates | paginate: { itemsPerPage: 5, currentPage: page }"
           >
             <span
               (click)="openCandidateModal(candidate)"
@@ -74,9 +74,10 @@
         </ul>
         <div class="pagination-container" *ngIf="candidates.length > 5" >
           <pagination-controls
-            class="pagination-controls"
-            (pageChange)="page = $event"
-          ></pagination-controls>
+          class="pagination-controls"
+          (pageChange)="page = $event"
+        ></pagination-controls>
+        
         </div>
       </div>
     </div>

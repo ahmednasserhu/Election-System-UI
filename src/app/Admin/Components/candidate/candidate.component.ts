@@ -41,6 +41,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 })
 export class CandidateComponent implements OnInit {
   candidates: Candidate[] = [];
+  filteredCandidates: Candidate[] = [];
   pendingCandidates: Candidate[] = [];
   approvedCandidates: Candidate[] = [];
   elections: Election[] = [];
@@ -48,6 +49,7 @@ export class CandidateComponent implements OnInit {
   rejectComment: string = '';
   page: number = 1;
   blockedPage: number = 1;
+  searchTerm: string = '';
   @ViewChild('candidateModal') candidateModal: ElementRef | undefined;
   @ViewChild('rejectModal') rejectModal: ElementRef | undefined;
 
@@ -72,6 +74,9 @@ export class CandidateComponent implements OnInit {
         this.approvedCandidates = this.candidates.filter(
           (c) => c.status === 'approved',
         );
+        // Initially show pending candidates
+        this.filteredCandidates = this.pendingCandidates.slice();
+        
       },
       (error) => {
         console.error('Error loading candidates:', error);
@@ -179,4 +184,16 @@ export class CandidateComponent implements OnInit {
         );
     }
   }
+  searchByLogoName(): void {
+    if (this.searchTerm) {
+      this.filteredCandidates = this.pendingCandidates.filter(candidate =>
+        candidate.logoName.toLowerCase().includes(this.searchTerm.toLowerCase())
+      );
+    } else {
+      this.filteredCandidates = this.pendingCandidates.slice(); // Show all pending candidates if search term is empty
+    }
+  }
+  
+  
+
 }
