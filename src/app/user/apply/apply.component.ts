@@ -40,6 +40,8 @@ export class ApplyComponent {
   eyeSlashed = faEyeSlash;
   fileImage = faFileImage;
   electionDetails!: any;
+  imageInvalid: boolean = false;
+  criminalRecordInvalid: boolean = false;
   constructor(
     private fb: FormBuilder,
     private customValidator: RegisterCustomValidator,
@@ -92,11 +94,9 @@ export class ApplyComponent {
     if (file) {
       if (file.type.startsWith('image/')) {
         this.selectedImage = file;
+        this.imageInvalid = false;
       } else {
-        Swal.fire({
-          title: 'Please select a valid image file',
-          icon: 'error',
-        });
+        this.imageInvalid = true;
         this.selectedImage = null;
         (event.target as HTMLInputElement).value = '';
       }
@@ -109,11 +109,9 @@ export class ApplyComponent {
     if (file) {
       if (file.type === 'application/pdf') {
         this.selectedCriminal = file;
+        this.criminalRecordInvalid = false;
       } else {
-        Swal.fire({
-          title: 'Please select a PDF file',
-          icon: 'error',
-        });
+        this.criminalRecordInvalid = true;
         this.selectedCriminal = null;
         (event.target as HTMLInputElement).value = '';
       }
@@ -138,10 +136,19 @@ export class ApplyComponent {
           }
         },
         (error: HttpErrorResponse) => {
+          if(error.error.message == undefined){
+            Swal.fire({
+              title: `please fill the form with valid data`,
+              icon: 'error',
+            });
+            this.imageInvalid = false;
+            this.criminalRecordInvalid = false;
+          }else{
           Swal.fire({
             title: `${error.error.message}`,
             icon: 'error',
           });
+        }
           this.clearForm();
         },
       );

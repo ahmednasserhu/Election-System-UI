@@ -74,6 +74,9 @@
                 [errorMsg]="'Required Field'"
               ></app-form-error>
             </div>
+            <div *ngIf="imageInvalid" class="custom-alert" role="alert">
+              Invalid Image. Please select a valid image file.
+            </div>
           </div>
 
           <!--! criminal record Upload Field -->
@@ -142,6 +145,9 @@
                 [validationType]="'required'"
                 [errorMsg]="'Required Field'"
               ></app-form-error>
+            </div>
+            <div *ngIf="criminalRecordInvalid" class="custom-alert" role="alert">
+              Invalid pdf file. Please select a valid criminal record file.
             </div>
           </div>
 
