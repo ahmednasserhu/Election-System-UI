@@ -26,6 +26,7 @@ export class ElectionComponent implements OnInit {
   endDateError: string | null = null;
   page: number = 1;
   blockedPage: number = 1;
+  itemsPerPage: number = 5;
 
   constructor(private electionService: ElectionService, private toastr: ToastrService) {}
 
@@ -47,11 +48,11 @@ export class ElectionComponent implements OnInit {
 
   loadElections(): void {
     this.electionService.getElections().subscribe({
-      next: (data) => {
-        if (Array.isArray(data)) {
-          this.elections = data;
+      next: (results) => {
+        if (Array.isArray(results)) {
+          this.elections = results;
         } else {
-          console.error('Data is not an array', data);
+          console.error('Data is not an array', results);
         }
       },
       error: (err) => {

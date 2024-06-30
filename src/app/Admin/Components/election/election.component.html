@@ -43,7 +43,7 @@
           <li
           class="list-group-item d-flex justify-content-between align-items-center text-light border-black"
           style="background-color: rgb(31, 31, 31)"
-          *ngFor="let election of elections"
+          *ngFor="let election of elections  | paginate: { itemsPerPage: itemsPerPage, currentPage: page }"
         >
           <span>
             {{ election.title }} ({{ election.startdate | date }} -
@@ -69,12 +69,14 @@
         </li>
         
         </ul>
-        <div class="pagination-container">
-          <pagination-controls
-            class="pagination-controls"
-            (pageChange)="page = $event"
-          ></pagination-controls>
-        </div>
+        <div
+        class="pagination-container"
+      >
+        <pagination-controls
+          class="pagination-controls"
+          (pageChange)="page = $event"
+        ></pagination-controls>
+      </div>
       </div>
     </div>
     <!-- Add Election -->
