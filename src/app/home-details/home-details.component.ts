@@ -1,6 +1,5 @@
 import { ElectionService } from './../services/election.service';
 import { Component, OnInit } from '@angular/core';
-import { Election } from '../Admin/Interfaces/election';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
@@ -9,25 +8,29 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './home-details.component.html',
-  styleUrl: './home-details.component.css',
+  styleUrls: ['./home-details.component.css'],
 })
 export class HomeDetailsComponent implements OnInit {
   election?: any;
 
   constructor(
     private route: ActivatedRoute,
-    private ElectionService: ElectionService,
+    private electionService: ElectionService,
   ) {}
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
       const electionId = params['id'];
-      this.ElectionService.getSpecificElection(electionId).subscribe(
+      this.electionService.getSpecificElection(electionId).subscribe(
         (election) => {
           this.election = election;
-          console.log(this.election);
+          console.log('Election data:', this.election); // Log the data
         },
+        (error) => {
+          console.error('Error fetching election:', error); // Log any errors
+        }
       );
     });
   }
+  
 }
