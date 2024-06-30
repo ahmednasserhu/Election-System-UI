@@ -215,10 +215,18 @@ export class ElectionDetailsComponent
         this.openModal(candidateId); // Pass the candidateId here
       },
       error: (err) => {
-        this.toaster.error(err.error.message);
+        const errorMessage = err.error.message;
+        this.toaster.error(errorMessage);
+  
+        if (errorMessage === 'Your account is blocked.') {
+          localStorage.removeItem('token');
+          localStorage.removeItem('role');
+          this.router.navigate(['/login']);
+        }
       },
     });
   }
+  
   resendOTP(candidateId: any, electionId: any) {
     this.VoteService.vote({
       candidateId: candidateId,
