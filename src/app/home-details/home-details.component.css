@@ -1,5 +1,6 @@
 .container {
   margin-top: 40px;
+
 }
 
 .events-title {
@@ -18,4 +19,8 @@
   margin-left: 350px;
   margin-top: -280px;
 
+}
+#chart{
+  margin-left: 160px;
+  margin-top: -400px;
 }
