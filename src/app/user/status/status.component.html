@@ -65,7 +65,18 @@
       </div>
     }
     }
-    
+         @if (status !== '') {
+              <div class="mypag flex justify-content-center pb-3">
+    <p-paginator 
+        (onPageChange)="onPageChange($event)" 
+        [first]="first" 
+        [rows]="rows" 
+        [totalRecords]="totalRecord" 
+        class="mypag"
+         />
+</div>
+        }
+        
   </div>
 </div>
 

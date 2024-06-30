@@ -32,7 +32,7 @@ export class ElectionService {
   getStatusElection(status: any,page:any=1): Observable<any> {
     console.log(page)
     status = status === '' ? '' : `?status=${status}`;
-    page = status === '' ? '' : `page=${page}`;
+    page = page === '' ? '' : `page=${page}`;
     return this._HttpClient.get<{ results: any }>(
       `http://localhost:3000/elections${status}&${page}`,
     );
