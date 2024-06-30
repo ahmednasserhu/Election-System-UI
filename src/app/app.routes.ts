@@ -6,6 +6,7 @@ import { CandidateProfileComponent } from './Candidate/candidate-profile/candida
 import { HomeComponent } from './general/home/home.component';
 import { AboutUsComponent } from './general/about-us/about-us.component';
 import { ElectionsComponent } from './user/elections/elections.component';
+import { CandidateElections } from './Candidate/elections/elections.component';
 import { ParentComponent } from './general/parent/parent.component';
 import { UserParentComponent } from './user/user-parent/user-parent.component';
 import { ElectionDetailsComponent } from './user/election-details/election-details.component';
@@ -100,6 +101,12 @@ export const routes: Routes = [
     path: 'candidate/profile/:id',
     component: CandidateProfileComponent,
     title: 'Candidate Profile',
+    canActivate: [candidateGuard],
+  },
+  {
+    path: 'candidate/elections',
+    component: CandidateElections,
+    title: 'Available Elections',
     canActivate: [candidateGuard],
   },
   {

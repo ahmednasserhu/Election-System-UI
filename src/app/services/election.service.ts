@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 })
 export class ElectionService {
   constructor(private _HttpClient: HttpClient, private router: Router) { }
+  private baseUrl = 'http://localhost:3000/elections';
   getElections(): Observable<Election[]> {
     return this._HttpClient.get<Election[]>('http://localhost:3000/elections');
   }
@@ -30,7 +31,12 @@ export class ElectionService {
     );
   }
 
-  getStatusElection(status: any,page:any=1): Observable<any> {
+  getCandidateElections(page: number = 1, rows: number = 10): Observable<any> {
+    return this._HttpClient.get<any>(`${this.baseUrl}?page=${page}&limit=${rows}&status=in-progress`);
+}
+
+
+  getStatusElection(status: any, page: any = 1): Observable<any> {
     console.log(page)
     status = status === '' ? '' : `?status=${status}`;
     page = status === '' ? '' : `page=${page}`;
