@@ -124,6 +124,7 @@ export class ApplyComponent {
             title: `${error.error.message}`,
             icon: 'error',
           });
+          this.clearForm();
         },
       );
     }
