@@ -4,6 +4,7 @@ import { jwtDecode } from 'jwt-decode';
 import { Citizen } from '../../Admin/Interfaces/citizen';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { CommonModule } from '@angular/common';
 
 interface TokenPayload {
   name: string;
@@ -14,7 +15,7 @@ interface TokenPayload {
 @Component({
   selector: 'app-user-navbar',
   standalone: true,
-  imports: [RouterLink, NgbCollapseModule],
+  imports: [RouterLink, NgbCollapseModule, CommonModule],
   templateUrl: './user-navbar.component.html',
   styleUrl: './user-navbar.component.css',
 })
