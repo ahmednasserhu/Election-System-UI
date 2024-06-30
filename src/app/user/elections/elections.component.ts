@@ -1,4 +1,4 @@
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ElectionService } from './../../services/election.service';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ElectionCardComponent } from '../election-card/election-card.component';
@@ -29,13 +29,8 @@ interface PageEvent {
 })
 export class ElectionsComponent implements OnInit {
   first: number = 0;
-
-  rows: number = 10;
-
-  onPageChange(event: PaginatorState) {
-    this.first = event.first || 0; // Use default value if undefined
-    this.rows = event.rows || 10; // Use default value if undefined
-  }
+  totalRecord: number = 0;
+  rows: number = 20;
 
   results!: any;
   private routeSubscription: any; // Variable to hold the subscription
@@ -46,43 +41,68 @@ export class ElectionsComponent implements OnInit {
     private _ElectionService: ElectionService,
     private activatedRoute: ActivatedRoute,
     private spinner: NgxSpinnerService,
-    private cdr: ChangeDetectorRef, // Inject ChangeDetectorRef for manual change detection
+    private cdr: ChangeDetectorRef,
+    private router: Router, // Inject ChangeDetectorRef for manual change detection
   ) {}
 
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe((params) => {
       this.dataCame = false;
-      status = params['status'] || '';
-      console.log(status);
-      this._ElectionService.getStatusElection(status).subscribe(
-        (res) => {
-          this.dataCame = true;
-          console.log(res);
-          // this.results = res;
-          if (status === 'finished') {
-            this.results = res.filter(
-              (res: any) => res.candidates.length !== 0,
-            );
-          } else if (status === 'pending') {
-            this.results = res;
-          } else if (status === 'in-progress') {
-            this.results = res.filter(
-              (res: any) =>
-                res.candidates.length !== 0 && res.candidates.length !== 1,
-            );
-          }
-          this.spinner.hide();
-          this.cdr.detectChanges(); // Manually trigger change detection
-        },
-        (error) => {
-          this.errorMessage = error;
-          this.spinner.hide();
-          this.dataCame = true;
-          this.cdr.detectChanges(); // Manually trigger change detection
-        },
-      );
+      this.status = params['status'] || '';
+      const page = params['page'] ? +params['page'] : 1; // Convert page to number
+      this.first = (page - 1) * this.rows;
+      this.loadElections(page);
     });
   }
+
+  onPageChange(event: PaginatorState) {
+    this.first = event.first || 0;
+    this.rows = event.rows || 10;
+    const myPage = (event.page || 0) + 1;
+
+    this.router.navigate([], {
+      relativeTo: this.activatedRoute,
+      queryParams: {
+        status: this.status,
+        page: myPage,
+      },
+      queryParamsHandling: 'merge',
+    });
+  }
+
+  loadElections(page: number) {
+    this.spinner.show();
+    this._ElectionService.getStatusElection(this.status, page).subscribe(
+      (res) => {
+        console.log(res);
+        this.totalRecord = res.total;
+        this.rows = res.limit;
+        this.results = res.results;
+        this.dataCame = true;
+
+        if (this.status === 'finished') {
+          this.results = this.results.filter(
+            (result: any) => result.candidates.length !== 0,
+          );
+        } else if (this.status === 'in-progress') {
+          this.results = this.results.filter(
+            (result: any) =>
+              result.candidates.length !== 0 && result.candidates.length !== 1,
+          );
+        }
+
+        this.spinner.hide();
+        this.cdr.detectChanges();
+      },
+      (error) => {
+        this.errorMessage = error;
+        this.spinner.hide();
+        this.dataCame = true;
+        this.cdr.detectChanges();
+      },
+    );
+  }
+
   ngOnDestroy(): void {
     // Unsubscribe from the route subscription to prevent memory leaks
     if (this.routeSubscription) {

@@ -22,7 +22,7 @@ export class HomeComponent {
   ) {}
   ngOnInit(): void {
     this.ElectionService.getStatusElection('finished').subscribe((res) => {
-      this.ElectionDetails = res;
+      this.ElectionDetails = res.results;
       console.log(res);
       this.dataCame = true;
     });

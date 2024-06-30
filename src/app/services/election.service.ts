@@ -29,13 +29,12 @@ export class ElectionService {
     );
   }
 
- getStatusElection(status: any): Observable<any> {
-  const statusParam = status ? `?status=${status}` : '';
-  return this._HttpClient.get<{ results: any }>(
-    `http://localhost:3000/elections${statusParam}`
-  ).pipe(
-    map((response) => response.results)
-  );
-}
-
+  getStatusElection(status: any,page:any=1): Observable<any> {
+    console.log(page)
+    status = status === '' ? '' : `?status=${status}`;
+    page = status === '' ? '' : `page=${page}`;
+    return this._HttpClient.get<{ results: any }>(
+      `http://localhost:3000/elections${status}&${page}`,
+    );
+  }
 }

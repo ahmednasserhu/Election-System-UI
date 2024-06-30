@@ -130,3 +130,12 @@
 .contain-spinner {
   height: 53.5vh;
 }
+
+
+::ng-deep .mypag .p-paginator {
+  background-color: #f0f0f0; /* Change to your desired color */
+}
+
+::ng-deep .mypag .p-paginator .p-paginator-pages .p-paginator-page {
+  background-color: #e0e0e0; /* Change to your desired color */
+}

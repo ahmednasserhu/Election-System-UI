@@ -15,11 +15,14 @@ export class ElectionResultComponent {
   number = '99999';
   previousNumber = '';
   elections!: any;
+  dataCame = false;
+
   constructor(private ElectionService: ElectionService) {}
   ngOnInit(): void {
     this.ElectionService.getStatusElection('finished').subscribe((res) => {
       console.log(555555, res);
-      this.elections = res;
+      this.elections = res.results;
+      this.dataCame = true;
     });
   }
   addNumber() {

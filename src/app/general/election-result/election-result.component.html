@@ -1,7 +1,15 @@
 <div class="p-4 bg-white d-flex">
   <div class="my-card gap-2 w-100">
     <h4 class="card-header p-2 ps-3">Finished Election</h4>
-    <ngb-carousel
+    @if (!this.dataCame) {
+        <div
+          class="contain-spinner d-flex justify-content-center align-items-center py-5"
+        >
+          <span class="loader"></span>
+          <!-- <ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "large" color = "#ffffff" type = "line-spin-clockwise-fade" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner> -->
+        </div>
+      } @else {
+          <ngb-carousel
       class="d-flex justify-content-center align-items-center pt-4 my-carouser py-5"
       style="background-color: #444444"
     >
@@ -28,6 +36,8 @@
         </ng-template>
       }
     </ngb-carousel>
+      }
+    
   </div>
 
   <!-- <button class="btn btn-info ms-5" (click)="addNumber()">Add</button> -->
