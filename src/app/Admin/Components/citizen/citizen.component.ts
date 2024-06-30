@@ -17,7 +17,7 @@ export class CitizenComponent implements OnInit {
   error: string = '';
   page: number = 1; // Current page for citizens
   blockedPage: number = 1; // Current page for blocked citizens
-  itemsPerPage: number = 5; 
+  itemsPerPage: number = 5;
 
   constructor(private citizenService: CitizenService) {}
 

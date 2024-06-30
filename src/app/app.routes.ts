@@ -26,7 +26,7 @@ import { authGuard } from './guards/admin-guard.guard';
 import { userGuardGuard } from './guards/user-guard.guard';
 import { HomeDetailsComponent } from './home-details/home-details.component';
 import { candidateGuard } from './guards/candidate.guard';
-
+import { StatusComponent } from './user/status/status.component';
 export const routes: Routes = [
   {
     path: '',
@@ -81,6 +81,10 @@ export const routes: Routes = [
       {
         path: 'apply/:id',
         component: ApplyComponent,
+      },
+      {
+        path: 'status',
+        component: StatusComponent,
       },
     ],
     component: UserParentComponent,

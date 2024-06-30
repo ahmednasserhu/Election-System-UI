@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class TestimonialService {
-  constructor(private _HttpClient: HttpClient) { }
+  constructor(private _HttpClient: HttpClient) {}
   getTestimonial(): Observable<any> {
     return this._HttpClient.get<any>('http://localhost:3000/testimonials');
   }
@@ -14,6 +14,8 @@ export class TestimonialService {
   sendTestimonial(data: any): Observable<any> {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders().set('token', `${token}`);
-    return this._HttpClient.post('http://localhost:3000/testimonials', data, { headers })
+    return this._HttpClient.post('http://localhost:3000/testimonials', data, {
+      headers,
+    });
   }
 }

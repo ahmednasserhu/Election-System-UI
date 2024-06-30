@@ -20,7 +20,12 @@ import {
   NgbDatepickerModule,
   NgbModal,
 } from '@ng-bootstrap/ng-bootstrap';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'; // Correct import
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms'; // Correct import
 import { FormErrorMsgComponent } from '../../form-error/form-error.component';
 import { TestimonialService } from '../../services/testimonial.service';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -37,12 +42,19 @@ interface CandidateJwtPayload extends JwtPayload {
 @Component({
   selector: 'app-election-card',
   standalone: true,
-  imports: [DatePipe, CommonModule, NgbDatepickerModule, ReactiveFormsModule, FormErrorMsgComponent],
+  imports: [
+    DatePipe,
+    CommonModule,
+    NgbDatepickerModule,
+    ReactiveFormsModule,
+    FormErrorMsgComponent,
+  ],
   templateUrl: './election-card.component.html',
   styleUrls: ['./election-card.component.css'],
 })
 export class ElectionCardComponent
-  implements OnDestroy, OnChanges, AfterViewInit {
+  implements OnDestroy, OnChanges, AfterViewInit
+{
   testimonialForm: FormGroup;
   currentDate!: Date;
   statusDate!: string;
@@ -57,17 +69,20 @@ export class ElectionCardComponent
     private modalService: NgbModal,
     private fb: FormBuilder,
     private testimonialService: TestimonialService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
   ) {
     this.currentDate = new Date();
     console.log(this.currentDate);
     this.testimonialForm = this.fb.group({
-      message: ['', [
-        Validators.required,
-        Validators.maxLength(255),
-        Validators.minLength(10),
-        Validators.pattern('^[A-Za-z].*')
-      ]]
+      message: [
+        '',
+        [
+          Validators.required,
+          Validators.maxLength(255),
+          Validators.minLength(10),
+          Validators.pattern('^[A-Za-z].*'),
+        ],
+      ],
     });
   }
 
@@ -106,11 +121,11 @@ export class ElectionCardComponent
       this.currentDate < new Date(this.result.startdate)
         ? 'Pending'
         : this.currentDate > new Date(this.result.enddate) ||
-          (this.currentDate > new Date(this.result.startdate) &&
-            this.currentDate < new Date(this.result.enddate) &&
-            this.result.candidates.length === 1)
+            (this.currentDate > new Date(this.result.startdate) &&
+              this.currentDate < new Date(this.result.enddate) &&
+              this.result.candidates.length === 1)
           ? 'Finished'
-        : 'In-progress';
+          : 'In-progress';
 
     this.cdr.detectChanges(); // Ensure the view is updated before rendering the chart
   }
@@ -124,7 +139,7 @@ export class ElectionCardComponent
     if (this.testimonialForm.valid) {
       const formData = {
         ...this.testimonialForm.value,
-        electionId: this.electionId
+        electionId: this.electionId,
       };
       console.log('Form Data:', formData);
       this.testimonialService.sendTestimonial(formData).subscribe(
@@ -139,10 +154,12 @@ export class ElectionCardComponent
         (error: HttpErrorResponse) => {
           console.log(error);
           this.toastr.error('Failed to submit testimonial. Please try again.');
-        }
+        },
       );
     } else {
-      this.toastr.warning('Please fill out the form correctly before submitting.');
+      this.toastr.warning(
+        'Please fill out the form correctly before submitting.',
+      );
     }
   }
 

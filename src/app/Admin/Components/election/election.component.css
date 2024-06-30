@@ -7,8 +7,9 @@
 .bulk-upload {
   margin-top: 20px;
 }
-#btn-close{
-color: #ff0000;}
+#btn-close {
+  color: #ff0000;
+}
 
 /* Center the pagination controls */
 .pagination-container {

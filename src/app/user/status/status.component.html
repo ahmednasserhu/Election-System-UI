@@ -1,0 +1,74 @@
+<div class="my-container my-5 d-flex justify-content-center">
+  <div class="row">
+     @if (status === '') {
+      <div class="container py-5">
+          <p class="m-0">You do not apply for any election</p>
+      </div>
+    }
+    @else if(!this.status ){
+        <div
+      class="contain-spinner d-flex justify-content-center align-items-center py-5"
+    >
+      <span class="loader"></span>
+      <!-- <ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "large" color = "#ffffff" type = "line-spin-clockwise-fade" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner> -->
+    </div>
+    }
+  
+    @else {
+        @for (singleStatus of this.status; track singleStatus._id) {
+      <div class="d-flex justify-content-center align-items-center col-md-12">
+        <div
+          class="card p-4 mt-2 mb-2 "
+          style="width: 75%; max-width: 800px; color: white"
+        >
+        <div class="row">
+          <div class="col-md-6">
+                                    <div class="d-flex justify-content-start align-items-center gap-2">
+            @if(singleStatus.status === 'approved'){
+                <span class="contain-icon correct bg-success">
+                <i class="fas fa-check fa-lg"></i>
+            </span>
+            }
+            @if(singleStatus.status === 'rejected'){
+<span class="contain-icon check bg-danger">
+                <i class="fa-solid fa-xmark fa-lg"></i>
+            </span>
+            
+            }
+            @if(singleStatus.status ==='pending'){
+                <span class="contain-icon check bg-warning">
+                <i class="fa-solid fa-info fa-lg"></i>
+            </span>
+            }
+            <p class="mb-0 my-pa">{{ singleStatus.status | uppercase }}</p>
+            </div>
+            <div class="d-flex gap-2 align-items-center mt-2">
+              <span class="sub-title m-0">Election:</span> <p class="m-0 my-sub" style="line-height: 16px;">{{singleStatus.electionId.title}}</p>
+            </div>
+            <p class="mt-4">{{singleStatus.comment}}</p>
+
+          </div>
+          <div class="col-md-6">
+              @if(singleStatus.status ==='rejected'){
+                <img src="../../assets/images/2663517.jpg" alt="">
+              }
+              @if(singleStatus.status ==='approved'){
+                <img src="../../assets/images/2201_w037_n003_114a_p1_114.jpg" alt="">
+              }
+              @if(singleStatus.status ==='pending'){
+                <img src="../../assets/images/3255337.jpg" alt="">
+              }
+          </div>
+        </div>
+            
+        </div>
+      </div>
+    }
+    }
+    
+  </div>
+</div>
+
+
+
+
