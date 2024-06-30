@@ -60,16 +60,16 @@ export class ApplyComponent {
         '',
         Validators.compose([
           Validators.required,
-          Validators.pattern(/^[a-zA-Z]+$/),
-          Validators.max(100),
+          Validators.pattern(/^[a-zA-Z\s]+$/),
+          Validators.maxLength(100),
         ]),
       ],
       brief: [
         '',
         Validators.compose([
           Validators.required,
-          Validators.pattern(/^[a-zA-Z]+$/),
-          Validators.max(200),
+          Validators.pattern(/^[a-zA-Z\s]+$/),
+          Validators.maxLength(200),
         ]),
       ],
       logoImage: [null, Validators.required],
@@ -90,7 +90,16 @@ export class ApplyComponent {
     const file: File = event.target.files[0];
 
     if (file) {
-      this.selectedImage = file;
+      if (file.type.startsWith('image/')) {
+        this.selectedImage = file;
+      } else {
+        Swal.fire({
+          title: 'Please select a valid image file',
+          icon: 'error',
+        });
+        this.selectedImage = null;
+        (event.target as HTMLInputElement).value = '';
+      }
     }
   }
 
@@ -98,7 +107,16 @@ export class ApplyComponent {
     const file: File = event.target.files[0];
 
     if (file) {
-      this.selectedCriminal = file;
+      if (file.type === 'application/pdf') {
+        this.selectedCriminal = file;
+      } else {
+        Swal.fire({
+          title: 'Please select a PDF file',
+          icon: 'error',
+        });
+        this.selectedCriminal = null;
+        (event.target as HTMLInputElement).value = '';
+      }
     }
   }
 
