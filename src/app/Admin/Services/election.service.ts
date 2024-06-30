@@ -15,10 +15,10 @@ export class ElectionService {
     return this.http.get<any>(`${this.apiUrl}/last-election`);
   }
   getElections(): Observable<Election[]> {
-    return this.http.get<{ data: Election[] }>(this.apiUrl).pipe(
+    return this.http.get<{ results: Election[] }>(this.apiUrl).pipe(
       map((response) => {
-        if (response.data && Array.isArray(response.data)) {
-          return response.data;
+        if (response.results && Array.isArray(response.results)) {
+          return response.results;
         } else {
           console.error('Invalid response format:', response);
           return [];
