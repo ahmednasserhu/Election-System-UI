@@ -148,8 +148,8 @@ export class RegisterComponent {
         },
         error: (error: HttpErrorResponse) => {
           this.loading = false;
-          this.toastr.error(error.error.message, 'Registration Failed');
-        },
+          const errorMessage = error.error?.message || error.error || 'Registration Failed';
+          this.toastr.error(errorMessage, 'Registration Failed');        },
       });
     }
   }
