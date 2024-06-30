@@ -72,7 +72,7 @@
             </span>
           </li>
         </ul>
-        <div class="pagination-container">
+        <div class="pagination-container" *ngIf="candidates.length > 5" >
           <pagination-controls
             class="pagination-controls"
             (pageChange)="page = $event"
@@ -94,7 +94,7 @@
             style="background-color: rgb(31, 31, 31)"
             *ngFor="
               let candidate of approvedCandidates
-                | paginate: { itemsPerPage: 5, currentPage: page }
+                
             "
           >
             <span

@@ -43,19 +43,22 @@
     >
       <div class="list">
         <h4 class="text-light my-3">Citizen List</h4>
-        <div *ngIf="citizens.length === 0" class="alert alert-warning">
+        <form class="d-flex mb-3" (ngSubmit)="searchBySSN()">
+          <input [(ngModel)]="searchTerm" (ngModelChange)="searchBySSN()" class="form-control me-2" type="search" placeholder="Search by SSN" aria-label="Search" name="search">
+        </form>
+        <div *ngIf="filteredCitizens.length === 0" class="alert alert-warning">
           No citizens found.
         </div>
         <ul class="list-group">
           <li
             *ngFor="
-              let citizen of citizens
+              let citizen of filteredCitizens
                 | paginate: { itemsPerPage: itemsPerPage, currentPage: page }
             "
             class="list-group-item d-flex justify-content-between align-items-center text-light border-black"
             style="background-color: rgb(31, 31, 31)"
           >
-            <span>{{ citizen.firstName }} {{ citizen.lastName }}</span>
+            <span>{{ citizen.firstName }} {{ citizen.lastName }} (SSN: {{ citizen.ssn }})</span>
             <span>
               <button
                 class="btn btn-sm btn-warning"
@@ -68,7 +71,7 @@
         </ul>
         <div
           class="pagination-container"
-          *ngIf="citizens.length > itemsPerPage"
+          *ngIf="filteredCitizens.length > itemsPerPage"
         >
           <pagination-controls
             class="pagination-controls"
@@ -111,9 +114,6 @@
             </span>
           </li>
         </ul>
-        <!-- <div class="pagination-container" *ngIf="blockedCitizens.length > itemsPerPage">
-          <pagination-controls class="pagination-controls" (pageChange)="blockedPage = $event"></pagination-controls>
-        </div> -->
       </div>
     </div>
   </div>
