@@ -3,6 +3,10 @@
   padding-inline: 16px;
 }
 
+.custom-toggler .navbar-toggler-icon {
+  color: white; 
+}
+
 p,
 a {
   color: white !important;

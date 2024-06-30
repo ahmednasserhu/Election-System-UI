@@ -13,7 +13,7 @@ interface CandidateJwtPayload extends JwtPayload {
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [RouterModule, NgbCollapseModule],
+  imports: [RouterModule, NgbCollapseModule,CommonModule],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css',
 })
