@@ -19,6 +19,7 @@ import { faFileImage } from '@fortawesome/free-solid-svg-icons';
 import { RegisterCustomValidator } from '../../../services/RegisterCustomValidation.service';
 import { CitizenService } from '../../Services/citizen.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-add-admin',
@@ -42,7 +43,7 @@ export class AddAdminComponent {
   eyeSlashed = faEyeSlash;
   fileImage = faFileImage;
   loading: boolean = false;
-
+  imageInvalid: boolean = false;
   constructor(
     private fb: FormBuilder,
     private customValidator: RegisterCustomValidator,
@@ -126,7 +127,14 @@ export class AddAdminComponent {
     const file: File = event.target.files[0];
 
     if (file) {
-      this.selectedImage = file;
+      if (file.type.startsWith('image/')) {
+        this.selectedImage = file;
+        this.imageInvalid = false; // Reset imageInvalid flag
+      } else {
+        this.imageInvalid = true; // Set imageInvalid flag
+        this.selectedImage = null;
+        (event.target as HTMLInputElement).value = '';
+      }
     }
   }
 
