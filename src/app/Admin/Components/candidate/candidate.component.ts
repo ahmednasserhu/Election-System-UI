@@ -11,6 +11,7 @@ import { CandidateService } from '../../Services/candidate.service';
 import { FilterByStatusPipe } from '../../Pips/filterbystatus.pipe';
 import { ToastrService } from 'ngx-toastr';
 import { Election } from '../../Interfaces/election';
+import { Router, ActivatedRoute } from '@angular/router';
 import {
   DatePipe,
   LowerCasePipe,
@@ -21,6 +22,13 @@ import {
 import { FormsModule } from '@angular/forms';
 import { ElectionService } from '../../Services/election.service'; // Ensure this service exists and is correctly implemented
 import { NgxPaginationModule } from 'ngx-pagination';
+import { PaginatorModule, PaginatorState } from 'primeng/paginator';
+interface PageEvent {
+  first: number;
+  rows: number;
+  page: number;
+  pageCount: number;
+}
 
 @Component({
   selector: 'app-candidate',
@@ -35,6 +43,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
     PercentPipe,
     FilterByStatusPipe,
     NgxPaginationModule,
+    PaginatorModule,
   ],
   templateUrl: './candidate.component.html',
   styleUrls: ['./candidate.component.css'],
@@ -49,10 +58,18 @@ export class CandidateComponent implements OnInit {
   rejectComment: string = '';
   page: number = 1;
   blockedPage: number = 1;
-  searchTerm: string = '';
-  itemsPerPage:number = 1
-  totalPages: number = 0;
-  pagesArray: number[] = [];
+
+  first: number = 0;
+  totalRecord!: number;
+  rows: number = 5;
+
+  onPageChange(event: PaginatorState) {
+    this.first = event.first || 0;
+    this.rows = event.rows || 5;
+    const page = event.page ? event.page + 1 : 1;
+    this.loadCandidates('approved', page);
+  }
+
   @ViewChild('candidateModal') candidateModal: ElementRef | undefined;
   @ViewChild('rejectModal') rejectModal: ElementRef | undefined;
 
@@ -60,17 +77,41 @@ export class CandidateComponent implements OnInit {
     private candidateService: CandidateService,
     private electionService: ElectionService, // Add ElectionService
     private toastr: ToastrService,
+    private router: Router,
+    private route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
-    this.loadCandidates();
-    this.loadElections(this.page, this.itemsPerPage); // Fetch elections on initialization
+    this.route.queryParams.subscribe((params) => {
+      const status = params['status'];
+      console.log(status);
+      if (status === 'approved') {
+        this.loadCandidates(status, 1);
+      } else {
+        this.loadCandidates(status, 1);
+      }
+    });
+    this.loadElections(); // Fetch elections on initialization
   }
 
-  loadCandidates(): void {
-    this.candidateService.getCandidates().subscribe(
+  navigateToApprovedCandidates(): void {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { status: 'approved' },
+      queryParamsHandling: 'merge', // merge with existing query params
+    });
+  }
+
+  navigateToCandidate(): void {
+    this.router.navigate(['admin','candidate']);
+  }
+
+  loadCandidates(status: any, page: any): void {
+    this.candidateService.getCandidates(status, page).subscribe(
       (data) => {
         this.candidates = data.paginationResults?.results || [];
+        console.log(data);
+        this.totalRecord = data.paginationResults.total;
         this.pendingCandidates = this.candidates.filter(
           (c) => c.status === 'pending',
         );

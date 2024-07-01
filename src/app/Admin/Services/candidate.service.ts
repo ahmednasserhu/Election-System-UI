@@ -11,9 +11,15 @@ export class CandidateService {
 
   constructor(private http: HttpClient) {}
 
-  getCandidates(): Observable<any> {
-    return this.http.get<any>(this.apiUrl);
+  getCandidates(status: any,page:any): Observable<any> {
+    status = status != undefined ? `status=${status}&` : '';
+
+    console.log(status);
+    return this.http.get<any>(
+      `http://localhost:3000/candidates?${status}page=${page}`,
+    );
   }
+
 
   approveCandidate(candidateId: string): Observable<any> {
     const url = `${this.apiUrl}review`;

@@ -48,7 +48,7 @@ export class HomeComponentAdmin implements OnInit {
   }
 
   fetchTotalCandidates(): void {
-    this.candidateService.getCandidates().subscribe(
+    this.candidateService.getCandidates('',1).subscribe(
       (response) => {
         console.log('Total Candidates:', response);
         this.registeredCandidates = response.paginationResults.total;

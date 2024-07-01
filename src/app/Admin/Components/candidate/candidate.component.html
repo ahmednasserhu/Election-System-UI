@@ -10,6 +10,7 @@
         role="tab"
         aria-controls="list"
         aria-selected="true"
+        (click)="navigateToCandidate()"
         >Candidate List</a
       >
     </li>
@@ -22,6 +23,7 @@
         role="tab"
         aria-controls="approved"
         aria-selected="false"
+        (click)="navigateToApprovedCandidates()"
         >Approved</a
       >
     </li>
@@ -115,6 +117,15 @@
         <!-- <div class="pagination-container">
           <pagination-controls class="pagination-controls" (pageChange)="page = $event"></pagination-controls>
         </div> -->
+                <div class="mypag d-flex justify-content-center pb-3 mt-5">
+    <p-paginator 
+        (onPageChange)="onPageChange($event)" 
+        [first]="first" 
+        [rows]="rows" 
+        [totalRecords]="totalRecord" 
+        class="mypag"
+         />
+</div>
       </div>
     </div>
   </div>
