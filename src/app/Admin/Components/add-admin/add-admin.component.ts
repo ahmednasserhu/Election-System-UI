@@ -139,10 +139,10 @@ export class AddAdminComponent {
   }
 
   onSubmit() {
-    if (this.registerForm.valid) {
+    if (this.registerForm.valid && !this.imageInvalid) { 
       this.loading = true;
       const formData = this.registerForm.value;
-      formData.image = this.selectedImage;
+      formData.image = this.selectedImage;git a
 
       const formDataToSend = new FormData();
       formDataToSend.append('firstName', formData.firstName);
