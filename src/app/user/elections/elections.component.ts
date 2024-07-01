@@ -7,6 +7,10 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
+import Swal from 'sweetalert2';
+import { HttpErrorResponse } from '@angular/common/http';
+import { jwtDecode } from 'jwt-decode';
+import { UserProfileService } from '../../services/user-profile.service';
 
 interface PageEvent {
   first: number;
@@ -42,6 +46,7 @@ export class ElectionsComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private spinner: NgxSpinnerService,
     private cdr: ChangeDetectorRef,
+    private userProfileService: UserProfileService,
     private router: Router, // Inject ChangeDetectorRef for manual change detection
   ) {}
 
@@ -71,6 +76,37 @@ export class ElectionsComponent implements OnInit {
   }
 
   loadElections(page: number) {
+    const token = localStorage.getItem('token');
+  
+    if (token) {
+        const decodedToken: any = jwtDecode(token);
+        console.log(decodedToken);
+        const citizenId = decodedToken?.citizen?._id;
+        if (citizenId) {
+          this.userProfileService.getProfile(citizenId).subscribe((profile: any) => {
+            this.loadElectionData(page);
+          }, (error: HttpErrorResponse) => {
+            console.error('Error fetching profile:', error);
+            if (error.status === 403 && error.error.message === 'Your account is blocked.') {
+              Swal.fire({
+                title: 'Your account is blocked.',
+                icon: 'error',
+              }).then(() => {
+                localStorage.removeItem('token');
+                localStorage.removeItem('role');
+                this.router.navigate(['/login']);
+              });
+            }
+          });
+        } else {
+          this.loadElectionData(page);
+        }
+    } else {
+      this.loadElectionData(page);
+    }
+  }
+
+  private loadElectionData(page: number) {
     this.spinner.show();
     this._ElectionService.getStatusElection(this.status, page).subscribe(
       (res) => {
@@ -80,28 +116,24 @@ export class ElectionsComponent implements OnInit {
         this.results = res.results;
         this.dataCame = true;
 
+        // Filter results based on status
         if (this.status === 'finished') {
           this.results = this.results.filter(
-            (result: any) => result.candidates.length !== 0,
+            (result: any) => result.candidates.length !== 0
           );
         } else if (this.status === 'in-progress') {
           this.results = this.results.filter(
             (result: any) =>
-              result.candidates.length !== 0 && result.candidates.length !== 1,
+              result.candidates.length !== 0 && result.candidates.length !== 1
           );
         }
 
         this.spinner.hide();
         this.cdr.detectChanges();
-      },
-      (error) => {
-        this.errorMessage = error;
-        this.spinner.hide();
-        this.dataCame = true;
-        this.cdr.detectChanges();
-      },
+      }
     );
   }
+
 
   ngOnDestroy(): void {
     // Unsubscribe from the route subscription to prevent memory leaks
