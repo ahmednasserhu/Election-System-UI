@@ -198,7 +198,7 @@
                 class="btn btn-block mt-2"
                 [class.btn-primary]="registerForm.valid"
                 [class.btn-secondary]="registerForm.invalid"
-                [disabled]="registerForm.invalid"
+                [disabled]="registerForm.invalid || imageInvalid || criminalRecordInvalid"
               >
                 Apply
               </button>
