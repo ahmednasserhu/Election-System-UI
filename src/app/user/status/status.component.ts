@@ -1,8 +1,11 @@
 import { StatusService } from './../../services/status.service';
 import { UpperCasePipe } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { jwtDecode } from 'jwt-decode';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
+import Swal from 'sweetalert2';
 
 
 interface PageEvent {
@@ -52,28 +55,41 @@ export class StatusComponent {
       queryParamsHandling: 'merge',
     });
   }
-  loadStatus(page:any){
-     this.StatusService.status(page).subscribe(
-       (res) => {
-        if(res.results.length === 0){
-          this.status=''
-        }
-        else{
+  loadStatus(page: any) {
+    this.StatusService.status(page).subscribe(
+      (res) => {
+        if (res.results.length === 0) {
+          this.status = '';
+          this.totalRecord = 0;
+          this.rows = 0;
+        } else {
           console.log(res);
           this.status = res.results;
           this.totalRecord = res.total;
           this.rows = res.limit;
         }
-         
-         
-       },
-       (err) => {
-        console.log(err)
-         if (err.error.message === 'Citizen does not have applications') {
-           this.status = '';
-           console.log(this.status);
-         }
-       },
-     );
+      },
+      (error: HttpErrorResponse) => {
+        console.log(error);
+        if (error.status === 403) {
+          Swal.fire({
+            title: 'Your account is blocked.',
+            icon: 'error',
+          }).then(() => {
+            this.router.navigate(['/login']);
+            localStorage.removeItem('token');
+            localStorage.removeItem('role');
+          });
+        } else if (error.error.message === 'Citizen does not have applications') {
+          this.status = '';
+          this.totalRecord = 0;
+          this.rows = 0;
+          console.log(this.status);
+        } else {
+          console.error('An unexpected error occurred:', error);
+        }
+      }
+    );
   }
+  
 }

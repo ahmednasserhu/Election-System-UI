@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { UserProfileService } from '../../services/user-profile.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faPen } from '@fortawesome/free-solid-svg-icons';
 import { environment } from '../../../environments/environment';
@@ -36,6 +36,8 @@ export class UserprofileComponent {
     private profileService: UserProfileService,
     private fb: FormBuilder,
     private route: ActivatedRoute,
+    private router: Router,
+
   ) {
     this.profileForm = this.fb.group({
       ssn: [{ value: '', disabled: true }],
@@ -91,6 +93,17 @@ export class UserprofileComponent {
       },
       (error: HttpErrorResponse) => {
         console.log(error);
+        if (error.status === 403) {
+          Swal.fire({
+            title: 'Your account is blocked.',
+            icon: 'error',
+          }).then(() => {
+            this.router.navigate(['/login']);
+            localStorage.removeItem('token');
+            localStorage.removeItem('role');
+          });
+        }
+
       },
     );
   }

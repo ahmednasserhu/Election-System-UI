@@ -14,6 +14,7 @@ import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import * as bootstrap from 'bootstrap';
 import { AuthService } from '../services/auth.service';
 import { jwtDecode } from 'jwt-decode';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
@@ -83,6 +84,18 @@ export class LoginComponent {
   handleForm(): void {
     this.isLoading = true;
     const userData = this.loginForm.value;
+  
+    // Check if the user is blocked before attempting login
+    const blockedMessage = localStorage.getItem('blockedMessage');
+    if (blockedMessage === 'Your account is blocked.') {
+      this.isLoading = false;
+      Swal.fire({
+        title: 'Your account is blocked.',
+        icon: 'error',
+      });
+      return;
+    }
+  
     if (this.loginForm.valid) {
       this.login(userData).subscribe({
         next: (response: any) => {
@@ -91,25 +104,42 @@ export class LoginComponent {
             const decodedToken: any = jwtDecode(response.token); // Decode the JWT token
             if (!decodedToken.citizen.emailConfirmation) {
               this.isLoading = false;
-              this.showToast('Please confirm your email before logging in.');
+              Swal.fire({
+                title: 'Please confirm your email before logging in.',
+                icon: 'warning',
+              });
+            }else if (decodedToken.citizen.status==="blocked") {
+              this.isLoading = false;
+              Swal.fire({
+                title: 'Your account is blocked .',
+                icon: 'error',
+              });
+              this.clearForm();
             } else {
               localStorage.setItem('token', response.token);
-              this.toastr.success('Login successfully.');
+              Swal.fire({
+                title: 'Login successfully.',
+                icon: 'success',
+              });
               this.authService.navigateBasedOnRole(response.role);
             }
           }
         },
         error: (err) => {
-          // this.errMsg = err.error.message;
           this.isLoading = false;
-          //////////////////////
-          // console.log('jhgjkj')
-          this.toastr.error(err.error.message);
+          Swal.fire({
+            title: err.error.message,
+            icon: 'error',
+          });
         },
       });
     }
   }
+  clearForm() {
+    this.loginForm.reset();
 
+  }
+  
   showToast(message: string, duration: number = 3000) {
     const alertDiv = document.createElement('div');
     alertDiv.classList.add('alert', 'alert-warning');

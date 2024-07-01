@@ -17,6 +17,8 @@ import { RegisterServiceService } from '../../services/register/register-service
 import { Router } from '@angular/router';
 import { ApplyService } from '../../services/apply.service';
 import Swal from 'sweetalert2';
+import { ToastrService } from 'ngx-toastr';
+import { jwtDecode } from 'jwt-decode';
 
 @Component({
   selector: 'app-apply',
@@ -49,6 +51,8 @@ export class ApplyComponent {
     private router: Router,
     private _ElectionService: ElectionService,
     private applyservice: ApplyService,
+    private toaster: ToastrService,
+
   ) {
     this.registerForm = this.fb.group({
       logoName: [
@@ -119,6 +123,27 @@ export class ApplyComponent {
   }
 
   onSubmit() {
+    // Decode JWT token to get user information
+    let token = localStorage.getItem('token') || '';
+    let decodedToken: any = jwtDecode(token);
+console.log(decodedToken);
+
+    // Check user status
+    if (decodedToken && decodedToken.status === 'blocked') {
+      Swal.fire({
+        title: 'Your account is blocked.',
+        icon: 'error'
+      });
+      localStorage.removeItem('token');
+      localStorage.removeItem('role');
+      this.router.navigate(['/login']);
+    } else {
+      // Proceed with application submission
+      this.submitApplication();
+    }
+  }
+
+  submitApplication() {
     if (this.registerForm.valid) {
       const formData = this.registerForm.value;
       formData.logoImage = this.selectedImage;
@@ -127,34 +152,29 @@ export class ApplyComponent {
 
       this.applyservice.applyAsCandidate(formData).subscribe(
         (res: any) => {
-          if (res) {
-            Swal.fire({
-              title: 'Application sent successfully',
-              icon: 'success',
-            });
-            this.clearForm();
-          }
-        },
-        (error: HttpErrorResponse) => {
-          if(error.error.message == undefined){
-            Swal.fire({
-              title: `please fill the form with valid data`,
-              icon: 'error',
-            });
-            this.imageInvalid = false;
-            this.criminalRecordInvalid = false;
-          }else{
           Swal.fire({
-            title: `${error.error.message}`,
-            icon: 'error',
+            title: 'Application sent successfully',
+            icon: 'success'
           });
-        }
           this.clearForm();
         },
+        (err: any) => {
+          const errorMessage = err.error.message || 'Failed to submit application.';
+          Swal.fire({
+            title: errorMessage,
+            icon: 'error'
+          });
+          localStorage.removeItem('token');
+          localStorage.removeItem('role');
+          this.router.navigate(['/login']);
+          this.clearForm();
+        }
       );
     }
   }
 
+  
+  
   clearForm(): void {
     this.registerForm.reset();
     this.selectedImage = null;
