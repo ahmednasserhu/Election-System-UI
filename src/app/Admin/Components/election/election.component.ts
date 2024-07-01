@@ -18,6 +18,7 @@ export class ElectionComponent implements OnInit {
   @ViewChild('editForm') editForm!: NgForm;
   @ViewChild('addElectionForm') addElectionForm!: NgForm;
   elections: Election[] = [];
+  filteredElections: Election[] = [];
   selectedElection: Election = this.initializeElection();
   newElection: Election = this.initializeElection();
   deleteElectionId: string | null = null;
@@ -27,11 +28,15 @@ export class ElectionComponent implements OnInit {
   page: number = 1;
   blockedPage: number = 1;
   itemsPerPage: number = 5;
+  searchTerm: string = '';
+  totalPages: number = 0;
+  pagesArray: number[] = [];
 
   constructor(private electionService: ElectionService, private toastr: ToastrService) {}
 
   ngOnInit(): void {
-    this.loadElections();
+    this.loadElections(this.page, this.itemsPerPage);
+    this.filteredElections = [...this.elections];
   }
 
   initializeElection(): Election {
@@ -43,16 +48,20 @@ export class ElectionComponent implements OnInit {
       enddate: '',
       candidates: [],
       totalVotes: 0,
+      
     };
   }
 
-  loadElections(): void {
-    this.electionService.getElections().subscribe({
-      next: (results) => {
-        if (Array.isArray(results)) {
-          this.elections = results;
+  loadElections(page: number, limit: number): void {
+    this.electionService.getElections(page, limit).subscribe({
+      next: (response) => {
+        if (response && Array.isArray(response.results)) {
+          this.elections = response.results;
+          this.totalPages = response.totalPages;
+          this.pagesArray = Array.from({ length: this.totalPages }, (_, i) => i + 1);
+          this.searchByTitle();
         } else {
-          console.error('Data is not an array', results);
+          console.error('Data is not in the expected format', response);
         }
       },
       error: (err) => {
@@ -60,6 +69,15 @@ export class ElectionComponent implements OnInit {
       },
     });
   }
+
+  onPageChange(newPage: number): void {
+    if (newPage >= 1 && newPage <= this.totalPages) {
+      this.page = newPage;
+      this.loadElections(this.page, this.itemsPerPage);
+    }
+  }
+
+  
   
   
   
@@ -89,7 +107,7 @@ export class ElectionComponent implements OnInit {
     if (this.deleteElectionId) {
       this.electionService.deleteElection(this.deleteElectionId).subscribe({
         next: () => {
-          this.loadElections();
+          this.loadElections(this.page, this.itemsPerPage);
           this.deleteElectionId = null;
           const deleteModal = bootstrap.Modal.getInstance(document.getElementById('deleteModal')!);
           deleteModal?.hide();
@@ -117,7 +135,7 @@ export class ElectionComponent implements OnInit {
 
     this.electionService.createElection(this.newElection).subscribe({
       next: () => {
-        this.loadElections();
+        this.loadElections(this.page, this.itemsPerPage);
         this.clearNewElectionForm();
         this.toastr.success('Election created successfully.');
       },
@@ -139,7 +157,7 @@ export class ElectionComponent implements OnInit {
 
     this.electionService.updateElection(this.selectedElection).subscribe({
       next: () => {
-        this.loadElections();
+        this.loadElections(this.page, this.itemsPerPage);
         this.clearSelectedElectionForm();
         const editModal = bootstrap.Modal.getInstance(document.getElementById('editModal')!);
         editModal?.hide();
@@ -222,4 +240,14 @@ export class ElectionComponent implements OnInit {
       this.toastr.error(errorMessage);
     }
   }
+  searchByTitle(): void {
+    if (this.searchTerm.trim() !== '') {
+      this.filteredElections = this.elections.filter(election =>
+        election.title.toLowerCase().includes(this.searchTerm.toLowerCase())
+      );
+    } else {
+      this.filteredElections = [...this.elections]; // Show all if search term is empty
+    }
+  }
+  
 }

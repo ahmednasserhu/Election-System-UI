@@ -50,6 +50,9 @@ export class CandidateComponent implements OnInit {
   page: number = 1;
   blockedPage: number = 1;
   searchTerm: string = '';
+  itemsPerPage:number = 1
+  totalPages: number = 0;
+  pagesArray: number[] = [];
   @ViewChild('candidateModal') candidateModal: ElementRef | undefined;
   @ViewChild('rejectModal') rejectModal: ElementRef | undefined;
 
@@ -61,7 +64,7 @@ export class CandidateComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadCandidates();
-    this.loadElections(); // Fetch elections on initialization
+    this.loadElections(this.page, this.itemsPerPage); // Fetch elections on initialization
   }
 
   loadCandidates(): void {
@@ -74,9 +77,7 @@ export class CandidateComponent implements OnInit {
         this.approvedCandidates = this.candidates.filter(
           (c) => c.status === 'approved',
         );
-        // Initially show pending candidates
         this.filteredCandidates = this.pendingCandidates.slice();
-        
       },
       (error) => {
         console.error('Error loading candidates:', error);
@@ -84,15 +85,21 @@ export class CandidateComponent implements OnInit {
     );
   }
 
-  loadElections(): void {
-    this.electionService.getElections().subscribe(
-      (data) => {
-        this.elections = data;
+  loadElections(page: number, limit: number): void {
+    this.electionService.getElections(page, limit).subscribe({
+      next: (response) => {
+        if (response && Array.isArray(response.results)) {
+          this.elections = response.results;
+          this.totalPages = response.totalPages;
+          this.pagesArray = Array.from({ length: this.totalPages }, (_, i) => i + 1);
+        } else {
+          console.error('Data is not in the expected format', response);
+        }
       },
-      (error) => {
-        console.error('Error loading elections:', error);
+      error: (err) => {
+        console.error('Error fetching elections:', err);
       },
-    );
+    });
   }
 
   getElectionTitle(electionId?: string): string {
@@ -184,16 +191,16 @@ export class CandidateComponent implements OnInit {
         );
     }
   }
-  searchByLogoName(): void {
-    if (this.searchTerm) {
-      this.filteredCandidates = this.pendingCandidates.filter(candidate =>
-        candidate.logoName.toLowerCase().includes(this.searchTerm.toLowerCase())
-      );
-    } else {
-      this.filteredCandidates = this.pendingCandidates.slice(); // Show all pending candidates if search term is empty
-    }
+ searchByLogoName(): void {
+  if (this.searchTerm) {
+    this.filteredCandidates = this.pendingCandidates.filter(candidate =>
+      candidate.logoName.toLowerCase().includes(this.searchTerm.toLowerCase())
+    );
+  } else {
+    this.filteredCandidates = this.pendingCandidates.slice(); // Show all pending candidates if search term is empty
   }
-  
+}
+
   
 
 }

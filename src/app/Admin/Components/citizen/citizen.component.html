@@ -44,7 +44,7 @@
       <div class="list">
         <h4 class="text-light my-3">Citizen List</h4>
         <form class="d-flex mb-3" (ngSubmit)="searchBySSN()">
-          <input [(ngModel)]="searchTerm" (ngModelChange)="searchBySSN()" class="form-control me-2" type="search" placeholder="Search by SSN" aria-label="Search" name="search">
+          <input [(ngModel)]="searchTerm" (ngModelChange)="searchBySSN()" class="form-control me-2" type="search" placeholder="Search by SSN ..." aria-label="Search" name="search">
         </form>
         <div *ngIf="filteredCitizens.length === 0" class="alert alert-warning">
           No citizens found.
@@ -70,11 +70,11 @@
           </li>
         </ul>
         <div
-          class="pagination-container"
+          class="pagination-container "
           *ngIf="filteredCitizens.length > itemsPerPage"
         >
           <pagination-controls
-            class="pagination-controls"
+            class="pagination-controls " 
             (pageChange)="page = $event"
           ></pagination-controls>
         </div>

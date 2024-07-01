@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, map } from 'rxjs';
-import { Election } from '../Interfaces/election';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Observable, catchError, map, throwError } from 'rxjs';
+import { Election,PaginatedResponse } from '../Interfaces/election';
 
 @Injectable({
   providedIn: 'root',
@@ -14,18 +14,22 @@ export class ElectionService {
   getLastElection(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/last-election`);
   }
-  getElections(): Observable<Election[]> {
-    return this.http.get<{ results: Election[] }>(this.apiUrl).pipe(
-      map((response) => {
-        if (response.results && Array.isArray(response.results)) {
-          return response.results;
-        } else {
-          console.error('Invalid response format:', response);
-          return [];
-        }
-      })
-    );
+
+
+  getElections(page: number, limit: number): Observable<PaginatedResponse<Election>> {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('limit', limit.toString());
+      
+    return this.http.get<PaginatedResponse<Election>>(this.apiUrl, { params });
   }
+  // getElections(): Observable<PaginatedResponse<Election>> {
+  //   return this.http.get<PaginatedResponse<Election>>(this.apiUrl);
+  // }
+  // getElections(page: number, limit: number): Observable<{ results: Election[], totalPages: number }> {
+  //   return this.http.get<{ results: Election[], totalPages: number }>(`${this.apiUrl}?page=${page}&limit=${limit}`);
+  // }
+
   
   
 

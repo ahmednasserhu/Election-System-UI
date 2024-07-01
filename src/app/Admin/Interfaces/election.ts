@@ -7,4 +7,12 @@ export interface Election {
   enddate: string;
   candidates: Candidate[];
   totalVotes: number;
+ 
+}
+export interface PaginatedResponse<T> {
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+  results: T[];
 }

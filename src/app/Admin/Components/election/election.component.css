@@ -50,3 +50,10 @@
   border-color: #343a40;
   pointer-events: none;
 }
+.pagination-wrapper {
+  margin-top: 15px; /* Adjust as needed */
+}
+
+.pagination {
+  justify-content: center;
+}
