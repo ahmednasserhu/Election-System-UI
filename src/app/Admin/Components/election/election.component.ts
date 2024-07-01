@@ -55,6 +55,7 @@ export class ElectionComponent implements OnInit {
   loadElections(page: number, limit: number): void {
     this.electionService.getElections(page, limit).subscribe({
       next: (response) => {
+        console.log(response)
         if (response && Array.isArray(response.results)) {
           this.elections = response.results;
           this.totalPages = response.totalPages;
