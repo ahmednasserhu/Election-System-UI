@@ -7,6 +7,8 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
+import Swal from 'sweetalert2';
+import { HttpErrorResponse } from '@angular/common/http';
 
 interface PageEvent {
   first: number;
@@ -79,7 +81,8 @@ export class ElectionsComponent implements OnInit {
         this.rows = res.limit;
         this.results = res.results;
         this.dataCame = true;
-
+  
+        // Filter results based on status
         if (this.status === 'finished') {
           this.results = this.results.filter(
             (result: any) => result.candidates.length !== 0,
@@ -90,12 +93,23 @@ export class ElectionsComponent implements OnInit {
               result.candidates.length !== 0 && result.candidates.length !== 1,
           );
         }
-
+  
         this.spinner.hide();
         this.cdr.detectChanges();
       },
-      (error) => {
-        this.errorMessage = error;
+      (error: HttpErrorResponse) => {
+        if (error.status === 403 && error.error.message === 'Your account is blocked.') {
+          Swal.fire({
+            title: 'Your account is blocked.',
+            icon: 'error',
+          }).then(() => {
+            localStorage.removeItem('token');
+            localStorage.removeItem('role');
+            this.router.navigate(['/login']);
+          });
+        } else {
+          this.errorMessage = error.error.message || 'An error occurred.';
+        }
         this.spinner.hide();
         this.dataCame = true;
         this.cdr.detectChanges();
