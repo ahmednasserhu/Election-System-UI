@@ -28,6 +28,7 @@ import { CommonModule } from '@angular/common';
 import { Chart, ChartConfiguration, registerables } from 'chart.js';
 import { JwtPayload, jwtDecode } from 'jwt-decode';
 import { CountdownComponent } from 'ngx-countdown';
+import Swal from 'sweetalert2';
 
 Chart.register(...registerables);
 
@@ -216,8 +217,10 @@ export class ElectionDetailsComponent
       },
       error: (err) => {
         const errorMessage = err.error.message;
-        this.toaster.error(errorMessage);
-  
+        Swal.fire({
+          title: errorMessage,
+          icon: 'error'
+        });  
         if (errorMessage === 'Your account is blocked.') {
           localStorage.removeItem('token');
           localStorage.removeItem('role');

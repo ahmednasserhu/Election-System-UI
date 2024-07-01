@@ -122,28 +122,28 @@ export class ApplyComponent {
     }
   }
 
+//   onSubmit() {
+//     // Decode JWT token to get user information
+//     let token = localStorage.getItem('token') || '';
+//     let decodedToken: any = jwtDecode(token);
+// console.log(decodedToken);
+
+//     // Check user status
+//     if (decodedToken && decodedToken.status === 'blocked') {
+//       Swal.fire({
+//         title: 'Your account is blocked.',
+//         icon: 'error'
+//       });
+//       localStorage.removeItem('token');
+//       localStorage.removeItem('role');
+//       this.router.navigate(['/login']);
+//     } else {
+//       // Proceed with application submission
+//       this.submitApplication();
+//     }
+//   }
+
   onSubmit() {
-    // Decode JWT token to get user information
-    let token = localStorage.getItem('token') || '';
-    let decodedToken: any = jwtDecode(token);
-console.log(decodedToken);
-
-    // Check user status
-    if (decodedToken && decodedToken.status === 'blocked') {
-      Swal.fire({
-        title: 'Your account is blocked.',
-        icon: 'error'
-      });
-      localStorage.removeItem('token');
-      localStorage.removeItem('role');
-      this.router.navigate(['/login']);
-    } else {
-      // Proceed with application submission
-      this.submitApplication();
-    }
-  }
-
-  submitApplication() {
     if (this.registerForm.valid) {
       const formData = this.registerForm.value;
       formData.logoImage = this.selectedImage;
@@ -164,9 +164,12 @@ console.log(decodedToken);
             title: errorMessage,
             icon: 'error'
           });
-          localStorage.removeItem('token');
-          localStorage.removeItem('role');
-          this.router.navigate(['/login']);
+          if (errorMessage=="Your account is blocked."){
+            localStorage.removeItem('token');
+            localStorage.removeItem('role');
+            this.router.navigate(['/login']);
+            this.clearForm();
+          }
           this.clearForm();
         }
       );
