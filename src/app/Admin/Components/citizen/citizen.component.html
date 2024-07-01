@@ -60,24 +60,28 @@
           >
             <span>{{ citizen.firstName }} {{ citizen.lastName }} (SSN: {{ citizen.ssn }})</span>
             <span>
+              @if(citizen.status === 'unblocked'){
               <button
                 class="btn btn-sm btn-warning"
                 (click)="blockCitizen(citizen, 'blocked')"
               >
                 Block
-              </button>
+              </button> 
+              }@else {
+                <p class="badge bg-danger mb-0">Blocked</p>
+              }
             </span>
           </li>
         </ul>
-        <div
-          class="pagination-container "
-          *ngIf="filteredCitizens.length > itemsPerPage"
-        >
-          <pagination-controls
-            class="pagination-controls w-50 pt-3 text-primary ps-5 bg-white rounded-2 " 
-            (pageChange)="page = $event"
-          ></pagination-controls>
-        </div>
+            <div class="mypag d-flex justify-content-center pb-3 mt-5">
+    <p-paginator 
+        (onPageChange)="onSecondPageChange($event)" 
+        [first]="first" 
+        [rows]="5" 
+        [totalRecords]="totalRecord2" 
+        class="mypag"
+         />
+</div>
       </div>
     </div>
 
@@ -101,7 +105,7 @@
           >
             <span>{{ citizen.firstName }} {{ citizen.lastName }}</span>
             <span>
-              <span class="badge bg-danger">Blocked</span>
+              <!-- <span class="badge bg-danger">Blocked</span> -->
             </span>
             <span>
               <button
@@ -114,6 +118,15 @@
             </span>
           </li>
         </ul>
+           <div class="mypag d-flex justify-content-center pb-3 mt-5">
+    <p-paginator 
+        (onPageChange)="onPageChange($event)" 
+        [first]="first" 
+        [rows]="5" 
+        [totalRecords]="totalRecord" 
+        class="mypag"
+         />
+</div>
       </div>
     </div>
   </div>

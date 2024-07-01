@@ -25,10 +25,10 @@ export class CitizenService {
     return this.http.post<any>(this.adminUrl, adminData);
   }
 
-  getCitizens(): Observable<Citizen[]> {
-    return this.http.get<any>(this.apiUrl).pipe(
-      map((response) => response.paginationResults.results as Citizen[]),
-      catchError(this.handleError<Citizen[]>('getCitizens', [])),
+  getCitizens(status: any, page: any): Observable<any> {
+    status = status !== '' ? `status=${status}&` : '';
+    return this.http.get<any>(
+      `http://localhost:3000/citizens?${status}page=${page}`,
     );
   }
 

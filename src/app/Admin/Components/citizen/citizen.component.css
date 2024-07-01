@@ -46,3 +46,6 @@
   border-color: #343a40;
   pointer-events: none;
 }
+.badge{
+  font-size: 16px;
+}

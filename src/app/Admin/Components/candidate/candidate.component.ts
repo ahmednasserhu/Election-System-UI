@@ -58,16 +58,23 @@ export class CandidateComponent implements OnInit {
   rejectComment: string = '';
   page: number = 1;
   blockedPage: number = 1;
-
+  searchTerm!: any;
   first: number = 0;
   totalRecord!: number;
   rows: number = 5;
+
+  onSecondPageChange(event: PaginatorState) {
+    this.first = event.first || 0;
+    this.rows = event.rows || 5;
+    const page = event.page ? event.page + 1 : 1;
+    this.loadCandidates('approved', page);
+  }
 
   onPageChange(event: PaginatorState) {
     this.first = event.first || 0;
     this.rows = event.rows || 5;
     const page = event.page ? event.page + 1 : 1;
-    this.loadCandidates('approved', page);
+    this.loadCandidates( '',page);
   }
 
   @ViewChild('candidateModal') candidateModal: ElementRef | undefined;
@@ -91,7 +98,7 @@ export class CandidateComponent implements OnInit {
         this.loadCandidates(status, 1);
       }
     });
-    this.loadElections(); // Fetch elections on initialization
+    // this.loadElections(); // Fetch elections on initialization
   }
 
   navigateToApprovedCandidates(): void {
@@ -103,7 +110,7 @@ export class CandidateComponent implements OnInit {
   }
 
   navigateToCandidate(): void {
-    this.router.navigate(['admin','candidate']);
+    this.router.navigate(['admin', 'candidate']);
   }
 
   loadCandidates(status: any, page: any): void {
@@ -112,13 +119,15 @@ export class CandidateComponent implements OnInit {
         this.candidates = data.paginationResults?.results || [];
         console.log(data);
         this.totalRecord = data.paginationResults.total;
-        this.pendingCandidates = this.candidates.filter(
-          (c) => c.status === 'pending',
-        );
-        this.approvedCandidates = this.candidates.filter(
-          (c) => c.status === 'approved',
-        );
-        this.filteredCandidates = this.pendingCandidates.slice();
+        // this.pendingCandidates = this.candidates.filter(
+        //   (c) => c.status === 'pending',
+        // );
+        // this.approvedCandidates = this.candidates.filter(
+        //   (c) => c.status === 'approved',
+        // );
+        // this.filteredCandidates = this.pendingCandidates.slice();
+        this.filteredCandidates = data.paginationResults.results
+        this.pendingCandidates = data.paginationResults.results;
       },
       (error) => {
         console.error('Error loading candidates:', error);
@@ -131,8 +140,8 @@ export class CandidateComponent implements OnInit {
       next: (response) => {
         if (response && Array.isArray(response.results)) {
           this.elections = response.results;
-          this.totalPages = response.totalPages;
-          this.pagesArray = Array.from({ length: this.totalPages }, (_, i) => i + 1);
+          // this.totalPages = response.totalPages;
+          // this.pagesArray = Array.from({ length: this.totalPages }, (_, i) => i + 1);
         } else {
           console.error('Data is not in the expected format', response);
         }
@@ -232,16 +241,16 @@ export class CandidateComponent implements OnInit {
         );
     }
   }
- searchByLogoName(): void {
-  if (this.searchTerm) {
-    this.filteredCandidates = this.pendingCandidates.filter(candidate =>
-      candidate.logoName.toLowerCase().includes(this.searchTerm.toLowerCase())
-    );
-  } else {
-    this.filteredCandidates = this.pendingCandidates.slice(); // Show all pending candidates if search term is empty
+  searchByLogoName(): void {
+    console.log(this.pendingCandidates);
+    if (this.searchTerm) {
+      this.filteredCandidates = this.pendingCandidates.filter((candidate) =>
+        candidate.logoName
+          .toLowerCase()
+          .includes(this.searchTerm.toLowerCase()),
+      );
+    } else {
+      this.filteredCandidates = this.pendingCandidates.slice(); // Show all pending candidates if search term is empty
+    }
   }
-}
-
-  
-
 }

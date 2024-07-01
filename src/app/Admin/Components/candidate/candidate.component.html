@@ -15,6 +15,7 @@
       >
     </li>
     <li class="nav-item" role="presentation">
+     
       <a
         class="nav-link"
         id="approved-tab"
@@ -59,7 +60,8 @@
               {{ candidate.logoName }}
             </span>
             <span>
-              <button
+               @if(candidate.status==='pending'){
+                  <button
                 class="btn btn-sm btn-primary me-2"
                 (click)="approveCandidate(candidate)"
               >
@@ -71,16 +73,33 @@
               >
                 Reject
               </button>
+      }@else if(candidate.status==='rejected') {
+        <div class="contain">
+          <p class="badge bg-danger">Rejected</p>  
+        </div>
+      }
+      @else if(candidate.status==='approved') {
+          <p class="badge bg-success">Approved</p>  
+      }
+              
+              
             </span>
           </li>
         </ul>
-        <div class="pagination-container" *ngIf="candidates.length > 5" >
-          <pagination-controls
-          class="pagination-controls w-50 text-primary ps-5 bg-white rounded-2 pt-3"
-          (pageChange)="page = $event"
-        ></pagination-controls>
+        <!-- <div class="pagination-container" *ngIf="candidates.length > 5" >
+
         
-        </div>
+        </div> -->
+
+                                 <div class="mypag d-flex justify-content-center pb-3 mt-5">
+    <p-paginator 
+        (onPageChange)="onPageChange($event)" 
+        [first]="first" 
+        [rows]="rows" 
+        [totalRecords]="totalRecord" 
+        class="mypag"
+         />
+</div>
       </div>
     </div>
     <div
@@ -96,7 +115,7 @@
             class="list-group-item text-light border-black"
             style="background-color: rgb(31, 31, 31)"
             *ngFor="
-              let candidate of approvedCandidates
+              let candidate of filteredCandidates
                 
             "
           >
@@ -114,12 +133,9 @@
             </span>
           </li>
         </ul>
-        <!-- <div class="pagination-container">
-          <pagination-controls class="pagination-controls" (pageChange)="page = $event"></pagination-controls>
-        </div> -->
-                <div class="mypag d-flex justify-content-center pb-3 mt-5">
+                        <div class="mypag d-flex justify-content-center pb-3 mt-5">
     <p-paginator 
-        (onPageChange)="onPageChange($event)" 
+        (onPageChange)="onSecondPageChange($event)" 
         [first]="first" 
         [rows]="rows" 
         [totalRecords]="totalRecord" 
